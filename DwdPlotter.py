@@ -1,0 +1,187 @@
+import matplotlib.pyplot as plt
+import gc
+import numpy as np
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
+plt.style.use('default')
+#plt.style.use('dark_background')
+#plt.style.use('Solarize_Light2')
+
+
+class PlotterForStations:
+    def __init__(self, x, y, z=0, type_of_data=""):
+        self.__x = x
+        self.__y = y
+        self.__z = z
+        self.type_of_data = type_of_data
+
+    def plotting_3d(self, projection=False):
+        fig = plt.figure()
+        fig.set_size_inches(12, 14)
+
+
+        ax = fig.add_subplot(111, projection="3d")
+        ax.stem(self.__x, self.__y, self.__z, bottom=0, basefmt=" ", orientation="z", linefmt='orange')
+        ax.view_init(20, 120)
+        ax.set_xlabel("Geolaenge / °E", color='black', weight='normal', size=18, labelpad=25)
+        ax.set_ylabel("Gebreite / °N", color='black', weight='normal', size=18, labelpad=25)
+        ax.set_zlabel("Stationshoehe / m", color='black', weight='normal', size=18, labelpad=30)
+        ax.tick_params(axis='z', which='major', pad=10)
+        plt.title(f"Geolokalisierung von Stationen in Deutschland [{self.type_of_data}]", pad=0, size=20,  weight='bold')
+
+        ax.xaxis.set_tick_params(labelsize=16)
+        ax.yaxis.set_tick_params(labelsize=16)
+        ax.zaxis.set_tick_params(labelsize=16)
+
+
+        if projection:
+            ax.plot(self.__x, self.__z, "+", zdir="y", zs=0)
+            fig.savefig("Graphs/projected_german_stations_3d_" + self.type_of_data + ".png")
+        else:
+            fig.savefig("Graphs/german_stations_3d_" + self.type_of_data + ".png")
+        plt.cla()
+        plt.clf()
+        plt.close('all')
+        gc.collect()
+
+        return print("plot saved")
+
+    def plotting_height_2d(self):
+        fig = plt.figure(figsize=(12, 14), dpi=100)
+        ax = fig.add_subplot(1, 1, 1)
+        plt.scatter(self.__x, self.__y, c=self.__z, cmap=plt.cm.get_cmap("seismic", 5), marker="s")
+        plt.clim(0, 1000)
+        plt.grid(True, linestyle='--', linewidth=0.5, color="black")
+        plt.title(f"Geolokalisierung von Stationen in Deutschland [{self.type_of_data}]", pad=30, size=20,  weight='bold')
+
+        cbar = plt.colorbar(extend="max")
+        cbar.set_ticks([0, 200, 400, 600, 800, 1000])
+        cbar.set_label('Stationshoehe / m', rotation=270, size=18, labelpad=18)
+        cbar.ax.tick_params(labelsize=14)
+
+        ax.set_xlabel("Geolaenge / °E", color='black', weight='normal', size=18, labelpad=20)
+        ax.set_ylabel("Gebreite / °N", color='black', weight='normal', size=18, labelpad=20)
+        ax.set_facecolor('lightgreen')
+        plt.xticks(fontsize=14)
+        plt.yticks(fontsize=14)
+
+        fig.savefig("Graphs/german_stations_2d_" + self.type_of_data + ".png")
+        plt.cla()
+        plt.clf()
+        plt.close('all')
+        gc.collect()
+
+        return print("plot saved")
+
+
+class PlotterForData:
+    def __init__(self, data_all, data_mean, index_for_plot, column_name_list, start_date_datetime, end_date_datetime, plot_name, k_factor, x_coordinate, y_coordinate, type_of_data, unit_dict, title_dict):
+        self.column_name_list = column_name_list
+        self.data_all = data_all
+        self.data_mean = data_mean
+        self.index_for_plot = index_for_plot
+        self.start_date_datetime = start_date_datetime
+        self.end_date_datetime = end_date_datetime
+        self.plot_name = plot_name
+        self.k_factor = k_factor
+        self.x_coordinate = x_coordinate
+        self.y_coordinate = y_coordinate
+        self.type_of_data = type_of_data
+        self.unit_dict = unit_dict[self.type_of_data]
+        self.title_dict = title_dict[self.type_of_data]
+
+    def plotting_compare(self, compare_station):
+        print(self.start_date_datetime)
+        print(self.end_date_datetime)
+        data_to_compare = self.data_all[compare_station]
+        data_all = self.data_all.drop([compare_station], axis=1)
+        data_mean = data_all.mean(axis=1)
+        diff = (data_mean - data_to_compare).abs()
+        maximum = diff.max()
+        avg_diff = np.full((len(diff)), diff.sum()/len(diff))
+        print(f"Durchschnittliche Abweichung: {avg_diff[0]}")
+        print(f"Maximale Abweichung: {maximum}")
+
+        fig, (ax1, ax2, ax3) = plt.subplots(nrows=3, figsize=(20, 10), dpi=100)
+        plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=1, hspace=0.5)
+
+        for i in self.column_name_list[1:]:
+            ax1.plot(self.index_for_plot, data_all[i], linewidth=0.5)
+        ax1.set_xlim(self.start_date_datetime, self.end_date_datetime)
+        ax1.legend(self.column_name_list[1:], bbox_to_anchor=(0, 1.02, 1, 0.2), loc='lower left', ncol=10, prop={'size': 8})
+        ax1.set_title(f"{self.plot_name} mit den Parametern: [k-Faktor: {self.k_factor-1}], [geoLaenge: {self.x_coordinate}], [geoBreite: "
+                      f"{self.y_coordinate}], [Startdatum: {self.start_date_datetime}], [Enddatum: {self.end_date_datetime}]", pad=50, weight='bold')
+        ax1.grid(True, linestyle='--', linewidth=0.25, color="grey")
+        ax1.set_ylabel(self.plot_name, color='black', weight='normal', size=12, labelpad=20)
+
+        ax2.plot(self.index_for_plot, data_mean, label="Berechneter Durchschnitt")
+        ax2.plot(self.index_for_plot, data_to_compare, label="Realwerte")
+        ax2.set_xlim(self.start_date_datetime, self.end_date_datetime)
+        ax2.legend(bbox_to_anchor=(0, 1.02, 1, 0.2), loc='lower left', prop={'size': 10}, ncol=2)
+        ax2.set_title(f"Durchschnitt der Stationen verglichen mit den Realwerten der Station {compare_station}", pad=10, weight='bold', loc="right")
+        ax2.grid(True, linestyle='--', linewidth=0.25, color="grey")
+        ax2.set_ylabel(self.plot_name, color='black', weight='normal', size=12, labelpad=20)
+
+        ax3.bar(self.index_for_plot, diff, width=np.timedelta64(9, 'm'), label="Abweichung von Realwerten", color="darkred")
+        ax3.plot(self.index_for_plot, avg_diff, label="Durchschnittliche Abweichung", color="b")
+        ax3.set_xlim(self.start_date_datetime, self.end_date_datetime)
+        ax3.set_ylim(0, maximum+1)
+        ax3.legend(bbox_to_anchor=(0, 1.02, 1, 0.2), loc='lower left', prop={'size': 10}, ncol=2)
+        ax3.set_title(f"Absolute Abweichung von den Realwerten", pad=10, weight='bold', loc="right")
+        ax3.grid(True, linestyle='--', linewidth=0.25, color="grey")
+        ax3.set_xlabel("Datum", color='black', weight='normal', size=12, labelpad=20)
+        ax3.set_ylabel(self.plot_name, color='black', weight='normal', size=12, labelpad=20)
+
+        fig.savefig("Graphs/" + "compare" + ".png")
+        plt.cla()
+        plt.clf()
+        plt.close('all')
+        gc.collect()
+
+        return print("plot saved")
+
+    def plotting_data(self):
+        print(self.data_all)
+        print(self.data_mean)
+        print(self.unit_dict)
+        fig, (ax1, ax2) = plt.subplots(nrows=2, figsize=(20, 10), dpi=100)
+        plt.subplots_adjust(left=None, bottom=0.1, right=None, top=0.85, wspace=0.5, hspace=0.5)
+
+        for i in self.column_name_list:
+            ax1.plot(self.index_for_plot, self.data_all[i], linewidth=0.5)
+        lgn_1 = ax1.legend(self.column_name_list, bbox_to_anchor=(0, 1.00, 1, 0.2), loc='lower left', ncol=10, prop={'size': 12})
+        ax1.set_title(f"{self.title_dict[self.plot_name]}" , pad=60, weight='bold', size=18)
+        ax1.set_xlim(self.start_date_datetime, self.end_date_datetime)
+        # ax1.set_xlabel("Datum", color='black', weight='normal', size=16, labelpad=20)
+        ax1.set_ylabel(self.unit_dict[self.plot_name], color='black', weight='normal', size=14, labelpad=20)
+        ax1.grid(True, linestyle='--', linewidth=0.25, color="grey")
+        ax1.xaxis.set_tick_params(labelsize=12)
+        ax1.yaxis.set_tick_params(labelsize=12)
+        for i in lgn_1.legendHandles:
+            i.set_linewidth(5)
+
+        ax2.plot(self.index_for_plot, self.data_mean, linewidth=0.5)
+        lgn_2 = ax2.legend([self.plot_name + "_" + self.type_of_data + "_mean"], bbox_to_anchor=(0, 1.00, 1, 0.2), loc='lower left', prop={'size': 12}, ncol=2)
+        ax2.set_title(f"Durchschnitt der Stationen", pad=10, weight='bold', size=18)
+        ax2.set_xlim(self.start_date_datetime, self.end_date_datetime)
+        ax2.set_xlabel("Datum", color='black', weight='normal', size=14, labelpad=20)
+        ax2.set_ylabel(self.plot_name, color='black', weight='normal', size=14, labelpad=20)
+        ax2.grid(True, linestyle='--', linewidth=0.25, color="grey")
+        ax2.xaxis.set_tick_params(labelsize=12)
+        ax2.yaxis.set_tick_params(labelsize=12)
+        for i in lgn_2.legendHandles:
+            i.set_linewidth(5)
+
+        textstr = (f"Parameter: [k-Faktor: {self.k_factor}], [geoLaenge: {self.x_coordinate}], "
+                      f"[geoBreite: {self.y_coordinate}], [Startdatum: {self.start_date_datetime}], [Enddatum: {self.end_date_datetime}]")
+        props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
+        plt.text(0.5, 0.99, textstr, transform=plt.gcf().transFigure, fontsize=10, bbox=props, ha='center', va="center")
+
+
+        fig.savefig("Graphs/" + self.type_of_data + "_" + self.plot_name + ".png")
+        plt.cla()
+        plt.clf()
+        plt.close('all')
+        gc.collect()
+
+        return print("plot saved")
