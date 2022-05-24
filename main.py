@@ -55,6 +55,7 @@ dwd = DwdMain(external_domain=external_domain_,
               title_dict=title_dict_)
 dwd.main_plotter_data(compare=False)
 
+print("test")
 
 
 # for i in dwd.main_station_array():
