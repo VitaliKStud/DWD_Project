@@ -5,6 +5,16 @@ Code created with PyCharm Professional Student Version.
 
 Interpreter: Python 3.10
 
+Tested on Windows 11 Pro 64-Bit Version
+
+
+>CPU: Intel Core i7 12700K
+> 
+> RAM: DDR5 32 GB
+> 
+> GPU: NVIDIA 3080 
+> 
+> ROM: SSD 980 PCIe 4.0 M.2
 # Used Packages
 ```
 pip install os 
@@ -48,7 +58,7 @@ pip install gc
 ## important variables @main.py
 >**looking_for_ = []** : Tells what type of measurement you are looking for. Check **DwdDict.py, title_dict**
 > 
->**start_date_ and end_data_ = int(YYYYMMDDhhmm)**  : Tells the range of data you are looking for
+>**start_date_ and end_date_ = int(YYYYMMDDhhmm)**  : Tells the range of data you are looking for
 > 
 >**x_coordinate_ and y_coordinate_ = int(Long) and int(Lat)** : Latitude coordinates in germany
 > 
@@ -61,4 +71,16 @@ pip install gc
 > **type_of_time_ = str()** : Tells what type of time you are looking for Check **Dwddict.py, type_of_time_list**
 
 ## important functions @main.py
->
+> **dwd.main_plotter_data()** # compare=False as standard
+> 
+> **dwd.main_station_array()**
+> 
+> **dwd.main_station_information()**
+> 
+> **dwd.main_datascrapper()** # will download the type_of_data_ for you
+> 
+> **dwd.main_writer()** # will prepare the data for you
+>  
+> **dwd.main_data_map()** # will create coordinate .json data for your JupyterNotebook Map
+> 
+> **dwd.main_plotter_stations()** # projection=False as standard

@@ -6,7 +6,6 @@ from DwdGui import DwdGui
 local_domain_ = r"C:/Users/VID/Desktop/Betriebliche Praxis/"
 os.chdir(local_domain_)
 
-
 looking_for_ = ["TM5_10"]
 # choose your data you need to plot #Check DwdDict
 
