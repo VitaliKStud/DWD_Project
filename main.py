@@ -5,7 +5,8 @@ from DwdDataPrep import Reader
 from DwdGui import DwdGui
 
 os.chdir(r"C:/Users/VID/Desktop/Betriebliche Praxis/")
-type_dict_, load_txt_dict_, rest_dict_, title_dict_, unit_dict_, type_of_time_list_, type_of_data_list_, external_domain_, local_domain_, external_path_global_, ending_ = get_dwd_dict()
+local_domain_ = "C:/Users/VID/Desktop/Betriebliche Praxis/"
+type_dict_, load_txt_dict_, rest_dict_, title_dict_, unit_dict_, type_of_time_list_, type_of_data_list_, external_domain_, external_path_global_, ending_ = get_dwd_dict()
 
 looking_for_ = ["TM5_10"]
 # choose your data you need to plot #Check DwdDict
@@ -55,7 +56,7 @@ dwd = DwdMain(external_domain=external_domain_,
               title_dict=title_dict_)
 dwd.main_plotter_data(compare=False)
 
-print("test")
+
 
 
 # for i in dwd.main_station_array():
@@ -63,7 +64,7 @@ print("test")
 
 # dwd.main_datascrapper()
 # dwd.main_writer()
-# dwd.main_data_map()
+#dwd.main_data_map()
 # dwd.main_plotter_stations(projection=False)
 
 

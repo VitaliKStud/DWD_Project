@@ -1,7 +1,6 @@
 from ipyleaflet import Map, basemaps, Marker, FullScreenControl, ScaleControl, AwesomeIcon, LegendControl, SplitMapControl, Heatmap, LayersControl, basemap_to_tiles
-from ipywidgets import HTML
+from ipywidgets import HTML, Layout
 from IPython.display import display
-from ipywidgets import Layout
 import json
 
 

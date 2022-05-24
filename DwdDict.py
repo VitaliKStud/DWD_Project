@@ -1,6 +1,5 @@
 def get_dwd_dict():
     external_domain = "https://opendata.dwd.de/"
-    local_domain = "C:/Users/VID/Desktop/Betriebliche Praxis/"
     external_path_global = "climate_environment/CDC/observations_germany/climate/10_minutes/"
     ending = [".zip", ".pdf", ".txt"]
     # choose your paths and which data you need
@@ -27,4 +26,4 @@ def get_dwd_dict():
     type_of_data_list = ["air_temperature", "precipitation", "solar", "wind"]
     # leave it (global lists). Here you can see what data_types and time_types are available (needed for type_of_data_ and type_of_time_)
 
-    return type_dict, load_txt_dict, rest_dict, title_dict, unit_dict, type_of_time_list, type_of_data_list, external_domain, local_domain, external_path_global, ending
+    return type_dict, load_txt_dict, rest_dict, title_dict, unit_dict, type_of_time_list, type_of_data_list, external_domain, external_path_global, ending
