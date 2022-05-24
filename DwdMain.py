@@ -2,6 +2,7 @@ from DwdDataScrapper import DataScrapper
 from DwdDataPrep import Reader, Writer
 from DwdNearNeighbor import NearNeighbor
 from DwdPlotter import PlotterForStations, PlotterForData
+from DwdDict import get_dwd_dict
 import numpy as np
 import json
 from datetime import datetime
@@ -172,4 +173,37 @@ class DwdMain:
     def main_station_array(self):
         return self.reader.get_station_ids()
 
-
+def main_dwd(local_domain,
+             type_of_data,
+             type_of_time,
+             start_date=None,
+             end_date=None,
+             compare_station=None,
+             x_coordinate=None,
+             y_coordinate=None,
+             z_coordinate=None,
+             k_factor=None,
+             looking_for=None):
+    type_dict, load_txt_dict, rest_dict, title_dict, unit_dict, type_of_time_list, type_of_data_list, external_domain, external_path_global, ending = get_dwd_dict()
+    dwd = DwdMain(external_domain=external_domain,
+                  external_path_global=external_path_global,
+                  local_domain=local_domain,
+                  type_of_data=type_of_data,
+                  type_of_time=type_of_time,
+                  type_dict=type_dict,
+                  load_txt_dict=load_txt_dict,
+                  rest_dict=rest_dict,
+                  ending=ending,
+                  start_date=start_date,
+                  end_date=end_date,
+                  compare_station=compare_station,
+                  x_coordinate=x_coordinate,
+                  y_coordinate=y_coordinate,
+                  z_coordinate=z_coordinate,
+                  k_factor=k_factor,
+                  looking_for=looking_for,
+                  type_of_time_list=type_of_time_list,
+                  type_of_data_list=type_of_data_list,
+                  unit_dict=unit_dict,
+                  title_dict=title_dict)
+    return dwd
