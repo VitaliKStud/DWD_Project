@@ -51,9 +51,11 @@ pip install gc
 >
 >main: will be a compressed file for the setup.
 ## important setups
->add a local path for yout data @main.py ![img_1.png](img_1.png)
+>add a **local_domain_** for yout data @main.py ![img_1.png](img_1.png)
 > 
 > Create a folder named "Graphs" inside your **local_domain_** for your plots.
+> 
+> Put DWD_project inside **the local_domain_**
 ## important variables @main.py
 >**looking_for_ = []** : Tells what type of measurement you are looking for. Check **DwdDict.py, title_dict**
 > 
@@ -76,10 +78,21 @@ pip install gc
 > 
 > **dwd.main_station_information()**
 > 
-> **dwd.main_datascrapper()** # will download the type_of_data_ for you
+> **dwd.main_datascrapper()** # all=False as standard. Will download the type_of_data_ for you
 > 
 > **dwd.main_writer()** # type_of_data_list=None, type_of_time_list=None as standard
 >  
 > **dwd.main_data_map()** # will create coordinate .json data for your JupyterNotebook Map
 > 
 > **dwd.main_plotter_stations()** # projection=False as standard
+> 
+## Avoid Windows bugs
+> to avoid any Windwos bugs, you need to change the max. length of any path![](disable_windwos_path_limit.png)
+> 
+> Press **Win+R** > **REGEDIT** > HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem
+> 
+> go to LongPathEnabled and set it to **1**
+> 
+> Note: If LongPathsEnabled is not available in your list. Right click and create **LongPathEnabled**
+> 
+> Choose the DWORD (32-bit) Value if your creating a new DWORD

@@ -102,10 +102,14 @@ class DataScrapper:
             if not os.path.exists(self.__local_path + path_i[i] + "/" + "extracted_files"):
                 os.makedirs(self.__local_path + path_i[i] + "/" + "extracted_files")
             for j in range(len(path_j)):
-                if looking_for in self.__local_path + path_i[i] + "/" + path_j[j]:
-                    with zipfile.ZipFile(self.__local_path + path_i[i] + "/" + path_j[j], "r") as zip_j:
-                        zip_j.extractall((self.__local_path + path_i[i] + "/" + "extracted_files/" + path_j[j].replace(".zip", "_unzipped/")))
-                        print("Extracting in: " + self.__local_path + path_i[i] + "/" + path_j[j])
+                my_path = self.__local_path + path_i[i] + "/" + path_j[j]
+                if looking_for in my_path:
+                    with zipfile.ZipFile(my_path, "r") as zip_j:
+                        extract_in = self.__local_path + path_i[i] + "/" + "extracted_files/" + path_j[j].replace(".zip", "_unzipped/")
+                        print("extracting: ", extract_in)
+                        zip_j.extractall(extract_in)
+                        zip_j.close()
+                        print("extracting")
                 else:
                     continue
         print("Extracting finished")

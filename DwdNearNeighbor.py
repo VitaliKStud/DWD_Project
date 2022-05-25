@@ -5,7 +5,6 @@ from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
 import os
 
-os.chdir(r"C:/Users/VID/Desktop/Betriebliche Praxis/")
 pd.set_option('display.max_rows', 500)
 pd.set_option('display.max_columns', 500)
 pd.set_option('display.width', 1000)

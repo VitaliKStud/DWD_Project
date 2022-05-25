@@ -3,7 +3,7 @@ import os
 import tkinter as tk
 import tkintermapview
 
-os.chdir(r"C:/Users/VID/Desktop/Betriebliche Praxis/")
+
 external_domain_ = "https://opendata.dwd.de/"
 local_domain_ = "C:/Users/VID/Desktop/Betriebliche Praxis/"
 external_path_global_ = "climate_environment/CDC/observations_germany/climate/10_minutes/"
