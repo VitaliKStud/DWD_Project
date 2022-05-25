@@ -78,7 +78,7 @@ pip install gc
 > 
 > **dwd.main_datascrapper()** # will download the type_of_data_ for you
 > 
-> **dwd.main_writer()** # will prepare the data for you
+> **dwd.main_writer()** # type_of_data_list=None, type_of_time_list=None as standard
 >  
 > **dwd.main_data_map()** # will create coordinate .json data for your JupyterNotebook Map
 > 

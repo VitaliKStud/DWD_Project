@@ -27,7 +27,7 @@ k_factor_ = 5
 # How many Stations you're looking for around your x_coordinate and y_coordinate
 
 type_of_data_ = "air_temperature"
-type_of_time_ = "historical"
+type_of_time_ = "recent"
 # what type do you have? Check type_of_data_list_ and type_of_time_list_
 
 #for i in type_of_data_list_:
@@ -48,7 +48,7 @@ dwd = main_dwd(local_domain=local_domain_,
 # dwd.main_station_array():
 # dwd.main_station_information("TU_00003")["geoBreite"]
 # dwd.main_datascrapper()
-dwd.main_writer([type_of_data_], [type_of_time_])
+dwd.main_writer([type_of_data_])
 # dwd.main_data_map()
 # dwd.main_plotter_stations(projection=False)
 
