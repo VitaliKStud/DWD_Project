@@ -76,14 +76,30 @@ class DwdMain:
                      local_domain=self.local_domain,
                      ending=self.ending).main_update_data()
 
-    def main_writer(self):
-        for i in range(len(self.type_of_data_list)):
-            print(i)
-            for j in range(len(self.type_of_time_list)):
-                self.load_txt, self.local_path, self.external_path, self.data_type = self.__main_path_loader(self.type_of_data_list[i], self.type_of_time_list[j])
-                Writer(local_path=self.local_path,
-                       path_to_txt=self.load_txt,
-                       data_type=self.data_type).write_stations_paths()
+    def main_writer(self, type_of_data_list=None, type_of_time_list=None):
+        if type_of_data_list:
+            for i in range(len(type_of_data_list)):
+                print("writing...")
+                if type_of_time_list:
+                    for j in range(len(type_of_time_list)):
+                        self.load_txt, self.local_path, self.external_path, self.data_type = self.__main_path_loader(type_of_data_list[i], type_of_time_list[j])
+                        Writer(local_path=self.local_path,
+                               path_to_txt=self.load_txt,
+                               data_type=self.data_type).write_stations_paths()
+                else:
+                    for j in range(len(self.type_of_time_list)):
+                        self.load_txt, self.local_path, self.external_path, self.data_type = self.__main_path_loader(type_of_data_list[i], self.type_of_time_list[j])
+                        Writer(local_path=self.local_path,
+                               path_to_txt=self.load_txt,
+                               data_type=self.data_type).write_stations_paths()
+        else:
+            for i in range(len(self.type_of_data_list)):
+                print("writing...")
+                for j in range(len(self.type_of_time_list)):
+                    self.load_txt, self.local_path, self.external_path, self.data_type = self.__main_path_loader(self.type_of_data_list[i], self.type_of_time_list[j])
+                    Writer(local_path=self.local_path,
+                           path_to_txt=self.load_txt,
+                           data_type=self.data_type).write_stations_paths()
         return print("data written")
 
     def __main_data_prep(self):
