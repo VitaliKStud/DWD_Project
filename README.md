@@ -13,8 +13,7 @@ Tested on Windows 11 Pro 64-Bit Version
 > RAM: DDR5 32 GB
 > 
 > GPU: NVIDIA 3080 
-> 
-> ROM: SSD 980 PCIe 4.0 M.2
+>
 # Used Packages
 ```
 pip install os 
