@@ -47,7 +47,7 @@ dwd = main_dwd(local_domain=local_domain_,
 # dwd.main_plotter_data(compare=False)
 # dwd.main_station_array():
 # dwd.main_station_information("TU_00003")["geoBreite"]
-# dwd.main_datascrapper()
+# dwd.main_datascrapper(all=True)
 dwd.main_writer([type_of_data_])
 # dwd.main_data_map()
 # dwd.main_plotter_stations(projection=False)

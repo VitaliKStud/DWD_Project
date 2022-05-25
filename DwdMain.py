@@ -62,19 +62,30 @@ class DwdMain:
         compare_station_t = self.type_dict[self.type_of_data] + "_" + compare_station
         return compare_station_t
 
-    def __main_path_loader(self, type_of_data, type_of_time):
-        load_txt = self.local_domain + self.external_path_global + type_of_data + "/" + type_of_time + "/" + self.rest_dict[type_of_time] + self.load_txt_dict[type_of_data] + "_Beschreibung_Stationen.txt"
-        local_path = self.local_domain + self.external_path_global + type_of_data + "/" + type_of_time + "/extracted_files/"
-        external_path = self.external_path_global + type_of_data + "/"
-        data_type = self.type_dict[type_of_data]
-        return load_txt, local_path, external_path, data_type
+    def __main_path_loader(self, type_of_data, type_of_time=None, for_scarpping=False):
+        if for_scarpping:
+            external_path = self.external_path_global + type_of_data + "/"
+            return external_path
+        else:
+            load_txt = self.local_domain + self.external_path_global + type_of_data + "/" + type_of_time + "/" + self.rest_dict[type_of_time] + self.load_txt_dict[type_of_data] + "_Beschreibung_Stationen.txt"
+            local_path = self.local_domain + self.external_path_global + type_of_data + "/" + type_of_time + "/extracted_files/"
+            external_path = self.external_path_global + type_of_data + "/"
+            data_type = self.type_dict[type_of_data]
+            return load_txt, local_path, external_path, data_type
 
-    def main_datascrapper(self):
+    def main_datascrapper(self, all=False):
         # looking_for = ".zip"
-        DataScrapper(external_domain=self.external_domain,
-                     external_path=self.external_path,
-                     local_domain=self.local_domain,
-                     ending=self.ending).main_update_data()
+        if all:
+            for i in self.type_of_data_list:
+                DataScrapper(external_domain=self.external_domain,
+                             external_path=self.__main_path_loader(i, for_scarpping=True),
+                             local_domain=self.local_domain,
+                             ending=self.ending).main_update_data()
+        else:
+            DataScrapper(external_domain=self.external_domain,
+                         external_path=self.external_path,
+                         local_domain=self.local_domain,
+                         ending=self.ending).main_update_data()
 
     def main_writer(self, type_of_data_list=None, type_of_time_list=None):
         if type_of_data_list:
@@ -82,25 +93,25 @@ class DwdMain:
                 if type_of_time_list:
                     for j in range(len(type_of_time_list)):
                         print("writing..." + " " + type_of_data_list[i] + " " + type_of_time_list[j])
-                        self.load_txt, self.local_path, self.external_path, self.data_type = self.__main_path_loader(type_of_data_list[i], type_of_time_list[j])
-                        Writer(local_path=self.local_path,
-                               path_to_txt=self.load_txt,
-                               data_type=self.data_type).write_stations_paths()
+                        load_txt, local_path, external_path, data_type = self.__main_path_loader(type_of_data_list[i], type_of_time_list[j])
+                        Writer(local_path=local_path,
+                               path_to_txt=load_txt,
+                               data_type=data_type).write_stations_paths()
                 else:
                     for j in range(len(self.type_of_time_list)):
                         print("writing... " + type_of_data_list[i] + " " + self.type_of_time_list[j])
-                        self.load_txt, self.local_path, self.external_path, self.data_type = self.__main_path_loader(type_of_data_list[i], self.type_of_time_list[j])
-                        Writer(local_path=self.local_path,
-                               path_to_txt=self.load_txt,
-                               data_type=self.data_type).write_stations_paths()
+                        load_txt, local_path, external_path, data_type = self.__main_path_loader(type_of_data_list[i], self.type_of_time_list[j])
+                        Writer(local_path=local_path,
+                               path_to_txt=load_txt,
+                               data_type=data_type).write_stations_paths()
         else:
             for i in range(len(self.type_of_data_list)):
                 for j in range(len(self.type_of_time_list)):
                     print("writing..." + " " + self.type_of_data_list[i] + " " + self.type_of_time_list[j])
-                    self.load_txt, self.local_path, self.external_path, self.data_type = self.__main_path_loader(self.type_of_data_list[i], self.type_of_time_list[j])
-                    Writer(local_path=self.local_path,
-                           path_to_txt=self.load_txt,
-                           data_type=self.data_type).write_stations_paths()
+                    load_txt, local_path, external_path, data_type = self.__main_path_loader(self.type_of_data_list[i], self.type_of_time_list[j])
+                    Writer(local_path=local_path,
+                           path_to_txt=load_txt,
+                           data_type=data_type).write_stations_paths()
         return print("data written")
 
     def __main_data_prep(self):
