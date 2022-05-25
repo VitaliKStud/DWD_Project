@@ -70,7 +70,7 @@ class DwdMain:
         return load_txt, local_path, external_path, data_type
 
     def main_datascrapper(self):
-        # looking_for_ = ".zip"
+        # looking_for = ".zip"
         DataScrapper(external_domain=self.external_domain,
                      external_path=self.external_path,
                      local_domain=self.local_domain,
