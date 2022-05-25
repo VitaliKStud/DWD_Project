@@ -152,29 +152,28 @@ class PlotterForData:
         lgn_1 = ax1.legend(self.column_name_list, bbox_to_anchor=(0, 1.00, 1, 0.2), loc='lower left', ncol=10, prop={'size': 12})
         ax1.set_title(f"{self.title_dict[self.plot_name]}" , pad=60, weight='bold', size=18)
         ax1.set_xlim(self.start_date_datetime, self.end_date_datetime)
-        # ax1.set_xlabel("Datum", color='black', weight='normal', size=16, labelpad=20)
-        ax1.set_ylabel(self.unit_dict[self.plot_name], color='black', weight='normal', size=14, labelpad=20)
+        ax1.set_ylabel(self.unit_dict[self.plot_name], color='black', weight='normal', size=14, labelpad=30, rotation=0)
         ax1.grid(True, linestyle='--', linewidth=0.25, color="grey")
-        ax1.xaxis.set_tick_params(labelsize=12)
-        ax1.yaxis.set_tick_params(labelsize=12)
+        ax1.xaxis.set_tick_params(labelsize=12, pad=10)
+        ax1.yaxis.set_tick_params(labelsize=12, pad=15)
         for i in lgn_1.legendHandles:
             i.set_linewidth(5)
 
         ax2.plot(self.index_for_plot, self.data_mean, linewidth=0.5)
         lgn_2 = ax2.legend([self.plot_name + "_" + self.type_of_data + "_mean"], bbox_to_anchor=(0, 1.00, 1, 0.2), loc='lower left', prop={'size': 12}, ncol=2)
-        ax2.set_title(f"Durchschnitt der Stationen", pad=10, weight='bold', size=18)
+        ax2.set_title(f"Durchschnitt der {self.k_factor} Stationen", pad=10, weight='bold', size=18)
         ax2.set_xlim(self.start_date_datetime, self.end_date_datetime)
         ax2.set_xlabel("Datum", color='black', weight='normal', size=14, labelpad=20)
-        ax2.set_ylabel(self.plot_name, color='black', weight='normal', size=14, labelpad=20)
+        ax2.set_ylabel(self.unit_dict[self.plot_name], color='black', weight='normal', size=14, labelpad=30, rotation=0)
         ax2.grid(True, linestyle='--', linewidth=0.25, color="grey")
-        ax2.xaxis.set_tick_params(labelsize=12)
-        ax2.yaxis.set_tick_params(labelsize=12)
+        ax2.xaxis.set_tick_params(labelsize=12, pad=10)
+        ax2.yaxis.set_tick_params(labelsize=12, pad=15)
         for i in lgn_2.legendHandles:
             i.set_linewidth(5)
 
         textstr = (f"Parameter: [k-Faktor: {self.k_factor}], [geoLaenge: {self.x_coordinate}], "
                       f"[geoBreite: {self.y_coordinate}], [Startdatum: {self.start_date_datetime}], [Enddatum: {self.end_date_datetime}]")
-        props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
+        props = dict(boxstyle='round', facecolor='salmon', alpha=0.2)
         plt.text(0.5, 0.99, textstr, transform=plt.gcf().transFigure, fontsize=10, bbox=props, ha='center', va="center")
 
 
