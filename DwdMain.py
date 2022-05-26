@@ -46,8 +46,11 @@ class DwdMain:
         self.y_coordinate = y_coordinate
         self.z_coordinate = z_coordinate
         self.k_factor = k_factor
-        self.start_date_datetime = datetime.strptime(str(self.start_date), "%Y%m%d%H%M")
-        self.end_date_datetime = datetime.strptime(str(self.end_date), "%Y%m%d%H%M")
+        if start_date == None:
+            pass
+        else:
+            self.start_date_datetime = datetime.strptime(str(self.start_date), "%Y%m%d%H%M")
+            self.end_date_datetime = datetime.strptime(str(self.end_date), "%Y%m%d%H%M")
         self.load_txt, self.local_path, self.external_path, self.data_type = self.__main_path_loader(self.type_of_data, self.type_of_time)
         self.looking_for = looking_for
         self.type_of_time_list = type_of_time_list
@@ -153,8 +156,10 @@ class DwdMain:
                                  type_of_data=self.type_of_data,
                                  unit_dict=self.unit_dict,
                                  title_dict=self.title_dict)
-        if compare:
+        if compare == "pltcompare":
             plotter.plotting_compare(compare_station=self.compare_station)
+        elif compare == "justcompare":
+            plotter.compare(compare_station=self.compare_station)
         else:
             plotter.plotting_data()
 
@@ -196,11 +201,18 @@ class DwdMain:
                                          column_name_list=column_name_list,
                                          plot_name=i,
                                          compare=compare)
+
     def main_station_information(self, station_id):
         return self.reader.read_station_list().get(station_id).get_station_informations()
 
     def main_station_array(self):
         return self.reader.get_station_ids()
+
+    def main_activ_stations_in_date(self):
+        return self.reader.get_active_stations_in_date(self.start_date, self.end_date)
+
+
+
 
 def main_dwd(local_domain,
              type_of_data,
