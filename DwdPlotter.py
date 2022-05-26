@@ -102,10 +102,10 @@ class PlotterForData:
         print(f"Durchschnittliche Abweichung: {avg_diff[0]}")
         print(f"Maximale Abweichung: {maximum}")
 
-        return data_to_compare, data_mean, data_mean, diff, maximum, avg_diff, data_all
+        return data_to_compare, data_mean, diff, maximum, avg_diff, data_all
 
     def plotting_compare(self, compare_station):
-        data_to_compare, data_mean, data_mean, diff, maximum, avg_diff, data_all = self.compare(compare_station)
+        data_to_compare, data_mean, diff, maximum, avg_diff, data_all = self.compare(compare_station)
 
         fig, (ax1, ax2, ax3) = plt.subplots(nrows=3, figsize=(20, 10), dpi=100)
         plt.subplots_adjust(left=None, bottom=0.1, right=None, top=0.85, wspace=0.5, hspace=0.5)
@@ -148,8 +148,8 @@ class PlotterForData:
         for i in lgn_3.legendHandles:
             i.set_linewidth(5)
 
-        textstr = (f"Parameter: [k-Faktor: {self.k_factor}], [geoLaenge: {self.x_coordinate}], "
-                      f"[geoBreite: {self.y_coordinate}], [Startdatum: {self.start_date_datetime}], [Enddatum: {self.end_date_datetime}]")
+        textstr = (f"Parameter: [k-Faktor: {self.k_factor}], [geoLaenge: {self.x_coordinate:.4f}], "
+                      f"[geoBreite: {self.y_coordinate:.4f}], [Startdatum: {self.start_date_datetime}], [Enddatum: {self.end_date_datetime}]")
         props = dict(boxstyle='round', facecolor='salmon', alpha=0.2)
         plt.text(0.5, 0.99, textstr, transform=plt.gcf().transFigure, fontsize=10, bbox=props, ha='center', va="center")
 
@@ -192,8 +192,8 @@ class PlotterForData:
         for i in lgn_2.legendHandles:
             i.set_linewidth(5)
 
-        textstr = (f"Parameter: [k-Faktor: {self.k_factor}], [geoLaenge: {self.x_coordinate}], "
-                      f"[geoBreite: {self.y_coordinate}], [Startdatum: {self.start_date_datetime}], [Enddatum: {self.end_date_datetime}]")
+        textstr = (f"Parameter: [k-Faktor: {self.k_factor}], [geoLaenge: {self.x_coordinate:.4f}], "
+                      f"[geoBreite: {self.y_coordinate:.4f}], [Startdatum: {self.start_date_datetime}], [Enddatum: {self.end_date_datetime}]")
         props = dict(boxstyle='round', facecolor='salmon', alpha=0.2)
         plt.text(0.5, 0.99, textstr, transform=plt.gcf().transFigure, fontsize=10, bbox=props, ha='center', va="center")
 

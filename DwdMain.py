@@ -159,7 +159,8 @@ class DwdMain:
         if compare == "pltcompare":
             plotter.plotting_compare(compare_station=self.compare_station)
         elif compare == "justcompare":
-            plotter.compare(compare_station=self.compare_station)
+            data_to_compare, data_mean, diff, maximum, avg_diff, data_all = plotter.compare(compare_station=self.compare_station)
+            return maximum, avg_diff
         else:
             plotter.plotting_data()
 
@@ -193,14 +194,24 @@ class DwdMain:
         return print("zipped_data_for_active_map")
 
     def main_plotter_data(self, compare=False):
-        for i in self.looking_for:
-            data_all, data_mean, index_for_plot, column_name_list = self.__main_nearneighbor(i)
-            self.__main_plotter_for_data(data_all=data_all,
-                                         data_mean=data_mean,
-                                         index_for_plot=index_for_plot,
-                                         column_name_list=column_name_list,
-                                         plot_name=i,
-                                         compare=compare)
+        if compare == "justcompare":
+            for i in self.looking_for:
+                data_all, data_mean, index_for_plot, column_name_list = self.__main_nearneighbor(i)
+                return self.__main_plotter_for_data(data_all=data_all,
+                                                    data_mean=data_mean,
+                                                    index_for_plot=index_for_plot,
+                                                    column_name_list=column_name_list,
+                                                    plot_name=i,
+                                                    compare=compare)
+        else:
+            for i in self.looking_for:
+                data_all, data_mean, index_for_plot, column_name_list = self.__main_nearneighbor(i)
+                self.__main_plotter_for_data(data_all=data_all,
+                                             data_mean=data_mean,
+                                             index_for_plot=index_for_plot,
+                                             column_name_list=column_name_list,
+                                             plot_name=i,
+                                             compare=compare)
 
     def main_station_information(self, station_id):
         return self.reader.read_station_list().get(station_id).get_station_informations()

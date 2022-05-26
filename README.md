@@ -26,7 +26,6 @@ pip install bs4
 pip install requests
 pip install zipfile
 pip install tkinter
-pip install tkintermapview
 pip install numpy
 pip install scipy.spatial / pip install scipy
 pip install matplotlib.pyplot / pip install matplotlib
@@ -96,3 +95,4 @@ pip install gc
 > Note: If LongPathsEnabled is not available in your list. Right click and create **LongPathEnabled**
 > 
 > Choose the DWORD (32-bit) Value if your creating a new DWORD
+>
