@@ -54,16 +54,16 @@ dwd = main_dwd(local_domain=local_domain_,
                z_coordinate=z_coordinate_,
                k_factor=k_factor_,
                looking_for=looking_for_)
-dwd.main_plotter_data(compare="False")
+#dwd.main_plotter_data(compare="False")
 # avg_diff_list.append(avg_diff)
 # max_diff.append(maximum)
 # print(avg_diff_list)
 # print(max_diff)
-# dwd.main_station_array():
-# dwd.main_station_information("TU_00003")["geoBreite"]
+print(type(dwd.main_station_array()))
+print(dwd.main_station_information("TU_00003"))
 # dwd.main_datascrapper(all=True)
 # dwd.main_writer(all=True)
-dwd.main_data_map()
+#dwd.main_data_map()
 # dwd.main_plotter_stations(projection=False)
 
 

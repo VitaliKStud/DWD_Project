@@ -54,37 +54,64 @@ pip install gc
 > 
 > Create a folder named "Graphs" inside your **local_domain_** for your plots.
 > 
-> Put DWD_project inside **the local_domain_**
-## important variables @main.py
->**looking_for_ = []** : Tells what type of measurement you are looking for. Check **DwdDict.py, title_dict**
+> Put DWD_project inside the **local_domain_**
+## Define your class with main_dwd() as *dwd*
+```
+from DwdMain import main_dwd
+dwd = main_dwd(local_domain,
+             type_of_data,
+             type_of_time,
+             start_date=None,
+             end_date=None,
+             compare_station=None,
+             x_coordinate=None,
+             y_coordinate=None,
+             z_coordinate=None,
+             k_factor=None,
+             looking_for=None)
+```
+> ### Variables
+>- >**local_domain as Raw String**: Is the local path, where everything will be processed
+>- >**type_of_data as String**: Tells what type of data you are looking for. Check **DwdDict.py, type_of_data_list**
+>- >**type_of_time as String** : Tells what type of time you are looking for Check **Dwddict.py, type_of_time_list**
+>- >**start_date and end_date as Integer**: define the timedelta you are looking for. (Note: YYYYMMDDhhmm)
+>- >**compare_station as String**: If you compare the precision of the mean method you need to chooce a 
+   > Station you want to compare with. (Example: "TU_00003" or "solar_00003")
+>- >**x_coordinate, y_coordinate, z_coordinate as float**: Define the location in germany (Latitude coordinates). You can 
+   leave z_coordinate=0 for now. 
+>- >**k_factor as integer**: Will look for this amount of Stations around your Latitude coordinates
+>- >**looking_for as String**: Tells what type of measurement you are looking for. Check **DwdDict.py, title_dict**
+> ### Methods
+> Get your data first!
+>- >**dwd.main_datascrapper(all=False)**: Will web-scrap DWD-Data from CDC. Check 
+**DwdDict.py, external_domain and external_path_global**. If all=False, it will download **type_of_data** for you. If all=True,
+   > it will download: check **DwdDict.py, type_of_data_list**
+   > 
+> Prepare some stuff first!
+>- >**dwd.main_writer(all=False)**: Will prepare the data, for faster loading times.Same rules for arg:all as for
+   > 
+> Get some information about any Station:
+>- >**dwd.main_station_information("")**: "TU_00003" for example
+   > 
+>Get the location and all available and activ stations in timedelta:
+>- >**x_coordinate, y_coordinate, z_coordinate, stations = dwd.main_activ_stations_in_date()**
+   > 
+>Get the whole station ID array
+>- >**dwd.main_station_array()**
+   > 
+> Plot all the locations of all stations 2D and 3D
+>- >**dwd.main_plotter_stations(projection=False)**: if projection==True. It will project all the heights in your 3D-plot
+   >
+> Plot your data
+>- >**dwd.main_plotter_data(compare="False")** args for compare: **"False"**, **"pltcompare"**, **"justcompare"**.
+   > **"False"** is for any location in germany. **"pltcompare"** will compare a station with the **mean method** 
+   > and create a plot. **"justcompare"** will just comapre the data with a station and return **maximum(absolute error)** 
+   > and **avg_diff**
 > 
->**start_date_ and end_date_ = int(YYYYMMDDhhmm)**  : Tells the range of data you are looking for
-> 
->**x_coordinate_ and y_coordinate_ = int(Long) and int(Lat)** : Latitude coordinates in germany
-> 
->**z_coordinate_ = int(height)** : You can skip it for now
-> 
->**k_factor_ = int()** : Tells how many stations you are looking for around the Latitude coordinates
-> 
-> **type_of_data_ = str()** : Tells what type of data you are looking for. Check **DwdDict.py, type_of_data_list**
-> 
-> **type_of_time_ = str()** : Tells what type of time you are looking for Check **Dwddict.py, type_of_time_list**
-
-## important functions @main.py
-> **dwd.main_plotter_data()** # compare=False as standard
-> 
-> **dwd.main_station_array()**
-> 
-> **dwd.main_station_information()**
-> 
-> **dwd.main_datascrapper()** # all=False as standard. Will download the type_of_data_ for you
-> 
-> **dwd.main_writer()** # type_of_data_list=None, type_of_time_list=None as standard
->  
-> **dwd.main_data_map()** # will create coordinate .json data for your JupyterNotebook Map
-> 
-> **dwd.main_plotter_stations()** # projection=False as standard
-> 
+> Will prepare data for a map (open DwdMapCreator to generate a map)
+>- >**dwd.main_data_map()**
+   Example: ![img.png](img.png)
+ 
 ## Avoid Windows bugs
 > to avoid any Windwos bugs, you need to change the max. length of any path![](disable_windwos_path_limit.png)
 > 
