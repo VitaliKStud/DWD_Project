@@ -88,7 +88,7 @@ dwd = main_dwd(local_domain,
    > it will download: check **DwdDict.py, type_of_data_list**
    > 
 > Prepare some stuff first!
->- >**dwd.main_writer(all=False)**: Will prepare the data, for faster loading times.Same rules for arg:all as for
+>- >**dwd.main_writer(all=False)**: Will prepare the data, for faster loading times.Same rules for arg:all as for **main_datascrapper()**
    > 
 > Get some information about any Station:
 >- >**dwd.main_station_information("")**: "TU_00003" for example
