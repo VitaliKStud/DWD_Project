@@ -11,8 +11,8 @@ start_date_ = 200001010000
 end_date_ = 200002010000
 # yyyymmddhhmm
 
-x_coordinate_ = 7.2162
-y_coordinate_ = 51.4818
+x_coordinate_ = 7.226955
+y_coordinate_ = 51.507247
 z_coordinate_ = 0
 # geoLaenge, geoBreite, height, geoLaenege immer kleiner (für DE)
 

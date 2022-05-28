@@ -191,6 +191,8 @@ class DwdMain:
             json.dump(np.array(list(zip(x_not_active, y_not_active, not_activ_id))).tolist(), f, indent=2)
         with open(self.local_domain + r"DWD_Project/MapCreator/" + r"zip_no_data.json", "w") as f:
             json.dump(np.array(list(zip(x_no_data, y_no_data, no_data_id))).tolist(), f, indent=2)
+        with open(self.local_domain + r"DWD_Project/MapCreator/" + r"config.json", "w") as f:
+            json.dump((self.x_coordinate, self.y_coordinate, self.local_domain), f, indent=2)
         return print("zipped_data_for_active_map")
 
     def main_plotter_data(self, compare=False):

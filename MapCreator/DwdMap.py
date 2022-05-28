@@ -2,14 +2,22 @@ from ipyleaflet import Map, basemaps, Marker, FullScreenControl, ScaleControl, A
 from ipywidgets import HTML, Layout
 from IPython.display import display
 import json
+import os
 
 
 class DwdMap:
-    def __init__(self, locations, location_marker_x, location_marker_y, local_domain):
+    def __init__(self, locations):
         self.locations = locations
-        self.location_marker_x = location_marker_x
-        self.location_marker_y = location_marker_y
-        self.local_domain = local_domain
+        self.location_marker_x,self.location_marker_y, self.local_domain = self.load_config()
+
+
+    def load_config(self):
+        with open(os.getcwd() + r"/config.json", "r") as f:
+            config = json.load(f)
+        config_list = []
+        for i in config:
+            config_list.append(i)
+        return config_list[0], config_list[1], config_list[2]
 
     def create_map(self):
         zip_data_not_active = []
@@ -28,7 +36,7 @@ class DwdMap:
             with open(self.local_domain + r"DWD_Project/MapCreator/" + r"zip_data_near.json", "r") as f:
                 zip_data_active = json.load(f)
 
-        full_screen_map = Map(center=(51, 10), zoom=7, layout=Layout(width='100%', height='1000px'), close_popup_on_click=False)
+        full_screen_map = Map(center=(51, 10), zoom=7, layout=Layout(width='50%', height='500px'), close_popup_on_click=False)
         icon1 = AwesomeIcon(name='gear', marker_color='green', icon_color='black', spin=False)
         icon2 = AwesomeIcon(name='gear', marker_color='red', icon_color='black', spin=False)
         icon3 = AwesomeIcon(name='gear', marker_color='orange', icon_color='black', spin=False)
@@ -55,8 +63,12 @@ class DwdMap:
             message.value = "StationID: " + str(i[2]) + "<br>" "geoBreite: " + str(i[1]) + "<br>" + "geoLaenge: " + str(i[0]) + "<br>"
             marker.popup = message
 
-        marker_search = Marker(location=(self.location_marker_x, self.location_marker_y), draggable=False, icon=icon4)
+
+        marker_search = Marker(location=(self.location_marker_y, self.location_marker_x), draggable=False, icon=icon4)
         full_screen_map.add_layer(marker_search)
+        message = HTML()
+        message.value = "StationID: " + " my_geo_coordinates" + "<br>" "geoBreite: " + str(self.location_marker_y) + "<br>" + "geoLaenge: " + str(self.location_marker_x) + "<br>"
+        marker_search.popup = message
 
         full_screen_map.add_control(SplitMapControl(left_layer=basemap_to_tiles(basemaps.OpenTopoMap), right_layer=basemap_to_tiles(basemaps.Esri.WorldImagery)))
         full_screen_map.add_control(FullScreenControl())
