@@ -97,76 +97,95 @@ class NearNeighbor:
 
     def average_for_coordinate(self, data_looking_for="TT_10", qn_weight_n_avg=False, distance_weight_n_avg=False, qn_distance_weight_n_avg=False, compare_n_avg=False, compare_station=None):
         if qn_weight_n_avg:
+            print("qn_weight")
+            date_range_df = self.date_range_df().set_index('MESS_DATUM_GENERATED')
+            date_range_q_df = self.date_range_df().set_index('MESS_DATUM_GENERATED')
+            df_from_to, column_names_list, column_name_list = self.dataframe_near_from_to_path()
+            counter = 0
+            for i in column_name_list:
+                date_range_df.loc[:, str(i)] = np.nan
+                date_range_q_df.loc[:, str(i)] = np.nan
+            for i in df_from_to["DATA_PATH"]:
+                df_tt_10 = pd.read_csv(i, sep=";", usecols=["MESS_DATUM", data_looking_for], index_col=["MESS_DATUM"])
+                df_qn = pd.read_csv(i, sep=";", usecols=[1, 2], index_col=["MESS_DATUM"])
+                mask = df_tt_10[data_looking_for] > -999
+                df_tt_10 = df_tt_10[mask]
+                df_qn = df_qn[mask]
+                df_tt_10 = df_tt_10.rename(columns={data_looking_for: column_names_list[counter]})
+                df_qn.columns = [column_names_list[counter]]
+                date_range_df.update(df_tt_10)
+                date_range_q_df.update(df_qn)
+                counter = counter + 1
             if compare_n_avg:
-                pass
-            else:
-                print("qn_weight")
-                date_range_df = self.date_range_df().set_index('MESS_DATUM_GENERATED')
-                date_range_q_df = self.date_range_df().set_index('MESS_DATUM_GENERATED')
-                df_from_to, column_names_list, column_name_list = self.dataframe_near_from_to_path()
-                counter = 0
-                for i in column_name_list:
-                    date_range_df.loc[:, str(i)] = np.nan
-                    date_range_q_df.loc[:, str(i)] = np.nan
-                for i in df_from_to["DATA_PATH"]:
-                    df_tt_10 = pd.read_csv(i, sep=";", usecols=["MESS_DATUM", data_looking_for], index_col=["MESS_DATUM"])
-                    df_qn = pd.read_csv(i, sep=";", usecols=[1, 2], index_col=["MESS_DATUM"])
-                    mask = df_tt_10[data_looking_for] > -999
-                    df_tt_10 = df_tt_10[mask]
-                    df_qn = df_qn[mask]
-                    df_tt_10 = df_tt_10.rename(columns={data_looking_for: column_names_list[counter]})
-                    df_qn.columns = [column_names_list[counter]]
-                    date_range_df.update(df_tt_10)
-                    date_range_q_df.update(df_qn)
-                    counter = counter + 1
                 data_all = date_range_df
+                data_to_compare = data_all[compare_station]
+                data_quality = date_range_q_df.iloc[:, 2:].div(date_range_q_df.iloc[:, 2:].sum(axis=1), axis=0)
+                data_all_qn = data_all.iloc[:, 2:].mul(data_quality)
                 print(date_range_q_df)
-                data_quality = date_range_q_df.div(date_range_q_df.sum(axis=1), axis=0)
-                data_all_qn = data_all.mul(data_quality)
+                print(data_all)
+                print(data_quality)
+                print(data_all_qn)
+                data_mean = data_all_qn.sum(axis=1)
+                diff = (data_mean - data_to_compare).abs()
+                maximum = diff.max()
+                avg_diff = np.full((len(diff)), diff.sum() / len(diff))
+                index_for_plot = data_all.index
+                index_for_plot = pd.to_datetime(index_for_plot, format='%Y%m%d%H%M')
+                print(data_mean)
+                print(f"Data All: \n{data_all}\n")
+                print(f"maximum: \n{maximum}\n")
+                print(f"avg_diff: \n{avg_diff[0]}\n")
+                return data_all, data_mean, index_for_plot, column_name_list, data_to_compare, diff, maximum, avg_diff
+            else:
+                data_all = date_range_df
+                data_quality = date_range_q_df.iloc[:, 1:].div(date_range_q_df.iloc[:, 1:].sum(axis=1), axis=0)
+                data_all_qn = data_all.iloc[:, 1:].mul(data_quality)
                 data_mean = data_all_qn.sum(axis=1)
                 index_for_plot = data_all.index
                 index_for_plot = pd.to_datetime(index_for_plot, format='%Y%m%d%H%M')
+                print(f"Data All: \n{data_all}\n")
                 return data_all, data_mean, index_for_plot, column_name_list
         elif distance_weight_n_avg:
-                date_range_df = self.date_range_df().set_index('MESS_DATUM_GENERATED')
-                df_from_to, column_names_list, column_name_list = self.dataframe_near_from_to_path()
-                counter = 0
-                for i in column_name_list:
-                    date_range_df.loc[:, str(i)] = np.nan
-                for i in df_from_to["DATA_PATH"]:
-                    df_tt_10 = pd.read_csv(i, sep=";", usecols=["MESS_DATUM", data_looking_for], index_col=["MESS_DATUM"])
-                    mask = df_tt_10[data_looking_for] > -999
-                    df_tt_10 = df_tt_10[mask]
-                    df_tt_10 = df_tt_10.rename(columns={data_looking_for: column_names_list[counter]})
-                    date_range_df.update(df_tt_10)
-                    counter = counter + 1
-                if compare_n_avg:
-                    sorted_distance = np.sort(self.distance[0], axis=0)[2:self.k_factor + 1]
-                    distance_quality = (1 - sorted_distance / np.sum(sorted_distance)) / (self.k_factor - 2)
-                    data_all = date_range_df
-                    data_to_compare = data_all[compare_station]
-                    data_quality = date_range_df.iloc[:, 2:].mul(distance_quality)
-                    data_mean = data_quality.sum(axis=1)
-                    diff = (data_mean - data_to_compare).abs()
-                    maximum = diff.max()
-                    avg_diff = np.full((len(diff)), diff.sum() / len(diff))
-                    index_for_plot = data_all.index
-                    index_for_plot = pd.to_datetime(index_for_plot, format='%Y%m%d%H%M')
-                    print(f"sum of distance_quality: {np.sum(distance_quality)}\n")
-                    print(f"sorted distance: {sorted_distance}\n")
-                    print(f"distance_quality: {distance_quality}\n")
-                    print(f"Data All: \n{data_all}\n")
-                    print(f"maximum: \n{maximum}\n")
-                    print(f"avg_diff: \n{avg_diff[0]}\n")
-                    return data_all, data_mean, index_for_plot, column_name_list, data_to_compare, diff, maximum, avg_diff
-                else:
-                    data_all = date_range_df
-                    data_mean = date_range_df.mean(axis=1)
-                    index_for_plot = data_all.index
-                    index_for_plot = pd.to_datetime(index_for_plot, format='%Y%m%d%H%M')
-                    print(f"Data All: \n{data_all}\n")
-                    print(f"Data Mean: \n{data_mean}\n")
-                    return data_all, data_mean, index_for_plot, column_name_list
+            print("distance weight")
+            date_range_df = self.date_range_df().set_index('MESS_DATUM_GENERATED')
+            df_from_to, column_names_list, column_name_list = self.dataframe_near_from_to_path()
+            counter = 0
+            for i in column_name_list:
+                date_range_df.loc[:, str(i)] = np.nan
+            for i in df_from_to["DATA_PATH"]:
+                df_tt_10 = pd.read_csv(i, sep=";", usecols=["MESS_DATUM", data_looking_for], index_col=["MESS_DATUM"])
+                mask = df_tt_10[data_looking_for] > -999
+                df_tt_10 = df_tt_10[mask]
+                df_tt_10 = df_tt_10.rename(columns={data_looking_for: column_names_list[counter]})
+                date_range_df.update(df_tt_10)
+                counter = counter + 1
+            if compare_n_avg:
+                sorted_distance = np.sort(self.distance[0], axis=0)[2:self.k_factor + 1]
+                distance_quality = (1 - sorted_distance / np.sum(sorted_distance)) / (self.k_factor - 2)
+                data_all = date_range_df
+                data_to_compare = data_all[compare_station]
+                data_quality = date_range_df.iloc[:, 2:].mul(distance_quality)
+                data_mean = data_quality.sum(axis=1)
+                diff = (data_mean - data_to_compare).abs()
+                maximum = diff.max()
+                avg_diff = np.full((len(diff)), diff.sum() / len(diff))
+                index_for_plot = data_all.index
+                index_for_plot = pd.to_datetime(index_for_plot, format='%Y%m%d%H%M')
+                print(f"sum of distance_quality: {np.sum(distance_quality)}\n")
+                print(f"sorted distance: {sorted_distance}\n")
+                print(f"distance_quality: {distance_quality}\n")
+                print(f"Data All: \n{data_all}\n")
+                print(f"maximum: \n{maximum}\n")
+                print(f"avg_diff: \n{avg_diff[0]}\n")
+                return data_all, data_mean, index_for_plot, column_name_list, data_to_compare, diff, maximum, avg_diff
+            else:
+                data_all = date_range_df
+                data_mean = date_range_df.mean(axis=1)
+                index_for_plot = data_all.index
+                index_for_plot = pd.to_datetime(index_for_plot, format='%Y%m%d%H%M')
+                print(f"Data All: \n{data_all}\n")
+                print(f"Data Mean: \n{data_mean}\n")
+                return data_all, data_mean, index_for_plot, column_name_list
         else:
             date_range_df = self.date_range_df().set_index('MESS_DATUM_GENERATED')
             df_from_to, column_names_list, column_name_list = self.dataframe_near_from_to_path()

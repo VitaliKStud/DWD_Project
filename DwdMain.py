@@ -198,7 +198,25 @@ class DwdMain:
         for i in self.looking_for:
             if qn_weight:
                 if compare:
-                    data_all_n, data_mean_n, index_for_plot_n, column_name_list_n = self.__main_nearneighbor(i, qn_weight_n=qn_weight, distance_weight_n=distance_weight, compare_n=compare, no_plot_n=no_plot)
+                    data_all_n, data_mean_n, index_for_plot_n, column_name_list_n, data_to_compare_n, diff_n, maximum_n, avg_diff_n = self.__main_nearneighbor(i, qn_weight_n=qn_weight, distance_weight_n=distance_weight, compare_n=compare, no_plot_n=no_plot)
+                    self.__main_plotter_for_data(data_all=data_all_n,
+                                                 data_mean=data_mean_n,
+                                                 index_for_plot=index_for_plot_n,
+                                                 column_name_list=column_name_list_n,
+                                                 plot_name=i,
+                                                 compare=compare,
+                                                 no_plot=no_plot,
+                                                 data_to_compare=data_to_compare_n,
+                                                 diff=diff_n,
+                                                 maximum=maximum_n,
+                                                 avg_diff=avg_diff_n,
+                                                 type_of_method="Gewichteter Durchschnitt (QN-Abh.)")
+                else:
+                    data_all_n, data_mean_n, index_for_plot_n, column_name_list_n = self.__main_nearneighbor(i,
+                                                                                                             qn_weight_n=qn_weight,
+                                                                                                             distance_weight_n=distance_weight,
+                                                                                                             compare_n=compare,
+                                                                                                             no_plot_n=no_plot)
                     self.__main_plotter_for_data(data_all=data_all_n,
                                                  data_mean=data_mean_n,
                                                  index_for_plot=index_for_plot_n,
