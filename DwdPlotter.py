@@ -90,28 +90,13 @@ class PlotterForData:
         self.unit_dict = unit_dict[self.type_of_data]
         self.title_dict = title_dict[self.type_of_data]
 
-    def compare(self, compare_station):
-        print(self.data_all)
-        print(compare_station)
-        data_to_compare = self.data_all[compare_station]
-        data_all = self.data_all.drop([compare_station], axis=1)
-        data_mean = data_all.mean(axis=1)
-        diff = (data_mean - data_to_compare).abs()
-        maximum = diff.max()
-        avg_diff = np.full((len(diff)), diff.sum()/len(diff))
-        print(f"Durchschnittliche Abweichung: {avg_diff[0]}")
-        print(f"Maximale Abweichung: {maximum}")
 
-        return data_to_compare, data_mean, diff, maximum, avg_diff, data_all
-
-    def plotting_compare(self, compare_station):
-        data_to_compare, data_mean, diff, maximum, avg_diff, data_all = self.compare(compare_station)
-
+    def plotting_compare(self, compare_station, data_to_compare, diff, maximum, avg_diff, type_of_method):
         fig, (ax1, ax2, ax3) = plt.subplots(nrows=3, figsize=(20, 10), dpi=100)
         plt.subplots_adjust(left=None, bottom=0.1, right=None, top=0.85, wspace=0.5, hspace=0.5)
 
         for i in self.column_name_list[1:]:
-            ax1.plot(self.index_for_plot, data_all[i], linewidth=0.5)
+            ax1.plot(self.index_for_plot, self.data_all[i], linewidth=0.5)
         ax1.set_xlim(self.start_date_datetime, self.end_date_datetime)
         lgn_1 = ax1.legend(self.column_name_list[1:], bbox_to_anchor=(0, 1.02, 1, 0.2), loc='lower left', ncol=10, prop={'size': 8})
         ax1.set_title(f"{self.title_dict[self.plot_name]}" , pad=60, weight='bold', size=18)
@@ -122,11 +107,11 @@ class PlotterForData:
         for i in lgn_1.legendHandles:
             i.set_linewidth(5)
 
-        ax2.plot(self.index_for_plot, data_mean, label="Berechneter Durchschnitt")
+        ax2.plot(self.index_for_plot, self.data_mean, label="Berechneter Durchschnitt")
         ax2.plot(self.index_for_plot, data_to_compare, label="Realwerte")
         ax2.set_xlim(self.start_date_datetime, self.end_date_datetime)
         lgn_2 = ax2.legend(bbox_to_anchor=(0, 1.02, 1, 0.2), loc='lower left', prop={'size': 10}, ncol=2)
-        ax2.set_title(f"Durchschnitt der Stationen verglichen mit den Realwerten der Station {compare_station}", pad=10, weight='bold', loc="right")
+        ax2.set_title(f"{type_of_method} der Stationen verglichen mit den Realwerten der Station {compare_station}", pad=10, weight='bold', loc="right")
         ax2.grid(True, linestyle='--', linewidth=0.25, color="grey")
         ax2.set_ylabel(self.unit_dict[self.plot_name], color='black', weight='normal', size=14, labelpad=30, rotation=0)
         ax2.xaxis.set_tick_params(labelsize=10, pad=10)
@@ -148,12 +133,12 @@ class PlotterForData:
         for i in lgn_3.legendHandles:
             i.set_linewidth(5)
 
-        textstr = (f"Parameter: [k-Faktor: {self.k_factor}], [geoLaenge: {self.x_coordinate:.4f}], "
+        textstr = (f"Parameter: [k-Faktor: {self.k_factor-1}], [geoLaenge: {self.x_coordinate:.4f}], "
                       f"[geoBreite: {self.y_coordinate:.4f}], [Startdatum: {self.start_date_datetime}], [Enddatum: {self.end_date_datetime}]")
         props = dict(boxstyle='round', facecolor='salmon', alpha=0.2)
         plt.text(0.5, 0.99, textstr, transform=plt.gcf().transFigure, fontsize=10, bbox=props, ha='center', va="center")
 
-        fig.savefig("Graphs/" + "compare" + ".png")
+        fig.savefig("Graphs/" + "compare_" + type_of_method + ".png")
         plt.cla()
         plt.clf()
         plt.close('all')
@@ -161,7 +146,7 @@ class PlotterForData:
 
         return print("plot saved")
 
-    def plotting_data(self):
+    def plotting_data(self, type_of_method):
         print(self.data_all)
         print(self.data_mean)
         print(self.unit_dict)
@@ -182,7 +167,7 @@ class PlotterForData:
 
         ax2.plot(self.index_for_plot, self.data_mean, linewidth=0.5)
         lgn_2 = ax2.legend(["Berechneter Durchschnitt"], bbox_to_anchor=(0, 1.00, 1, 0.2), loc='lower left', prop={'size': 12}, ncol=2)
-        ax2.set_title(f"Durchschnitt der {self.k_factor} Stationen", pad=10, weight='bold', size=18)
+        ax2.set_title(f"{type_of_method} der {self.k_factor} Stationen", pad=10, weight='bold', size=18)
         ax2.set_xlim(self.start_date_datetime, self.end_date_datetime)
         ax2.set_xlabel("Datum", color='black', weight='normal', size=14, labelpad=20)
         ax2.set_ylabel(self.unit_dict[self.plot_name], color='black', weight='normal', size=14, labelpad=30, rotation=0)
@@ -198,7 +183,7 @@ class PlotterForData:
         plt.text(0.5, 0.99, textstr, transform=plt.gcf().transFigure, fontsize=10, bbox=props, ha='center', va="center")
 
 
-        fig.savefig("Graphs/" + self.type_of_data + "_" + self.plot_name + ".png")
+        fig.savefig("Graphs/" + self.type_of_data + "_" + self.plot_name + "_" + type_of_method +".png")
         plt.cla()
         plt.clf()
         plt.close('all')

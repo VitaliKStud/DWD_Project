@@ -250,6 +250,7 @@ class Reader:
             station_ids_array = np.append(station_ids_array, read_station_list.get(station_id).get_station_id())
         return station_ids_array
 
+
     def data_prep_for_new_location(self, start_date, end_date, x_coordinate, y_coordinate, z_coordinate):
         new_point_name = "Find near TU for me"
         x_active_reader, y_active_reader, z_active_reader, activ_id_reader = self.get_active_stations_in_date(start_date, end_date)

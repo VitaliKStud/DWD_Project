@@ -7,19 +7,21 @@ os.chdir(local_domain_)
 looking_for_ = ["TT_10"]
 # choose your data you need to plot #Check DwdDict
 
-start_date_ = 200001010000
-end_date_ = 200002010000
+start_date_ = 200501010000
+end_date_ = 200502011000
 # yyyymmddhhmm
 
-x_coordinate_ = 7.226955
-y_coordinate_ = 51.507247
+x_coordinate_ = 6.0941
+y_coordinate_ = 50.7827
 z_coordinate_ = 0
+
+
 # geoLaenge, geoBreite, height, geoLaenege immer kleiner (für DE)
 
-k_factor_ = 5
+k_factor_ = 10
 # How many Stations you're looking for around your x_coordinate and y_coordinate
 
-compare_station_ = None
+compare_station_ = "TU_00003"
 # only needed if compare="pltcompare" or compare="justcompare"
 
 type_of_data_ = "air_temperature"
@@ -49,7 +51,7 @@ dwd = main_dwd(local_domain=local_domain_,
 # dwd.main_station_array()
 
 # Plot your data
-# dwd.main_plotter_data(compare="False")
+dwd.main_plotter_data(qn_weight=False, distance_weight=True, compare=True, no_plot=False)
 # dwd.main_plotter_stations(projection=False)
 
 # Generate some data for DwdMapCreator
