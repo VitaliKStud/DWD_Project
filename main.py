@@ -7,8 +7,8 @@ os.chdir(local_domain_)
 looking_for_ = ["TT_10"]
 # choose your data you need to plot #Check DwdDict
 
-start_date_ = 200501010000
-end_date_ = 200502011000
+start_date_ = 199401190000
+end_date_   = 199401210000
 # yyyymmddhhmm
 
 x_coordinate_ = 6.0941
@@ -18,7 +18,7 @@ z_coordinate_ = 0
 
 # geoLaenge, geoBreite, height, geoLaenege immer kleiner (für DE)
 
-k_factor_ = 5
+k_factor_ = 3
 # How many Stations you're looking for around your x_coordinate and y_coordinate
 
 compare_station_ = "TU_00003"
@@ -51,7 +51,9 @@ dwd = main_dwd(local_domain=local_domain_,
 # dwd.main_station_array()
 
 # Plot your data
-dwd.main_plotter_data(qn_weight=True, distance_weight=False, compare=False, no_plot=False)
+# dwd.main_plotter_data(qn_weight=True, distance_weight=False, compare=True, no_plot=False)
+dwd.main_plotter_data(qn_weight=False, distance_weight=True, compare=True, no_plot=False)
+# dwd.main_plotter_data(qn_weight=False, distance_weight=False, compare=True, no_plot=False)
 # dwd.main_plotter_stations(projection=False)
 
 # Generate some data for DwdMapCreator

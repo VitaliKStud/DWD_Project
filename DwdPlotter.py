@@ -134,7 +134,7 @@ class PlotterForData:
             i.set_linewidth(5)
 
         textstr = (f"Parameter: [k-Faktor: {self.k_factor-1}], [geoLaenge: {self.x_coordinate:.4f}], "
-                      f"[geoBreite: {self.y_coordinate:.4f}], [Startdatum: {self.start_date_datetime}], [Enddatum: {self.end_date_datetime}]")
+                      f"[geoBreite: {self.y_coordinate:.4f}], [Startdatum: {self.start_date_datetime}], [Enddatum: {self.end_date_datetime}] Ergebnis: [Maximale absolute Abweichung: {maximum:.4f}], [Durchschnittliche Abweichung: {avg_diff[0]:.4f}]")
         props = dict(boxstyle='round', facecolor='salmon', alpha=0.2)
         plt.text(0.5, 0.99, textstr, transform=plt.gcf().transFigure, fontsize=10, bbox=props, ha='center', va="center")
 
