@@ -18,7 +18,7 @@ z_coordinate_ = 0
 
 # geoLaenge, geoBreite, height, geoLaenege immer kleiner (für DE)
 
-k_factor_ = 3
+k_factor_ = 5
 # How many Stations you're looking for around your x_coordinate and y_coordinate
 
 compare_station_ = "TU_00003"
@@ -52,8 +52,8 @@ dwd = main_dwd(local_domain=local_domain_,
 
 # Plot your data
 # dwd.main_plotter_data(qn_weight=True, distance_weight=False, compare=True, no_plot=False)
-dwd.main_plotter_data(qn_weight=False, distance_weight=True, compare=True, no_plot=False)
-# dwd.main_plotter_data(qn_weight=False, distance_weight=False, compare=True, no_plot=False)
+dwd.main_plotter_data(qn_weight=False, distance_weight=True, compare=False, no_plot=False)
+dwd.main_plotter_data(qn_weight=False, distance_weight=False, compare=False, no_plot=False)
 # dwd.main_plotter_stations(projection=False)
 
 # Generate some data for DwdMapCreator
