@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DwdDict &mdash; DWD Project 31.05.2022 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DWD Project
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">DWD_Project</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DWD Project</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Module code</a> &raquo;</li>
+      <li>DwdDict</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for DwdDict</h1><div class="highlight"><pre>
+<div class="viewcode-block" id="get_dwd_dict"><a class="viewcode-back" href="../DwdDict.html#DwdDict.get_dwd_dict">[docs]</a><span></span><span class="k">def</span> <span class="nf">get_dwd_dict</span><span class="p">():</span>
+    <span class="n">external_domain</span> <span class="o">=</span> <span class="s2">&quot;https://opendata.dwd.de/&quot;</span>
+    <span class="n">external_path_global</span> <span class="o">=</span> <span class="s2">&quot;climate_environment/CDC/observations_germany/climate/10_minutes/&quot;</span>
+    <span class="n">ending</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;.zip&quot;</span><span class="p">,</span> <span class="s2">&quot;.pdf&quot;</span><span class="p">,</span> <span class="s2">&quot;.txt&quot;</span><span class="p">]</span>
+    <span class="c1"># choose your paths and which data you need</span>
+
+    <span class="n">type_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;air_temperature&quot;</span><span class="p">:</span> <span class="s2">&quot;TU&quot;</span><span class="p">,</span> <span class="s2">&quot;precipitation&quot;</span><span class="p">:</span> <span class="s2">&quot;nieder&quot;</span><span class="p">,</span> <span class="s2">&quot;solar&quot;</span><span class="p">:</span> <span class="s2">&quot;SOLAR&quot;</span><span class="p">,</span> <span class="s2">&quot;wind&quot;</span><span class="p">:</span> <span class="s2">&quot;wind&quot;</span><span class="p">}</span>
+    <span class="n">load_txt_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;air_temperature&quot;</span><span class="p">:</span> <span class="s2">&quot;tu&quot;</span><span class="p">,</span> <span class="s2">&quot;precipitation&quot;</span><span class="p">:</span> <span class="s2">&quot;rr&quot;</span><span class="p">,</span> <span class="s2">&quot;solar&quot;</span><span class="p">:</span> <span class="s2">&quot;sd&quot;</span><span class="p">,</span> <span class="s2">&quot;wind&quot;</span><span class="p">:</span> <span class="s2">&quot;ff&quot;</span><span class="p">}</span>
+    <span class="n">rest_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;recent&quot;</span><span class="p">:</span> <span class="s2">&quot;zehn_min_&quot;</span><span class="p">,</span> <span class="s2">&quot;now&quot;</span><span class="p">:</span> <span class="s2">&quot;zehn_now_&quot;</span><span class="p">,</span> <span class="s2">&quot;historical&quot;</span><span class="p">:</span> <span class="s2">&quot;zehn_min_&quot;</span><span class="p">}</span>
+    <span class="c1"># leave it (global dictionaries)</span>
+
+    <span class="n">title_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;air_temperature&quot;</span><span class="p">:{</span><span class="s2">&quot;PP_10&quot;</span><span class="p">:</span> <span class="s2">&quot;Luftdruck [p] auf Stationshoehe in hPa&quot;</span><span class="p">,</span>
+                                     <span class="s2">&quot;TT_10&quot;</span><span class="p">:</span> <span class="s2">&quot;Lufttemperatur [T] auf 2m Hoehe in °C&quot;</span><span class="p">,</span>
+                                     <span class="s2">&quot;TM5_10&quot;</span><span class="p">:</span> <span class="s2">&quot;Lufttemperatur [T] auf 5cm Hoehe in °C&quot;</span><span class="p">,</span>
+                                     <span class="s2">&quot;TD_10&quot;</span><span class="p">:</span> <span class="s2">&quot;Taupunkttemperatur [T] auf 2m Hoehe in °C&quot;</span><span class="p">,</span>
+                                     <span class="s2">&quot;RF_10&quot;</span><span class="p">:</span> <span class="s2">&quot;relative Feuchte [r.F] auf 2m Hoehe in %&quot;</span><span class="p">},</span>
+                  <span class="s2">&quot;precipitation&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;RWS_DAU_10&quot;</span><span class="p">:</span> <span class="s2">&quot;Niederschalgsdauer [t] der letzten 10-Minuten in min&quot;</span><span class="p">,</span>
+                                    <span class="s2">&quot;RWS_10&quot;</span><span class="p">:</span> <span class="s2">&quot;Niederschalgshoehe [h] der letzten 10-Minuten in mm&quot;</span><span class="p">,</span>
+                                    <span class="s2">&quot;RWS_IND_10&quot;</span><span class="p">:</span> <span class="s2">&quot;[0: kein Niederschlag], [1: Niederschlag gefallen], [3: Niederschlag gefallen und Heizung des Messgerätes an&quot;</span><span class="p">},</span>
+                  <span class="s2">&quot;solar&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;DS_10&quot;</span><span class="p">:</span> <span class="s2">&quot;10min-Summe der diffusen solaren Strahlung in J/cm^2&quot;</span><span class="p">,</span>
+                            <span class="s2">&quot;GS_10&quot;</span><span class="p">:</span> <span class="s2">&quot;10min-Summe der Globalstrahlung in/ J/cm^2&quot;</span><span class="p">,</span>
+                            <span class="s2">&quot;SD_10&quot;</span><span class="p">:</span> <span class="s2">&quot;10min-Summe der Sonnenscheindauer in h&quot;</span><span class="p">},</span>
+                  <span class="s2">&quot;wind&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;FF_10&quot;</span><span class="p">:</span> <span class="s2">&quot;10min-Mittel der Windgeschwindigkeit in m/s&quot;</span><span class="p">,</span>
+                           <span class="s2">&quot;DD_10&quot;</span><span class="p">:</span> <span class="s2">&quot;10min-Mittel der Windrichtung in Grad&quot;</span><span class="p">}}</span>
+    <span class="c1">#title Dict</span>
+
+
+    <span class="n">unit_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;air_temperature&quot;</span><span class="p">:{</span><span class="s2">&quot;PP_10&quot;</span><span class="p">:</span> <span class="s2">&quot;p / hPa&quot;</span><span class="p">,</span>
+                                    <span class="s2">&quot;TT_10&quot;</span><span class="p">:</span> <span class="s2">&quot;T / °C&quot;</span><span class="p">,</span>
+                                    <span class="s2">&quot;TM5_10&quot;</span><span class="p">:</span> <span class="s2">&quot;T / °C&quot;</span><span class="p">,</span>
+                                    <span class="s2">&quot;TD_10&quot;</span><span class="p">:</span> <span class="s2">&quot;T / °C&quot;</span><span class="p">,</span>
+                                    <span class="s2">&quot;RF_10&quot;</span><span class="p">:</span> <span class="s2">&quot;r.F. / %&quot;</span><span class="p">},</span>
+                  <span class="s2">&quot;precipitation&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;RWS_DAU_10&quot;</span><span class="p">:</span> <span class="s2">&quot;t / min&quot;</span><span class="p">,</span>
+                                    <span class="s2">&quot;RWS_10&quot;</span><span class="p">:</span> <span class="s2">&quot;h / mm&quot;</span><span class="p">,</span>
+                                    <span class="s2">&quot;RWS_IND_10&quot;</span><span class="p">:</span> <span class="s2">&quot;Index&quot;</span><span class="p">},</span>
+                  <span class="s2">&quot;solar&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;DS_10&quot;</span><span class="p">:</span> <span class="s2">&quot;E/A / J/cm^2&quot;</span><span class="p">,</span>
+                            <span class="s2">&quot;GS_10&quot;</span><span class="p">:</span> <span class="s2">&quot;E/A / J/cm^2&quot;</span><span class="p">,</span>
+                            <span class="s2">&quot;SD_10&quot;</span><span class="p">:</span> <span class="s2">&quot;t / h&quot;</span><span class="p">},</span>
+                  <span class="s2">&quot;wind&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;FF_10&quot;</span><span class="p">:</span> <span class="s2">&quot;v / m/s&quot;</span><span class="p">,</span>
+                           <span class="s2">&quot;DD_10&quot;</span><span class="p">:</span> <span class="s2">&quot;Winkel / Grad&quot;</span><span class="p">}}</span>
+    <span class="c1"># Unit Dict</span>
+
+
+    <span class="n">type_of_time_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;recent&quot;</span><span class="p">,</span> <span class="s2">&quot;now&quot;</span><span class="p">,</span> <span class="s2">&quot;historical&quot;</span><span class="p">]</span>
+    <span class="n">type_of_data_list</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;air_temperature&quot;</span><span class="p">,</span> <span class="s2">&quot;precipitation&quot;</span><span class="p">,</span> <span class="s2">&quot;solar&quot;</span><span class="p">,</span> <span class="s2">&quot;wind&quot;</span><span class="p">]</span>
+    <span class="c1"># leave it (global lists). Here you can see what data_types and time_types are available (needed for type_of_data_ and type_of_time_)</span>
+
+    <span class="k">return</span> <span class="n">type_dict</span><span class="p">,</span> <span class="n">load_txt_dict</span><span class="p">,</span> <span class="n">rest_dict</span><span class="p">,</span> <span class="n">title_dict</span><span class="p">,</span> <span class="n">unit_dict</span><span class="p">,</span> <span class="n">type_of_time_list</span><span class="p">,</span> <span class="n">type_of_data_list</span><span class="p">,</span> <span class="n">external_domain</span><span class="p">,</span> <span class="n">external_path_global</span><span class="p">,</span> <span class="n">ending</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Vitali Krilov.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

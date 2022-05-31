@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DwdDataPrep module &mdash; DWD Project 31.05.2022 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="DwdDataScrapper module" href="DwdDataScrapper.html" />
+    <link rel="prev" title="DwdCodeArchiv module" href="DwdCodeArchiv.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> DWD Project
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">DWD_Project</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="DwdCodeArchiv.html">DwdCodeArchiv module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">DwdDataPrep module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DwdDataScrapper.html">DwdDataScrapper module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DwdDict.html">DwdDict module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DwdGui.html">DwdGui module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DwdMain.html">DwdMain module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DwdNearNeighbor.html">DwdNearNeighbor module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="DwdPlotter.html">DwdPlotter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html">main module</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">DWD Project</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="modules.html">DWD_Project</a> &raquo;</li>
+      <li>DwdDataPrep module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/DwdDataPrep.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-DwdDataPrep">
+<span id="dwddataprep-module"></span><h1>DwdDataPrep module<a class="headerlink" href="#module-DwdDataPrep" title="Permalink to this headline"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="DwdDataPrep.Reader">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">DwdDataPrep.</span></span><span class="sig-name descname"><span class="pre">Reader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_to_txt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Reader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Reader" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="DwdDataPrep.Reader.data_prep_for_new_location">
+<span class="sig-name descname"><span class="pre">data_prep_for_new_location</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_coordinate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_coordinate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_coordinate</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Reader.data_prep_for_new_location"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Reader.data_prep_for_new_location" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DwdDataPrep.Reader.get_active_stations">
+<span class="sig-name descname"><span class="pre">get_active_stations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Reader.get_active_stations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Reader.get_active_stations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DwdDataPrep.Reader.get_active_stations_in_date">
+<span class="sig-name descname"><span class="pre">get_active_stations_in_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_date</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Reader.get_active_stations_in_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Reader.get_active_stations_in_date" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DwdDataPrep.Reader.get_station_ids">
+<span class="sig-name descname"><span class="pre">get_station_ids</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Reader.get_station_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Reader.get_station_ids" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DwdDataPrep.Reader.get_station_ids_in_date">
+<span class="sig-name descname"><span class="pre">get_station_ids_in_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_date</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Reader.get_station_ids_in_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Reader.get_station_ids_in_date" title="Permalink to this definition"></a></dt>
+<dd><p>test</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DwdDataPrep.Reader.get_station_information">
+<span class="sig-name descname"><span class="pre">get_station_information</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Reader.get_station_information"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Reader.get_station_information" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DwdDataPrep.Reader.read_station_list">
+<span class="sig-name descname"><span class="pre">read_station_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Reader.read_station_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Reader.read_station_list" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="DwdDataPrep.Station">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">DwdDataPrep.</span></span><span class="sig-name descname"><span class="pre">Station</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stations_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="DwdDataPrep.Station.check_activ_in_date">
+<span class="sig-name descname"><span class="pre">check_activ_in_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_date</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station.check_activ_in_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station.check_activ_in_date" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DwdDataPrep.Station.check_activitiy">
+<span class="sig-name descname"><span class="pre">check_activitiy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station.check_activitiy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station.check_activitiy" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DwdDataPrep.Station.check_data">
+<span class="sig-name descname"><span class="pre">check_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station.check_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station.check_data" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DwdDataPrep.Station.format_number_to_date">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">format_number_to_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station.format_number_to_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station.format_number_to_date" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DwdDataPrep.Station.generate_tu_data_path">
+<span class="sig-name descname"><span class="pre">generate_tu_data_path</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station.generate_tu_data_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station.generate_tu_data_path" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DwdDataPrep.Station.generate_tu_data_path_date">
+<span class="sig-name descname"><span class="pre">generate_tu_data_path_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_date</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station.generate_tu_data_path_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station.generate_tu_data_path_date" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DwdDataPrep.Station.generate_tu_date_array">
+<span class="sig-name descname"><span class="pre">generate_tu_date_array</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station.generate_tu_date_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station.generate_tu_date_array" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DwdDataPrep.Station.get_bis_datum">
+<span class="sig-name descname"><span class="pre">get_bis_datum</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station.get_bis_datum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station.get_bis_datum" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DwdDataPrep.Station.get_bundesland">
+<span class="sig-name descname"><span class="pre">get_bundesland</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station.get_bundesland"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station.get_bundesland" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DwdDataPrep.Station.get_geobreite">
+<span class="sig-name descname"><span class="pre">get_geobreite</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station.get_geobreite"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station.get_geobreite" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DwdDataPrep.Station.get_geolaenge">
+<span class="sig-name descname"><span class="pre">get_geolaenge</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station.get_geolaenge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station.get_geolaenge" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DwdDataPrep.Station.get_local_path">
+<span class="sig-name descname"><span class="pre">get_local_path</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station.get_local_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station.get_local_path" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DwdDataPrep.Station.get_station_id">
+<span class="sig-name descname"><span class="pre">get_station_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station.get_station_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station.get_station_id" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DwdDataPrep.Station.get_station_informations">
+<span class="sig-name descname"><span class="pre">get_station_informations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station.get_station_informations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station.get_station_informations" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DwdDataPrep.Station.get_stationshoehe">
+<span class="sig-name descname"><span class="pre">get_stationshoehe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station.get_stationshoehe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station.get_stationshoehe" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DwdDataPrep.Station.get_stationsname">
+<span class="sig-name descname"><span class="pre">get_stationsname</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station.get_stationsname"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station.get_stationsname" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DwdDataPrep.Station.get_von_datum">
+<span class="sig-name descname"><span class="pre">get_von_datum</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station.get_von_datum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station.get_von_datum" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="DwdDataPrep.Writer">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">DwdDataPrep.</span></span><span class="sig-name descname"><span class="pre">Writer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_to_txt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Writer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Writer" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="DwdDataPrep.Writer.write_stations_paths">
+<span class="sig-name descname"><span class="pre">write_stations_paths</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Writer.write_stations_paths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Writer.write_stations_paths" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="DwdCodeArchiv.html" class="btn btn-neutral float-left" title="DwdCodeArchiv module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="DwdDataScrapper.html" class="btn btn-neutral float-right" title="DwdDataScrapper module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Vitali Krilov.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

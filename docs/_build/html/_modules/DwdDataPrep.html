@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DwdDataPrep &mdash; DWD Project 31.05.2022 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> DWD Project
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">DWD_Project</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">DWD Project</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Module code</a> &raquo;</li>
+      <li>DwdDataPrep</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for DwdDataPrep</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">compress</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+
+<div class="viewcode-block" id="Station"><a class="viewcode-back" href="../DwdDataPrep.html#DwdDataPrep.Station">[docs]</a><span class="k">class</span> <span class="nc">Station</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stations_array</span><span class="p">,</span> <span class="n">local_path</span><span class="p">,</span> <span class="n">data_type</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__data_type</span> <span class="o">=</span> <span class="n">data_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__stations_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__data_type</span> <span class="o">+</span> <span class="s2">&quot;_</span><span class="si">{:05d}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">stations_array</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__von_datum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_number_to_date</span><span class="p">(</span><span class="n">stations_array</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__bis_datum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_number_to_date</span><span class="p">(</span><span class="n">stations_array</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__stationshoehe</span> <span class="o">=</span> <span class="n">stations_array</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__geoBreite</span> <span class="o">=</span> <span class="n">stations_array</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__geoLaenge</span> <span class="o">=</span> <span class="n">stations_array</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__stationsname</span> <span class="o">=</span> <span class="n">stations_array</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__bundesland</span> <span class="o">=</span> <span class="n">stations_array</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__local_path</span> <span class="o">=</span> <span class="n">local_path</span>
+
+<div class="viewcode-block" id="Station.format_number_to_date"><a class="viewcode-back" href="../DwdDataPrep.html#DwdDataPrep.Station.format_number_to_date">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">format_number_to_date</span><span class="p">(</span><span class="n">number</span><span class="p">):</span>
+        <span class="n">year</span> <span class="o">=</span> <span class="n">number</span> <span class="o">//</span> <span class="mi">10000</span>
+        <span class="n">month</span> <span class="o">=</span> <span class="n">number</span> <span class="o">//</span> <span class="mi">100</span> <span class="o">-</span> <span class="n">year</span> <span class="o">*</span> <span class="mi">100</span>
+        <span class="n">day</span> <span class="o">=</span> <span class="n">number</span> <span class="o">-</span> <span class="n">month</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">-</span> <span class="n">year</span> <span class="o">*</span> <span class="mi">10000</span>
+        <span class="n">date</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">year</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">month</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">day</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">date</span></div>
+
+<div class="viewcode-block" id="Station.get_local_path"><a class="viewcode-back" href="../DwdDataPrep.html#DwdDataPrep.Station.get_local_path">[docs]</a>    <span class="k">def</span> <span class="nf">get_local_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__local_path</span></div>
+
+<div class="viewcode-block" id="Station.get_station_id"><a class="viewcode-back" href="../DwdDataPrep.html#DwdDataPrep.Station.get_station_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_station_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__stations_id</span></div>
+
+<div class="viewcode-block" id="Station.get_von_datum"><a class="viewcode-back" href="../DwdDataPrep.html#DwdDataPrep.Station.get_von_datum">[docs]</a>    <span class="k">def</span> <span class="nf">get_von_datum</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__von_datum</span></div>
+
+<div class="viewcode-block" id="Station.get_bis_datum"><a class="viewcode-back" href="../DwdDataPrep.html#DwdDataPrep.Station.get_bis_datum">[docs]</a>    <span class="k">def</span> <span class="nf">get_bis_datum</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bis_datum</span></div>
+
+<div class="viewcode-block" id="Station.get_stationshoehe"><a class="viewcode-back" href="../DwdDataPrep.html#DwdDataPrep.Station.get_stationshoehe">[docs]</a>    <span class="k">def</span> <span class="nf">get_stationshoehe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__stationshoehe</span></div>
+
+<div class="viewcode-block" id="Station.get_geobreite"><a class="viewcode-back" href="../DwdDataPrep.html#DwdDataPrep.Station.get_geobreite">[docs]</a>    <span class="k">def</span> <span class="nf">get_geobreite</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__geoBreite</span></div>
+
+<div class="viewcode-block" id="Station.get_geolaenge"><a class="viewcode-back" href="../DwdDataPrep.html#DwdDataPrep.Station.get_geolaenge">[docs]</a>    <span class="k">def</span> <span class="nf">get_geolaenge</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__geoLaenge</span></div>
+
+<div class="viewcode-block" id="Station.get_stationsname"><a class="viewcode-back" href="../DwdDataPrep.html#DwdDataPrep.Station.get_stationsname">[docs]</a>    <span class="k">def</span> <span class="nf">get_stationsname</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__stationsname</span></div>
+
+<div class="viewcode-block" id="Station.get_bundesland"><a class="viewcode-back" href="../DwdDataPrep.html#DwdDataPrep.Station.get_bundesland">[docs]</a>    <span class="k">def</span> <span class="nf">get_bundesland</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bundesland</span></div>
+
+<div class="viewcode-block" id="Station.check_activitiy"><a class="viewcode-back" href="../DwdDataPrep.html#DwdDataPrep.Station.check_activitiy">[docs]</a>    <span class="k">def</span> <span class="nf">check_activitiy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__bis_datum</span><span class="p">,</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Station.get_station_informations"><a class="viewcode-back" href="../DwdDataPrep.html#DwdDataPrep.Station.get_station_informations">[docs]</a>    <span class="k">def</span> <span class="nf">get_station_informations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">station_information_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;ID&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__stations_id</span><span class="p">,</span> <span class="s2">&quot;von_datum&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__von_datum</span><span class="p">,</span> <span class="s2">&quot;bis_datum&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bis_datum</span><span class="p">,</span> <span class="s2">&quot;stationshoehe&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__stationshoehe</span><span class="p">,</span> <span class="s2">&quot;geoBreite&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__geoBreite</span><span class="p">,</span>
+         <span class="s2">&quot;geoLaenge&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__geoLaenge</span><span class="p">,</span> <span class="s2">&quot;Stationsname&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__stationsname</span><span class="p">,</span> <span class="s2">&quot;Bundesland&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">__bundesland</span><span class="p">,</span> <span class="s2">&quot;Aktivität&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_activitiy</span><span class="p">()}</span>
+        <span class="k">return</span> <span class="n">station_information_dict</span></div>
+
+<div class="viewcode-block" id="Station.generate_tu_data_path"><a class="viewcode-back" href="../DwdDataPrep.html#DwdDataPrep.Station.generate_tu_data_path">[docs]</a>    <span class="k">def</span> <span class="nf">generate_tu_data_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">local_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__local_path</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">__stations_id</span> <span class="ow">in</span> <span class="n">i</span><span class="p">:</span>
+                <span class="n">size</span> <span class="o">=</span> <span class="n">size</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__local_path</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span><span class="p">))):</span>
+                    <span class="k">if</span> <span class="s2">&quot;.txt&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__local_path</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__local_path</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="n">j</span><span class="p">]:</span>
+                        <span class="n">local_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__local_path</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__local_path</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="n">j</span><span class="p">])</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">size</span> <span class="o">=</span> <span class="n">size</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">pass</span>
+        <span class="k">if</span> <span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">local_list</span></div>
+
+<div class="viewcode-block" id="Station.check_data"><a class="viewcode-back" href="../DwdDataPrep.html#DwdDataPrep.Station.check_data">[docs]</a>    <span class="k">def</span> <span class="nf">check_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_tu_data_path</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">1</span></div>
+
+<div class="viewcode-block" id="Station.generate_tu_date_array"><a class="viewcode-back" href="../DwdDataPrep.html#DwdDataPrep.Station.generate_tu_date_array">[docs]</a>    <span class="k">def</span> <span class="nf">generate_tu_date_array</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_data</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">tu_data_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_tu_data_path</span><span class="p">()</span>
+            <span class="n">from_list</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tu_data_path</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">tu_data_path</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">tu_data_path</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+                        <span class="n">file</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+                        <span class="n">first_line</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+                        <span class="k">for</span> <span class="n">last_line</span> <span class="ow">in</span> <span class="n">file</span><span class="p">:</span>
+                            <span class="k">pass</span>
+                    <span class="n">from_date</span> <span class="o">=</span> <span class="n">first_line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="n">to_date</span> <span class="o">=</span> <span class="n">last_line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="n">from_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">from_date</span><span class="p">))</span>
+                    <span class="n">from_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">to_date</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">tu_data_path</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+                        <span class="n">file</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+                        <span class="n">first_line</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+                    <span class="n">from_date</span> <span class="o">=</span> <span class="n">first_line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="n">from_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">from_date</span><span class="p">))</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">from_list</span><span class="p">,</span> <span class="n">tu_data_path</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="Station.generate_tu_data_path_date"><a class="viewcode-back" href="../DwdDataPrep.html#DwdDataPrep.Station.generate_tu_data_path_date">[docs]</a>    <span class="k">def</span> <span class="nf">generate_tu_data_path_date</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__local_path</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;dict_from_list.json&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">dict_from_list</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__local_path</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;dict_tu_data_path.json&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">dict_tu_data_path</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="n">from_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dict_from_list</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__stations_id</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">from_array</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">tu_data_path</span> <span class="o">=</span> <span class="n">dict_tu_data_path</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__stations_id</span><span class="p">]</span>
+            <span class="n">mask_for_data_path</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="n">end_date</span> <span class="o">&lt;</span> <span class="n">from_array</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">elif</span> <span class="n">start_date</span> <span class="o">&gt;=</span> <span class="n">from_array</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">from_array</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">mask_1</span> <span class="o">=</span> <span class="n">start_date</span> <span class="o">&lt;</span> <span class="n">from_array</span>
+                <span class="n">mask_2</span> <span class="o">=</span> <span class="n">end_date</span> <span class="o">&gt;=</span> <span class="n">from_array</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">from_array</span><span class="p">)):</span>
+                    <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">from_array</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">mask_for_data_path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mask_1</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&amp;</span> <span class="n">mask_2</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">pass</span>
+                <span class="n">generate_tu_data_path_date</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">compress</span><span class="p">(</span><span class="n">tu_data_path</span><span class="p">,</span> <span class="n">mask_for_data_path</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">generate_tu_data_path_date</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="Station.check_activ_in_date"><a class="viewcode-back" href="../DwdDataPrep.html#DwdDataPrep.Station.check_activ_in_date">[docs]</a>    <span class="k">def</span> <span class="nf">check_activ_in_date</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__local_path</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;dict_from_list.json&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">dict_from_list</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="n">from_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dict_from_list</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__stations_id</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">dict_from_list</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__stations_id</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">end_date</span> <span class="o">&lt;</span> <span class="n">from_array</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">elif</span> <span class="n">start_date</span> <span class="o">&gt;=</span> <span class="n">from_array</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">from_array</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span></div></div>
+
+
+<div class="viewcode-block" id="Writer"><a class="viewcode-back" href="../DwdDataPrep.html#DwdDataPrep.Writer">[docs]</a><span class="k">class</span> <span class="nc">Writer</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_to_txt</span><span class="p">,</span> <span class="n">local_path</span><span class="p">,</span> <span class="n">data_type</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__path_to_txt</span> <span class="o">=</span> <span class="n">path_to_txt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__local_path</span> <span class="o">=</span> <span class="n">local_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__data_type</span> <span class="o">=</span> <span class="n">data_type</span>
+
+<div class="viewcode-block" id="Writer.write_stations_paths"><a class="viewcode-back" href="../DwdDataPrep.html#DwdDataPrep.Writer.write_stations_paths">[docs]</a>    <span class="k">def</span> <span class="nf">write_stations_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">reader</span> <span class="o">=</span> <span class="n">Reader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__path_to_txt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__local_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__data_type</span><span class="p">)</span>
+        <span class="n">get_station_ids</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">get_station_ids</span><span class="p">()</span>
+        <span class="n">station_list</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">read_station_list</span><span class="p">()</span>
+        <span class="n">from_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">tu_data_path</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">stations_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">get_station_ids</span><span class="p">:</span>
+            <span class="n">from_list_</span><span class="p">,</span> <span class="n">tu_data_path_</span> <span class="o">=</span> <span class="n">station_list</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">generate_tu_date_array</span><span class="p">()</span>
+            <span class="n">stations_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">from_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">from_list_</span><span class="p">)</span>
+            <span class="n">tu_data_path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tu_data_path_</span><span class="p">)</span>
+        <span class="n">dict_tu_data_path</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">stations_list</span><span class="p">,</span> <span class="n">tu_data_path</span><span class="p">))</span>
+        <span class="n">dict_from_list</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">stations_list</span><span class="p">,</span> <span class="n">from_list</span><span class="p">))</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__local_path</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;dict_from_list.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">dict_from_list</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__local_path</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;dict_tu_data_path.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">dict_tu_data_path</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;stations_path and stations_date dicts written in: &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">__local_path</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="Reader"><a class="viewcode-back" href="../DwdDataPrep.html#DwdDataPrep.Reader">[docs]</a><span class="k">class</span> <span class="nc">Reader</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_to_txt</span><span class="p">,</span> <span class="n">local_path</span><span class="p">,</span> <span class="n">data_type</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__path_to_txt</span> <span class="o">=</span> <span class="n">path_to_txt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__local_path</span> <span class="o">=</span> <span class="n">local_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__data_type</span> <span class="o">=</span> <span class="n">data_type</span>
+
+    <span class="k">def</span> <span class="nf">__get_station_headlines</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">station_headlines</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__path_to_txt</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;str&#39;</span><span class="p">,</span> <span class="n">max_rows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__path_to_txt</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;str&#39;</span><span class="p">,</span> <span class="n">max_rows</span><span class="o">=</span><span class="mi">1</span><span class="p">))))</span>
+        <span class="k">return</span> <span class="n">station_headlines</span>
+
+<div class="viewcode-block" id="Reader.get_station_information"><a class="viewcode-back" href="../DwdDataPrep.html#DwdDataPrep.Reader.get_station_information">[docs]</a>    <span class="k">def</span> <span class="nf">get_station_information</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">station_information</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__path_to_txt</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;names&quot;</span><span class="p">:</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__get_station_headlines</span><span class="p">()),</span> <span class="s2">&quot;formats&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;i4&quot;</span><span class="p">,</span> <span class="s2">&quot;i4&quot;</span><span class="p">,</span> <span class="s2">&quot;i4&quot;</span><span class="p">,</span> <span class="s2">&quot;i4&quot;</span><span class="p">,</span> <span class="s2">&quot;f4&quot;</span><span class="p">,</span> <span class="s2">&quot;f4&quot;</span><span class="p">,</span> <span class="s2">&quot;S20&quot;</span><span class="p">,</span> <span class="s2">&quot;S20&quot;</span><span class="p">)},</span>
+                                         <span class="n">usecols</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__get_station_headlines</span><span class="p">())))</span>
+        <span class="k">return</span> <span class="n">station_information</span></div>
+
+<div class="viewcode-block" id="Reader.read_station_list"><a class="viewcode-back" href="../DwdDataPrep.html#DwdDataPrep.Reader.read_station_list">[docs]</a>    <span class="k">def</span> <span class="nf">read_station_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">stations</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">get_station_information</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_station_information</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">get_station_information</span><span class="p">))):</span>
+            <span class="n">stations</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="bp">self</span><span class="o">.</span><span class="n">__data_type</span> <span class="o">+</span> <span class="s2">&quot;_</span><span class="si">{:05d}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">get_station_information</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]):</span> <span class="n">Station</span><span class="p">(</span><span class="n">get_station_information</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">__local_path</span><span class="p">,</span> <span class="n">data_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__data_type</span><span class="p">)})</span>
+        <span class="k">return</span> <span class="n">stations</span></div>
+
+<div class="viewcode-block" id="Reader.get_active_stations"><a class="viewcode-back" href="../DwdDataPrep.html#DwdDataPrep.Reader.get_active_stations">[docs]</a>    <span class="k">def</span> <span class="nf">get_active_stations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">read_station_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_station_list</span><span class="p">()</span>
+        <span class="n">station_information</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_station_information</span><span class="p">()</span>
+        <span class="n">station_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_station_ids</span><span class="p">()</span>
+        <span class="n">active_stations_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+        <span class="k">for</span> <span class="n">active_station</span> <span class="ow">in</span> <span class="n">read_station_list</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">read_station_list</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">active_station</span><span class="p">)</span><span class="o">.</span><span class="n">check_data</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">active_stations_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">active_stations_array</span><span class="p">,</span> <span class="n">read_station_list</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">active_station</span><span class="p">)</span><span class="o">.</span><span class="n">check_activitiy</span><span class="p">())</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">active_stations_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">active_stations_array</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">x_active</span> <span class="o">=</span> <span class="n">station_information</span><span class="p">[:][</span><span class="s2">&quot;geoLaenge&quot;</span><span class="p">][</span><span class="n">active_stations_array</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">y_active</span> <span class="o">=</span> <span class="n">station_information</span><span class="p">[:][</span><span class="s2">&quot;geoBreite&quot;</span><span class="p">][</span><span class="n">active_stations_array</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">z_active</span> <span class="o">=</span> <span class="n">station_information</span><span class="p">[:][</span><span class="s2">&quot;Stationshoehe&quot;</span><span class="p">][</span><span class="n">active_stations_array</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">active_id</span> <span class="o">=</span> <span class="n">station_ids</span><span class="p">[:][</span><span class="n">active_stations_array</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">x_not_active</span> <span class="o">=</span> <span class="n">station_information</span><span class="p">[:][</span><span class="s2">&quot;geoLaenge&quot;</span><span class="p">][</span><span class="n">active_stations_array</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">y_not_active</span> <span class="o">=</span> <span class="n">station_information</span><span class="p">[:][</span><span class="s2">&quot;geoBreite&quot;</span><span class="p">][</span><span class="n">active_stations_array</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">z_not_active</span> <span class="o">=</span> <span class="n">station_information</span><span class="p">[:][</span><span class="s2">&quot;Stationshoehe&quot;</span><span class="p">][</span><span class="n">active_stations_array</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">not_activ_id</span> <span class="o">=</span> <span class="n">station_ids</span><span class="p">[:][</span><span class="n">active_stations_array</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">x_no_data</span> <span class="o">=</span> <span class="n">station_information</span><span class="p">[:][</span><span class="s2">&quot;geoLaenge&quot;</span><span class="p">][</span><span class="n">active_stations_array</span> <span class="o">==</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="n">y_no_data</span> <span class="o">=</span> <span class="n">station_information</span><span class="p">[:][</span><span class="s2">&quot;geoBreite&quot;</span><span class="p">][</span><span class="n">active_stations_array</span> <span class="o">==</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="n">z_no_data</span> <span class="o">=</span> <span class="n">station_information</span><span class="p">[:][</span><span class="s2">&quot;Stationshoehe&quot;</span><span class="p">][</span><span class="n">active_stations_array</span> <span class="o">==</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="n">no_data_id</span> <span class="o">=</span> <span class="n">station_ids</span><span class="p">[:][</span><span class="n">active_stations_array</span> <span class="o">==</span> <span class="mi">2</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">x_active</span><span class="p">,</span> <span class="n">y_active</span><span class="p">,</span> <span class="n">z_active</span><span class="p">,</span> <span class="n">active_id</span><span class="p">,</span> <span class="n">x_not_active</span><span class="p">,</span> <span class="n">y_not_active</span><span class="p">,</span> <span class="n">z_not_active</span><span class="p">,</span> <span class="n">not_activ_id</span><span class="p">,</span> <span class="n">x_no_data</span><span class="p">,</span> <span class="n">y_no_data</span><span class="p">,</span> <span class="n">z_no_data</span><span class="p">,</span> <span class="n">no_data_id</span></div>
+
+<div class="viewcode-block" id="Reader.get_active_stations_in_date"><a class="viewcode-back" href="../DwdDataPrep.html#DwdDataPrep.Reader.get_active_stations_in_date">[docs]</a>    <span class="k">def</span> <span class="nf">get_active_stations_in_date</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">):</span>
+        <span class="n">station_information</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_station_information</span><span class="p">()</span>
+        <span class="n">station_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_station_ids</span><span class="p">()</span>
+        <span class="n">get_station_ids_in_date</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_station_ids_in_date</span><span class="p">(</span><span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">)</span>
+        <span class="n">x_active</span> <span class="o">=</span> <span class="n">station_information</span><span class="p">[:][</span><span class="s2">&quot;geoLaenge&quot;</span><span class="p">][</span><span class="n">get_station_ids_in_date</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">y_active</span> <span class="o">=</span> <span class="n">station_information</span><span class="p">[:][</span><span class="s2">&quot;geoBreite&quot;</span><span class="p">][</span><span class="n">get_station_ids_in_date</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">z_active</span> <span class="o">=</span> <span class="n">station_information</span><span class="p">[:][</span><span class="s2">&quot;Stationshoehe&quot;</span><span class="p">][</span><span class="n">get_station_ids_in_date</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">active_id</span> <span class="o">=</span> <span class="n">station_ids</span><span class="p">[:][</span><span class="n">get_station_ids_in_date</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">x_active</span><span class="p">,</span> <span class="n">y_active</span><span class="p">,</span> <span class="n">z_active</span><span class="p">,</span> <span class="n">active_id</span></div>
+
+<div class="viewcode-block" id="Reader.get_station_ids_in_date"><a class="viewcode-back" href="../DwdDataPrep.html#DwdDataPrep.Reader.get_station_ids_in_date">[docs]</a>    <span class="k">def</span> <span class="nf">get_station_ids_in_date</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        test</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">activ_stations_in_date_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+        <span class="n">read_station_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_station_list</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">station_id</span> <span class="ow">in</span> <span class="n">read_station_list</span><span class="p">:</span>
+            <span class="n">activ_stations_in_date_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">activ_stations_in_date_array</span><span class="p">,</span> <span class="n">read_station_list</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">station_id</span><span class="p">)</span><span class="o">.</span><span class="n">check_activ_in_date</span><span class="p">(</span><span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">activ_stations_in_date_array</span></div>
+
+<div class="viewcode-block" id="Reader.get_station_ids"><a class="viewcode-back" href="../DwdDataPrep.html#DwdDataPrep.Reader.get_station_ids">[docs]</a>    <span class="k">def</span> <span class="nf">get_station_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">station_ids_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+        <span class="n">read_station_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_station_list</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">station_id</span> <span class="ow">in</span> <span class="n">read_station_list</span><span class="p">:</span>
+            <span class="n">station_ids_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">station_ids_array</span><span class="p">,</span> <span class="n">read_station_list</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">station_id</span><span class="p">)</span><span class="o">.</span><span class="n">get_station_id</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">station_ids_array</span></div>
+
+
+<div class="viewcode-block" id="Reader.data_prep_for_new_location"><a class="viewcode-back" href="../DwdDataPrep.html#DwdDataPrep.Reader.data_prep_for_new_location">[docs]</a>    <span class="k">def</span> <span class="nf">data_prep_for_new_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">,</span> <span class="n">x_coordinate</span><span class="p">,</span> <span class="n">y_coordinate</span><span class="p">,</span> <span class="n">z_coordinate</span><span class="p">):</span>
+        <span class="n">new_point_name</span> <span class="o">=</span> <span class="s2">&quot;Find near TU for me&quot;</span>
+        <span class="n">x_active_reader</span><span class="p">,</span> <span class="n">y_active_reader</span><span class="p">,</span> <span class="n">z_active_reader</span><span class="p">,</span> <span class="n">activ_id_reader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_active_stations_in_date</span><span class="p">(</span><span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">)</span>
+        <span class="n">x_active_in_date</span> <span class="o">=</span> <span class="p">[</span><span class="n">x_coordinate</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x_active_reader</span><span class="p">:</span>
+            <span class="n">x_active_in_date</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">y_active_in_date</span> <span class="o">=</span> <span class="p">[</span><span class="n">y_coordinate</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">y_active_reader</span><span class="p">:</span>
+            <span class="n">y_active_in_date</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">z_active_in_date</span> <span class="o">=</span> <span class="p">[</span><span class="n">z_coordinate</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">z_active_reader</span><span class="p">:</span>
+            <span class="n">z_active_in_date</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">activ_id_in_date</span> <span class="o">=</span> <span class="p">[</span><span class="n">new_point_name</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">activ_id_reader</span><span class="p">:</span>
+            <span class="n">activ_id_in_date</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">station_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">read_station_list</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">x_active_in_date</span><span class="p">,</span> <span class="n">y_active_in_date</span><span class="p">,</span> <span class="n">z_active_in_date</span><span class="p">,</span> <span class="n">activ_id_in_date</span><span class="p">,</span> <span class="n">station_list</span></div></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Vitali Krilov.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

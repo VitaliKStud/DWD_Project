@@ -52,13 +52,14 @@ dwd = main_dwd(local_domain=local_domain_,
 
 # Plot your data
 # dwd.main_plotter_data(qn_weight=True, distance_weight=False, compare=True, no_plot=False)
-dwd.main_plotter_data(qn_weight=False, distance_weight=True, compare=True, no_plot=False)
-dwd.main_plotter_data(qn_weight=False, distance_weight=False, compare=True, no_plot=False)
-# dwd.main_plotter_stations(projection=False)
-
+# dwd.main_plotter_data(qn_weight=False, distance_weight=True, compare=True, no_plot=False)
+# dwd.main_plotter_data(qn_weight=False, distance_weight=False, compare=True, no_plot=False)
+dwd.main_plotter_stations(projection=False)
+"""
+test
+"""
 # Generate some data for DwdMapCreator
 # dwd.main_data_map()
-
 
 
 

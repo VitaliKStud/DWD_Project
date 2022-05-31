@@ -290,6 +290,11 @@ class DwdMain:
                                                  type_of_method="Durchschnitt")
 
     def main_station_information(self, station_id):
+        """
+
+        :param station_id:
+        :return:
+        """
         return self.reader.read_station_list().get(station_id).get_station_informations()
 
     def main_station_array(self):
