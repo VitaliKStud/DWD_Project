@@ -82,13 +82,16 @@
              
   <section id="module-DwdDict">
 <span id="dwddict-module"></span><h1>DwdDict module<a class="headerlink" href="#module-DwdDict" title="Permalink to this headline"></a></h1>
-<p>description
-:Describtion: Is a global dictionary for all data you are scraping for DWD/CDC. If you want to change from 10_minutes resolution to 1_minute resolution of your data, you might start here with few changes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Describtion</dt>
+<dd class="field-odd"><p>Is a global dictionary for all data you are scraping from DWD/CDC. If you want to change from 10_minutes resolution to 1_minute resolution of your data, you might start here with few changes.</p>
+</dd>
+</dl>
 <table class="docutils align-default">
 <colgroup>
-<col style="width: 29%" />
-<col style="width: 8%" />
-<col style="width: 63%" />
+<col style="width: 20%" />
+<col style="width: 5%" />
+<col style="width: 75%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Name</p></th>
@@ -99,51 +102,63 @@
 <tbody>
 <tr class="row-even"><td><p>external_domain</p></td>
 <td><p>str</p></td>
-<td><p>What domain do you use for your data?
-Default:”<a class="reference external" href="https://opendata.dwd.de/">https://opendata.dwd.de/</a>”</p></td>
+<td><p>What <strong>domain</strong> do you use for your data?</p></td>
 </tr>
 <tr class="row-odd"><td><p>external_global_path</p></td>
 <td><p>str</p></td>
-<td><p>What data did you choose from external_domain?
-Default: “climate_environment/CDC/
-observations_germany/climate/10_minutes/”</p>
-<p>Note: Here you could change for 1_minute.</p>
+<td><p>What is the data path for your external_domain?</p>
+<p><strong>Note:</strong> Here you could change for 1_minute.</p>
 </td>
 </tr>
 <tr class="row-even"><td><p>ending</p></td>
 <td><p>list</p></td>
-<td><p>Is important for DwdDataScraper, for the
-download. It will download all the data with
-this given endings.
-Default: “.zip”, “.pdf”, “.txt”</p></td>
+<td><p>Is important for for the <strong>download</strong>.</p>
+<p>It will download all the data with this given endings.</p>
+</td>
 </tr>
 <tr class="row-odd"><td><p>type_dict</p></td>
 <td><p>dict</p></td>
-<td></td>
+<td><p>Describes what the <strong>prefix</strong> is before any station_id.</p>
+<p>Example: You downloaded data for solar. If you check</p>
+<p>the file names which you downloaded. It should be something</p>
+<p>like: 10minutenwerte_SOLAR_00003_19930428_19991231_hist.</p>
+<p>So the prefix would be <strong>SOLAR</strong>.</p>
+</td>
 </tr>
 <tr class="row-even"><td><p>load_txt_dict</p></td>
 <td><p>dict</p></td>
-<td></td>
+<td><p>Describes what the <strong>prefix</strong> (for given station_list) is.</p>
+<p>DWD gives you a simple .txt file, that got some different</p>
+<p>names and this .txt describes what stations are given for the type_of_data.</p>
+<p>Example: You downloaded data for solar. if you check the</p>
+<p>folder there should something like: zehn_min_sd_Beschreibung_Stationen.</p>
+<p>So the prefix would be <strong>sd</strong></p>
+</td>
 </tr>
 <tr class="row-odd"><td><p>rest_dict</p></td>
 <td><p>dict</p></td>
-<td></td>
+<td><p>Since all the given .txt are not completely uniform. We need this dict.</p>
+<p>It describes the part of the given .txt names.</p>
+<p>Example: zehn_now_sd_Beschreibung_Stationen and</p>
+<p>zehn_min_sd_Beschreibung_Stationen are different.</p>
+<p>There is a <strong>now</strong> and a <strong>min</strong>.</p>
+</td>
 </tr>
 <tr class="row-even"><td><p>title_dict</p></td>
 <td><p>dict</p></td>
-<td></td>
+<td><p>Is important for <strong>plotting</strong> your data. It will be the <strong>title</strong> of your graphs.</p></td>
 </tr>
 <tr class="row-odd"><td><p>unit_dict</p></td>
 <td><p>dict</p></td>
-<td></td>
+<td><p>Is important for <strong>plotting</strong> your data. This units will be on your <strong>axes</strong>.</p></td>
 </tr>
 <tr class="row-even"><td><p>type_of_time_list</p></td>
 <td><p>list</p></td>
-<td></td>
+<td><p>Describes the types of time, that are given. Is important for <strong>writing</strong>.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type_of_data_list</p></td>
 <td><p>list</p></td>
-<td></td>
+<td><p>Describes the types of data, that are given. Is important for <strong>downloading</strong>.</p></td>
 </tr>
 </tbody>
 </table>

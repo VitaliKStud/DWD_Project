@@ -1,37 +1,59 @@
-"""description
-:Describtion: Is a global dictionary for all data you are scraping for DWD/CDC. If you want to change from 10_minutes resolution to 1_minute resolution of your data, you might start here with few changes.
+"""
+:Describtion: Is a global dictionary for all data you are scraping from DWD/CDC. If you want to change from 10_minutes resolution to 1_minute resolution of your data, you might start here with few changes.
 
-+----------------------+------+------------------------------------------------+
-| Name                 | type | description                                    |
-+======================+======+================================================+
-| external_domain      | str  | What domain do you use for your data?          |
-|                      |      | Default:"https://opendata.dwd.de/"             |
-+----------------------+------+------------------------------------------------+
-| external_global_path | str  | What data did you choose from external_domain? |
-|                      |      | Default: "climate_environment/CDC/             |
-|                      |      | observations_germany/climate/10_minutes/"      |
-|                      |      |                                                |
-|                      |      | Note: Here you could change for 1_minute.      |
-+----------------------+------+------------------------------------------------+
-| ending               | list | Is important for DwdDataScraper, for the       |
-|                      |      | download. It will download all the data with   |
-|                      |      | this given endings.                            |
-|                      |      | Default: ".zip", ".pdf", ".txt"                |
-+----------------------+------+------------------------------------------------+
-| type_dict            | dict |                                                |
-+----------------------+------+------------------------------------------------+
-| load_txt_dict        | dict |                                                |
-+----------------------+------+------------------------------------------------+
-| rest_dict            | dict |                                                |
-+----------------------+------+------------------------------------------------+
-| title_dict           | dict |                                                |
-+----------------------+------+------------------------------------------------+
-| unit_dict            | dict |                                                |
-+----------------------+------+------------------------------------------------+
-| type_of_time_list    | list |                                                |
-+----------------------+------+------------------------------------------------+
-| type_of_data_list    | list |                                                |
-+----------------------+------+------------------------------------------------+
++----------------------+------+-----------------------------------------------------------------------------------+
+| Name                 | type | description                                                                       |
++======================+======+===================================================================================+
+| external_domain      | str  | What **domain** do you use for your data?                                         |
++----------------------+------+-----------------------------------------------------------------------------------+
+| external_global_path | str  | What is the data path for your external_domain?                                   |
+|                      |      |                                                                                   |
+|                      |      | **Note:** Here you could change for 1_minute.                                     |
++----------------------+------+-----------------------------------------------------------------------------------+
+| ending               | list | Is important for for the **download**.                                            |
+|                      |      |                                                                                   |
+|                      |      | It will download all the data with this given endings.                            |
++----------------------+------+-----------------------------------------------------------------------------------+
+| type_dict            | dict | Describes what the **prefix** is before any station_id.                           |
+|                      |      |                                                                                   |
+|                      |      | Example: You downloaded data for solar. If you check                              |
+|                      |      |                                                                                   |
+|                      |      | the file names which you downloaded. It should be something                       |
+|                      |      |                                                                                   |
+|                      |      | like: 10minutenwerte_SOLAR_00003_19930428_19991231_hist.                          |
+|                      |      |                                                                                   |
+|                      |      | So the prefix would be **SOLAR**.                                                 |
++----------------------+------+-----------------------------------------------------------------------------------+
+| load_txt_dict        | dict | Describes what the **prefix** (for given station_list) is.                        |
+|                      |      |                                                                                   |
+|                      |      | DWD gives you a simple .txt file, that got some different                         |
+|                      |      |                                                                                   |
+|                      |      | names and this .txt describes what stations are given for the type_of_data.       |
+|                      |      |                                                                                   |
+|                      |      | Example: You downloaded data for solar. if you check the                          |
+|                      |      |                                                                                   |
+|                      |      | folder there should something like: zehn_min_sd_Beschreibung_Stationen.           |
+|                      |      |                                                                                   |
+|                      |      | So the prefix would be **sd**                                                     |
++----------------------+------+-----------------------------------------------------------------------------------+
+| rest_dict            | dict | Since all the given .txt are not completely uniform. We need this dict.           |
+|                      |      |                                                                                   |
+|                      |      | It describes the part of the given .txt names.                                    |
+|                      |      |                                                                                   |
+|                      |      | Example: zehn_now_sd_Beschreibung_Stationen and                                   |
+|                      |      |                                                                                   |
+|                      |      | zehn_min_sd_Beschreibung_Stationen are different.                                 |
+|                      |      |                                                                                   |
+|                      |      | There is a **now** and a **min**.                                                 |
++----------------------+------+-----------------------------------------------------------------------------------+
+| title_dict           | dict | Is important for **plotting** your data. It will be the **title** of your graphs. |
++----------------------+------+-----------------------------------------------------------------------------------+
+| unit_dict            | dict | Is important for **plotting** your data. This units will be on your **axes**.     |
++----------------------+------+-----------------------------------------------------------------------------------+
+| type_of_time_list    | list | Describes the types of time, that are given. Is important for **writing**.        |
++----------------------+------+-----------------------------------------------------------------------------------+
+| type_of_data_list    | list | Describes the types of data, that are given. Is important for **downloading**.    |
++----------------------+------+-----------------------------------------------------------------------------------+
 """
 
 
