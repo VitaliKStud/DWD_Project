@@ -86,18 +86,39 @@
 <dt class="sig sig-object py" id="DwdDataScrapper.DataScrapper">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">DwdDataScrapper.</span></span><span class="sig-name descname"><span class="pre">DataScrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">external_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">external_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_domain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ending</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">looking_for_ending</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataScrapper.html#DataScrapper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataScrapper.DataScrapper" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description</dt>
+<dd class="field-odd"><p>This class will download and unzip your files. Check DwdDict module first!</p>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataScrapper.DataScrapper.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">external_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">external_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_domain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ending</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">looking_for_ending</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataScrapper.html#DataScrapper.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataScrapper.DataScrapper.__init__" title="Permalink to this definition"></a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>external_domain</strong> – Where do you want to get your data from? “<a class="reference external" href="https://opendata.dwd.de/">https://opendata.dwd.de/</a>”</p></li>
-<li><p><strong>external_path</strong> – </p></li>
-<li><p><strong>local_domain</strong> – </p></li>
-<li><p><strong>ending</strong> – </p></li>
-<li><p><strong>looking_for_ending</strong> – </p></li>
+<li><p><strong>external_domain</strong> – will be set from your DwdDict.py</p></li>
+<li><p><strong>external_path</strong> – will be set from your DwdDict.py</p></li>
+<li><p><strong>local_domain</strong> – tells where to save your downloading and unzipping data</p></li>
+<li><p><strong>ending</strong> – will be set from your DwdDict.py</p></li>
+<li><p><strong>looking_for_ending</strong> – skip this (not important for now, maybe in future)</p></li>
 </ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="DwdDataScrapper.DataScrapper.download">
+<span class="sig-name descname"><span class="pre">download</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">download_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataScrapper.html#DataScrapper.download"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataScrapper.DataScrapper.download" title="Permalink to this definition"></a></dt>
+<dd><p><strong>Description:</strong> Is the main downloading method. It will download the data for you. It will also create folders of the same structure,
+that the path is in your local_domain (if not existing already). After the download it will create the needed .json file in the folder,
+where the data was saved. It will be called “last_download_date” and it will include some information about the filepath download-date and filename.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>download_path</strong> – can be generated by self.external_directory_indicator(). Or if you want to download something manually. The path would look like this: “climate_environment/CDC/observations_germany/climate/10_minutes/air_temperature/historical/”</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>“download finished” if succeeded.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -105,17 +126,24 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataScrapper.DataScrapper.download_loop">
 <span class="sig-name descname"><span class="pre">download_loop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataScrapper.html#DataScrapper.download_loop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataScrapper.DataScrapper.download_loop" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p><strong>Description:</strong> Creates the download loop. Will download all the data from the self.external_directory_indicator()</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataScrapper.DataScrapper.external_directory_indicator">
 <span class="sig-name descname"><span class="pre">external_directory_indicator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pre_extend_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataScrapper.html#DataScrapper.external_directory_indicator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataScrapper.DataScrapper.external_directory_indicator" title="Permalink to this definition"></a></dt>
-<dd><dl class="field-list simple">
+<dd><p><strong>Description:</strong> Will generate a list (verzeichnis_list) of oll the “href” (links and urls) on a given page</p>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>pre_extend_list</strong> – </p>
+<dd class="field-odd"><p><strong>pre_extend_list</strong> – skip this (not important for now, maybe in future)</p>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Test</p>
+<dd class="field-even"><p>verzeichnis_list</p>
 </dd>
 </dl>
 </dd></dl>
@@ -123,27 +151,49 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataScrapper.DataScrapper.extract_zip">
 <span class="sig-name descname"><span class="pre">extract_zip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">looking_for</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'.zip'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataScrapper.html#DataScrapper.extract_zip"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataScrapper.DataScrapper.extract_zip" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="DwdDataScrapper.DataScrapper.generate_external_list">
-<span class="sig-name descname"><span class="pre">generate_external_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pre_extend_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataScrapper.html#DataScrapper.generate_external_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataScrapper.DataScrapper.generate_external_list" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p><strong>Description:</strong> Extract all the files inside a path</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>looking_for</strong> – Should be “.zip”.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>“Extracting finished” if succeeded.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataScrapper.DataScrapper.generate_local_list">
 <span class="sig-name descname"><span class="pre">generate_local_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataScrapper.html#DataScrapper.generate_local_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataScrapper.DataScrapper.generate_local_list" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p><strong>Description:</strong> Will generate a local_list with all filenames.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>local_list</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataScrapper.DataScrapper.get_external_date">
 <span class="sig-name descname"><span class="pre">get_external_date</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataScrapper.html#DataScrapper.get_external_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataScrapper.DataScrapper.get_external_date" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p><strong>Description:</strong> Will generate a list (text_elemnts) of all text elements on a page (here the date) (will be important in future).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>text_elements</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataScrapper.DataScrapper.main_update_data">
 <span class="sig-name descname"><span class="pre">main_update_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataScrapper.html#DataScrapper.main_update_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataScrapper.DataScrapper.main_update_data" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p><strong>Description:</strong> Compressed method for the download. Less complicated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>“Data updated” if succeeded.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 

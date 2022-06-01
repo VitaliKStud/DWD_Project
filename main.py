@@ -1,5 +1,6 @@
 import os
 from DwdMain import main_dwd
+from DwdDataScrapper import DataScrapper
 
 local_domain_ = r"C:/Users/VID/Desktop/Betriebliche_Praxis/"
 os.chdir(local_domain_)
@@ -54,12 +55,13 @@ dwd = main_dwd(local_domain=local_domain_,
 # dwd.main_plotter_data(qn_weight=True, distance_weight=False, compare=True, no_plot=False)
 # dwd.main_plotter_data(qn_weight=False, distance_weight=True, compare=True, no_plot=False)
 # dwd.main_plotter_data(qn_weight=False, distance_weight=False, compare=True, no_plot=False)
-dwd.main_plotter_stations(projection=False)
-"""
-test
-"""
+# dwd.main_plotter_stations(projection=False)
+
 # Generate some data for DwdMapCreator
 # dwd.main_data_map()
 
 
+a = DataScrapper("https://opendata.dwd.de/", "climate_environment/CDC/observations_germany/climate/10_minutes/air_temperature/", local_domain_, [".zip", ".pdf", ".txt"]).generate_local_list()
+
+print(a)
 

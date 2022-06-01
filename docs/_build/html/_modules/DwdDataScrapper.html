@@ -76,8 +76,10 @@
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">zipfile</span>
 
-
 <div class="viewcode-block" id="DataScrapper"><a class="viewcode-back" href="../DwdDataScrapper.html#DwdDataScrapper.DataScrapper">[docs]</a><span class="k">class</span> <span class="nc">DataScrapper</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :Description: This class will download and unzip your files. Check DwdDict module first!</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="DataScrapper.__init__"><a class="viewcode-back" href="../DwdDataScrapper.html#DwdDataScrapper.DataScrapper.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">external_domain</span><span class="p">,</span>
                  <span class="n">external_path</span><span class="p">,</span>
@@ -85,11 +87,11 @@
                  <span class="n">ending</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">looking_for_ending</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        :param external_domain: Where do you want to get your data from? &quot;https://opendata.dwd.de/&quot;</span>
-<span class="sd">        :param external_path:</span>
-<span class="sd">        :param local_domain:</span>
-<span class="sd">        :param ending:</span>
-<span class="sd">        :param looking_for_ending:</span>
+<span class="sd">        :param external_domain: will be set from your DwdDict.py</span>
+<span class="sd">        :param external_path: will be set from your DwdDict.py</span>
+<span class="sd">        :param local_domain: tells where to save your downloading and unzipping data</span>
+<span class="sd">        :param ending: will be set from your DwdDict.py</span>
+<span class="sd">        :param looking_for_ending: skip this (not important for now, maybe in future)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__external_domain</span> <span class="o">=</span> <span class="n">external_domain</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__external_path</span> <span class="o">=</span> <span class="n">external_path</span>
@@ -100,25 +102,21 @@
 
 <div class="viewcode-block" id="DataScrapper.external_directory_indicator"><a class="viewcode-back" href="../DwdDataScrapper.html#DwdDataScrapper.DataScrapper.external_directory_indicator">[docs]</a>    <span class="k">def</span> <span class="nf">external_directory_indicator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pre_extend_list</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        :param pre_extend_list:</span>
-<span class="sd">        :return: Test</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        **Description:** Will generate a list (verzeichnis_list) of oll the &quot;href&quot; (links and urls) on a given page</span>
 
+<span class="sd">        :param pre_extend_list: skip this (not important for now, maybe in future)</span>
+<span class="sd">        :return: verzeichnis_list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__external_domain</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">__external_path</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s2">&quot;html.parser&quot;</span><span class="p">)</span>
         <span class="n">verzeichnis_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">pre_extend_list</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">__external_path</span> <span class="o">+</span> <span class="n">n</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;href&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">n</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;href&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">&quot;../&quot;</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">verzeichnis_list</span></div>
 
-<div class="viewcode-block" id="DataScrapper.generate_external_list"><a class="viewcode-back" href="../DwdDataScrapper.html#DwdDataScrapper.DataScrapper.generate_external_list">[docs]</a>    <span class="k">def</span> <span class="nf">generate_external_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pre_extend_list</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-        <span class="n">external_list</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">external_directory_indicator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">external_directory_indicator</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">external_directory_indicator</span><span class="p">)):</span>
-            <span class="n">path2</span> <span class="o">=</span> <span class="n">external_directory_indicator</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-            <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__external_domain</span> <span class="o">+</span> <span class="n">path2</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s2">&quot;html.parser&quot;</span><span class="p">)</span>
-            <span class="n">external_list_i</span> <span class="o">=</span> <span class="p">[</span><span class="n">pre_extend_list</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">n</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;href&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">check_ending</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__ending</span> <span class="k">if</span> <span class="n">check_ending</span> <span class="ow">in</span> <span class="n">n</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;href&quot;</span><span class="p">)]</span>
-            <span class="n">external_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">external_list_i</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">external_list</span></div>
-
 <div class="viewcode-block" id="DataScrapper.get_external_date"><a class="viewcode-back" href="../DwdDataScrapper.html#DwdDataScrapper.DataScrapper.get_external_date">[docs]</a>    <span class="k">def</span> <span class="nf">get_external_date</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        **Description:** Will generate a list (text_elemnts) of all text elements on a page (here the date) (will be important in future).</span>
+
+<span class="sd">        :return: text_elements</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">text_elements</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">blacklist</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;h1&quot;</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">]</span>
         <span class="n">external_directory_indicator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">external_directory_indicator</span><span class="p">()</span>
@@ -133,7 +131,15 @@
             <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">text_elements</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">text_elements</span></div>
 
-    <span class="k">def</span> <span class="nf">__download</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">download_path</span><span class="p">):</span>
+<div class="viewcode-block" id="DataScrapper.download"><a class="viewcode-back" href="../DwdDataScrapper.html#DwdDataScrapper.DataScrapper.download">[docs]</a>    <span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">download_path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        **Description:** Is the main downloading method. It will download the data for you. It will also create folders of the same structure,</span>
+<span class="sd">        that the path is in your local_domain (if not existing already). After the download it will create the needed .json file in the folder,</span>
+<span class="sd">        where the data was saved. It will be called &quot;last_download_date&quot; and it will include some information about the filepath download-date and filename.</span>
+
+<span class="sd">        :param download_path: can be generated by self.external_directory_indicator(). Or if you want to download something manually. The path would look like this: &quot;climate_environment/CDC/observations_germany/climate/10_minutes/air_temperature/historical/&quot;</span>
+<span class="sd">        :return: &quot;download finished&quot; if succeeded.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__external_domain</span> <span class="o">+</span> <span class="n">download_path</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s2">&quot;html.parser&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">download_path</span><span class="p">):</span>
             <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">download_path</span><span class="p">)</span>
@@ -157,27 +163,43 @@
                     <span class="k">if</span> <span class="n">check_ending</span> <span class="ow">in</span> <span class="n">download</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;href&quot;</span><span class="p">):</span>
                         <span class="nb">print</span><span class="p">(</span><span class="n">download</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;href&quot;</span><span class="p">))</span>
                         <span class="n">date_i</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">download</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;href&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;,&quot;</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">-%b-%Y %H:%M&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;,&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">__external_path</span><span class="p">)</span>
-                        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">download_path</span> <span class="o">+</span> <span class="n">download</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;href&quot;</span><span class="p">),</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>  <span class="c1"># Hier speichere ich</span>
+                        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">download_path</span> <span class="o">+</span> <span class="n">download</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;href&quot;</span><span class="p">),</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>  <span class="c1"># saving path</span>
                             <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__external_domain</span> <span class="o">+</span> <span class="n">download_path</span> <span class="o">+</span> <span class="n">download</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;href&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="k">continue</span>
                 <span class="n">date</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">date_i</span><span class="p">)</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">download_path</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">&quot;last_download_date.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">date</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-        <span class="k">return</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Download finished&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Download finished&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DataScrapper.download_loop"><a class="viewcode-back" href="../DwdDataScrapper.html#DwdDataScrapper.DataScrapper.download_loop">[docs]</a>    <span class="k">def</span> <span class="nf">download_loop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        **Description:** Creates the download loop. Will download all the data from the self.external_directory_indicator()</span>
+
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">external_directory_indicator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">external_directory_indicator</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">external_directory_indicator</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__download</span><span class="p">(</span><span class="n">i</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="n">i</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DataScrapper.generate_local_list"><a class="viewcode-back" href="../DwdDataScrapper.html#DwdDataScrapper.DataScrapper.generate_local_list">[docs]</a>    <span class="k">def</span> <span class="nf">generate_local_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        **Description:** Will generate a local_list with all filenames.</span>
+
+<span class="sd">        :return: local_list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">local_list</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">((</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__local_path</span><span class="p">)))):</span>
             <span class="n">local_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__local_path</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__local_path</span><span class="p">)[</span><span class="n">i</span><span class="p">]))</span>
         <span class="k">return</span> <span class="n">local_list</span></div>
 
 <div class="viewcode-block" id="DataScrapper.extract_zip"><a class="viewcode-back" href="../DwdDataScrapper.html#DwdDataScrapper.DataScrapper.extract_zip">[docs]</a>    <span class="k">def</span> <span class="nf">extract_zip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">looking_for</span><span class="o">=</span><span class="s2">&quot;.zip&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        **Description:** Extract all the files inside a path</span>
+
+<span class="sd">        :param looking_for: Should be &quot;.zip&quot;.</span>
+<span class="sd">        :return: &quot;Extracting finished&quot; if succeeded.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">path_i</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__local_path</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">path_i</span><span class="p">)):</span>
             <span class="n">path_j</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__local_path</span> <span class="o">+</span> <span class="n">path_i</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span><span class="p">)</span>
@@ -197,9 +219,15 @@
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Extracting finished&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DataScrapper.main_update_data"><a class="viewcode-back" href="../DwdDataScrapper.html#DwdDataScrapper.DataScrapper.main_update_data">[docs]</a>    <span class="k">def</span> <span class="nf">main_update_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        **Description:** Compressed method for the download. Less complicated.</span>
+
+<span class="sd">        :return: &quot;Data updated&quot; if succeeded.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">download_loop</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">extract_zip</span><span class="p">()</span>
         <span class="k">return</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Data updated&quot;</span><span class="p">)</span></div></div>
+
 </pre></div>
 
            </div>
