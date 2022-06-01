@@ -1,4 +1,45 @@
+"""description
+:Describtion: Is a global dictionary for all data you are scraping for DWD/CDC. If you want to change from 10_minutes resolution to 1_minute resolution of your data, you might start here with few changes.
+
++----------------------+------+------------------------------------------------+
+| Name                 | type | description                                    |
++======================+======+================================================+
+| external_domain      | str  | What domain do you use for your data?          |
+|                      |      | Default:"https://opendata.dwd.de/"             |
++----------------------+------+------------------------------------------------+
+| external_global_path | str  | What data did you choose from external_domain? |
+|                      |      | Default: "climate_environment/CDC/             |
+|                      |      | observations_germany/climate/10_minutes/"      |
+|                      |      |                                                |
+|                      |      | Note: Here you could change for 1_minute.      |
++----------------------+------+------------------------------------------------+
+| ending               | list | Is important for DwdDataScraper, for the       |
+|                      |      | download. It will download all the data with   |
+|                      |      | this given endings.                            |
+|                      |      | Default: ".zip", ".pdf", ".txt"                |
++----------------------+------+------------------------------------------------+
+| type_dict            | dict |                                                |
++----------------------+------+------------------------------------------------+
+| load_txt_dict        | dict |                                                |
++----------------------+------+------------------------------------------------+
+| rest_dict            | dict |                                                |
++----------------------+------+------------------------------------------------+
+| title_dict           | dict |                                                |
++----------------------+------+------------------------------------------------+
+| unit_dict            | dict |                                                |
++----------------------+------+------------------------------------------------+
+| type_of_time_list    | list |                                                |
++----------------------+------+------------------------------------------------+
+| type_of_data_list    | list |                                                |
++----------------------+------+------------------------------------------------+
+"""
+
+
 def get_dwd_dict():
+    """
+    :return: type_dict, load_txt_dict, rest_dict, title_dict, unit_dict, type_of_time_list, type_of_data_list, external_domain, external_path_global, ending
+    """
+
     external_domain = "https://opendata.dwd.de/"
     external_path_global = "climate_environment/CDC/observations_germany/climate/10_minutes/"
     ending = [".zip", ".pdf", ".txt"]

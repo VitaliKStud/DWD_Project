@@ -12,6 +12,10 @@ class DwdMap:
 
 
     def load_config(self):
+        """
+
+        :return: bla
+        """
         with open(os.getcwd() + r"/config.json", "r") as f:
             config = json.load(f)
         config_list = []

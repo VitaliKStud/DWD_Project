@@ -4,9 +4,10 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DwdNearNeighbor module &mdash; DWD Project 31.05.2022 documentation</title>
+  <title>DwdNearNeighbor module &mdash; DWD Project  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/my_theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -29,6 +30,9 @@
         <div class="wy-side-nav-search" >
             <a href="index.html" class="icon icon-home"> DWD Project
           </a>
+              <div class="version">
+                0.0.1
+              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -40,11 +44,9 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">DWD_Project</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="DwdCodeArchiv.html">DwdCodeArchiv module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="DwdDataPrep.html">DwdDataPrep module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="DwdDataScrapper.html">DwdDataScrapper module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="DwdDict.html">DwdDict module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="DwdGui.html">DwdGui module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="DwdMain.html">DwdMain module</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">DwdNearNeighbor module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="DwdPlotter.html">DwdPlotter module</a></li>
@@ -84,6 +86,11 @@
 <dt class="sig sig-object py" id="DwdNearNeighbor.NearNeighbor">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">DwdNearNeighbor.</span></span><span class="sig-name descname"><span class="pre">NearNeighbor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_active</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_active</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_active</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zip_data_active</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_factor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activ_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">station_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdNearNeighbor.html#NearNeighbor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdNearNeighbor.NearNeighbor" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="DwdNearNeighbor.NearNeighbor.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_active</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_active</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_active</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zip_data_active</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_factor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activ_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">station_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdNearNeighbor.html#NearNeighbor.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdNearNeighbor.NearNeighbor.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdNearNeighbor.NearNeighbor.average_for_coordinate">
 <span class="sig-name descname"><span class="pre">average_for_coordinate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_looking_for</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'TT_10'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qn_weight_n_avg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance_weight_n_avg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qn_distance_weight_n_avg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compare_n_avg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compare_station</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdNearNeighbor.html#NearNeighbor.average_for_coordinate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdNearNeighbor.NearNeighbor.average_for_coordinate" title="Permalink to this definition"></a></dt>

@@ -3,9 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DwdPlotter &mdash; DWD Project 31.05.2022 documentation</title>
+  <title>DwdPlotter &mdash; DWD Project  documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/my_theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -26,6 +27,9 @@
         <div class="wy-side-nav-search" >
             <a href="../index.html" class="icon icon-home"> DWD Project
           </a>
+              <div class="version">
+                0.0.1
+              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -75,11 +79,11 @@
 
 
 <div class="viewcode-block" id="PlotterForStations"><a class="viewcode-back" href="../DwdPlotter.html#DwdPlotter.PlotterForStations">[docs]</a><span class="k">class</span> <span class="nc">PlotterForStations</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">type_of_data</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+<div class="viewcode-block" id="PlotterForStations.__init__"><a class="viewcode-back" href="../DwdPlotter.html#DwdPlotter.PlotterForStations.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">type_of_data</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__x</span> <span class="o">=</span> <span class="n">x</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__y</span> <span class="o">=</span> <span class="n">y</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__z</span> <span class="o">=</span> <span class="n">z</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">type_of_data</span> <span class="o">=</span> <span class="n">type_of_data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type_of_data</span> <span class="o">=</span> <span class="n">type_of_data</span></div>
 
 <div class="viewcode-block" id="PlotterForStations.plotting_3d"><a class="viewcode-back" href="../DwdPlotter.html#DwdPlotter.PlotterForStations.plotting_3d">[docs]</a>    <span class="k">def</span> <span class="nf">plotting_3d</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
@@ -141,7 +145,7 @@
 
 
 <div class="viewcode-block" id="PlotterForData"><a class="viewcode-back" href="../DwdPlotter.html#DwdPlotter.PlotterForData">[docs]</a><span class="k">class</span> <span class="nc">PlotterForData</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_all</span><span class="p">,</span> <span class="n">data_mean</span><span class="p">,</span> <span class="n">index_for_plot</span><span class="p">,</span> <span class="n">column_name_list</span><span class="p">,</span> <span class="n">start_date_datetime</span><span class="p">,</span> <span class="n">end_date_datetime</span><span class="p">,</span> <span class="n">plot_name</span><span class="p">,</span> <span class="n">k_factor</span><span class="p">,</span> <span class="n">x_coordinate</span><span class="p">,</span> <span class="n">y_coordinate</span><span class="p">,</span> <span class="n">type_of_data</span><span class="p">,</span> <span class="n">unit_dict</span><span class="p">,</span> <span class="n">title_dict</span><span class="p">):</span>
+<div class="viewcode-block" id="PlotterForData.__init__"><a class="viewcode-back" href="../DwdPlotter.html#DwdPlotter.PlotterForData.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_all</span><span class="p">,</span> <span class="n">data_mean</span><span class="p">,</span> <span class="n">index_for_plot</span><span class="p">,</span> <span class="n">column_name_list</span><span class="p">,</span> <span class="n">start_date_datetime</span><span class="p">,</span> <span class="n">end_date_datetime</span><span class="p">,</span> <span class="n">plot_name</span><span class="p">,</span> <span class="n">k_factor</span><span class="p">,</span> <span class="n">x_coordinate</span><span class="p">,</span> <span class="n">y_coordinate</span><span class="p">,</span> <span class="n">type_of_data</span><span class="p">,</span> <span class="n">unit_dict</span><span class="p">,</span> <span class="n">title_dict</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">column_name_list</span> <span class="o">=</span> <span class="n">column_name_list</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data_all</span> <span class="o">=</span> <span class="n">data_all</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data_mean</span> <span class="o">=</span> <span class="n">data_mean</span>
@@ -154,7 +158,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">y_coordinate</span> <span class="o">=</span> <span class="n">y_coordinate</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">type_of_data</span> <span class="o">=</span> <span class="n">type_of_data</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">unit_dict</span> <span class="o">=</span> <span class="n">unit_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">type_of_data</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">title_dict</span> <span class="o">=</span> <span class="n">title_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">type_of_data</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">title_dict</span> <span class="o">=</span> <span class="n">title_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">type_of_data</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="PlotterForData.plotting_compare"><a class="viewcode-back" href="../DwdPlotter.html#DwdPlotter.PlotterForData.plotting_compare">[docs]</a>    <span class="k">def</span> <span class="nf">plotting_compare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">compare_station</span><span class="p">,</span> <span class="n">data_to_compare</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">maximum</span><span class="p">,</span> <span class="n">avg_diff</span><span class="p">,</span> <span class="n">type_of_method</span><span class="p">):</span>

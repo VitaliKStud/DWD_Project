@@ -4,9 +4,10 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DwdDict module &mdash; DWD Project 31.05.2022 documentation</title>
+  <title>DwdDict module &mdash; DWD Project  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/my_theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -18,7 +19,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="DwdGui module" href="DwdGui.html" />
+    <link rel="next" title="DwdMain module" href="DwdMain.html" />
     <link rel="prev" title="DwdDataScrapper module" href="DwdDataScrapper.html" /> 
 </head>
 
@@ -29,6 +30,9 @@
         <div class="wy-side-nav-search" >
             <a href="index.html" class="icon icon-home"> DWD Project
           </a>
+              <div class="version">
+                0.0.1
+              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -40,11 +44,9 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">DWD_Project</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="DwdCodeArchiv.html">DwdCodeArchiv module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="DwdDataPrep.html">DwdDataPrep module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="DwdDataScrapper.html">DwdDataScrapper module</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">DwdDict module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="DwdGui.html">DwdGui module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="DwdMain.html">DwdMain module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="DwdNearNeighbor.html">DwdNearNeighbor module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="DwdPlotter.html">DwdPlotter module</a></li>
@@ -80,10 +82,80 @@
              
   <section id="module-DwdDict">
 <span id="dwddict-module"></span><h1>DwdDict module<a class="headerlink" href="#module-DwdDict" title="Permalink to this headline"></a></h1>
+<p>description
+:Describtion: Is a global dictionary for all data you are scraping for DWD/CDC. If you want to change from 10_minutes resolution to 1_minute resolution of your data, you might start here with few changes.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 8%" />
+<col style="width: 63%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>type</p></th>
+<th class="head"><p>description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>external_domain</p></td>
+<td><p>str</p></td>
+<td><p>What domain do you use for your data?
+Default:”<a class="reference external" href="https://opendata.dwd.de/">https://opendata.dwd.de/</a>”</p></td>
+</tr>
+<tr class="row-odd"><td><p>external_global_path</p></td>
+<td><p>str</p></td>
+<td><p>What data did you choose from external_domain?
+Default: “climate_environment/CDC/
+observations_germany/climate/10_minutes/”</p>
+<p>Note: Here you could change for 1_minute.</p>
+</td>
+</tr>
+<tr class="row-even"><td><p>ending</p></td>
+<td><p>list</p></td>
+<td><p>Is important for DwdDataScraper, for the
+download. It will download all the data with
+this given endings.
+Default: “.zip”, “.pdf”, “.txt”</p></td>
+</tr>
+<tr class="row-odd"><td><p>type_dict</p></td>
+<td><p>dict</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>load_txt_dict</p></td>
+<td><p>dict</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>rest_dict</p></td>
+<td><p>dict</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>title_dict</p></td>
+<td><p>dict</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>unit_dict</p></td>
+<td><p>dict</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>type_of_time_list</p></td>
+<td><p>list</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>type_of_data_list</p></td>
+<td><p>list</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <dl class="py function">
 <dt class="sig sig-object py" id="DwdDict.get_dwd_dict">
 <span class="sig-prename descclassname"><span class="pre">DwdDict.</span></span><span class="sig-name descname"><span class="pre">get_dwd_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDict.html#get_dwd_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDict.get_dwd_dict" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>type_dict, load_txt_dict, rest_dict, title_dict, unit_dict, type_of_time_list, type_of_data_list, external_domain, external_path_global, ending</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 
@@ -92,7 +164,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="DwdDataScrapper.html" class="btn btn-neutral float-left" title="DwdDataScrapper module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="DwdGui.html" class="btn btn-neutral float-right" title="DwdGui module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="DwdMain.html" class="btn btn-neutral float-right" title="DwdMain module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

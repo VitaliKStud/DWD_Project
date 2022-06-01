@@ -3,9 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DwdNearNeighbor &mdash; DWD Project 31.05.2022 documentation</title>
+  <title>DwdNearNeighbor &mdash; DWD Project  documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/my_theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -26,6 +27,9 @@
         <div class="wy-side-nav-search" >
             <a href="../index.html" class="icon icon-home"> DWD Project
           </a>
+              <div class="version">
+                0.0.1
+              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -81,7 +85,7 @@
 <span class="c1"># plt.style.use(&#39;default&#39;)</span>
 
 <div class="viewcode-block" id="NearNeighbor"><a class="viewcode-back" href="../DwdNearNeighbor.html#DwdNearNeighbor.NearNeighbor">[docs]</a><span class="k">class</span> <span class="nc">NearNeighbor</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_active</span><span class="p">,</span> <span class="n">y_active</span><span class="p">,</span> <span class="n">z_active</span><span class="p">,</span> <span class="n">zip_data_active</span><span class="p">,</span> <span class="n">k_factor</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">,</span> <span class="n">activ_id</span><span class="p">,</span> <span class="n">station_list</span><span class="p">):</span>
+<div class="viewcode-block" id="NearNeighbor.__init__"><a class="viewcode-back" href="../DwdNearNeighbor.html#DwdNearNeighbor.NearNeighbor.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_active</span><span class="p">,</span> <span class="n">y_active</span><span class="p">,</span> <span class="n">z_active</span><span class="p">,</span> <span class="n">zip_data_active</span><span class="p">,</span> <span class="n">k_factor</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">,</span> <span class="n">activ_id</span><span class="p">,</span> <span class="n">station_list</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">zip_data_active</span> <span class="o">=</span> <span class="n">zip_data_active</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">x_active</span> <span class="o">=</span> <span class="n">x_active</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">y_active</span> <span class="o">=</span> <span class="n">y_active</span>
@@ -92,7 +96,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">distance</span> <span class="o">=</span> <span class="n">distance</span><span class="o">.</span><span class="n">squareform</span><span class="p">(</span><span class="n">distance</span><span class="o">.</span><span class="n">pdist</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">zip_data_active</span><span class="p">,</span> <span class="s2">&quot;euclidean&quot;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">closest</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">distance</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">activ_id</span> <span class="o">=</span> <span class="n">activ_id</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">station_list</span> <span class="o">=</span> <span class="n">station_list</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">station_list</span> <span class="o">=</span> <span class="n">station_list</span></div>
 
 <div class="viewcode-block" id="NearNeighbor.get_start_date"><a class="viewcode-back" href="../DwdNearNeighbor.html#DwdNearNeighbor.NearNeighbor.get_start_date">[docs]</a>    <span class="k">def</span> <span class="nf">get_start_date</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_date</span></div>

@@ -4,9 +4,10 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DwdDataScrapper module &mdash; DWD Project 31.05.2022 documentation</title>
+  <title>DwdDataScrapper module &mdash; DWD Project  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/my_theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -29,6 +30,9 @@
         <div class="wy-side-nav-search" >
             <a href="index.html" class="icon icon-home"> DWD Project
           </a>
+              <div class="version">
+                0.0.1
+              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -40,11 +44,9 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">DWD_Project</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="DwdCodeArchiv.html">DwdCodeArchiv module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="DwdDataPrep.html">DwdDataPrep module</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">DwdDataScrapper module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="DwdDict.html">DwdDict module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="DwdGui.html">DwdGui module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="DwdMain.html">DwdMain module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="DwdNearNeighbor.html">DwdNearNeighbor module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="DwdPlotter.html">DwdPlotter module</a></li>
@@ -85,6 +87,22 @@
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">DwdDataScrapper.</span></span><span class="sig-name descname"><span class="pre">DataScrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">external_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">external_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_domain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ending</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">looking_for_ending</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataScrapper.html#DataScrapper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataScrapper.DataScrapper" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
+<dt class="sig sig-object py" id="DwdDataScrapper.DataScrapper.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">external_domain</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">external_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_domain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ending</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">looking_for_ending</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataScrapper.html#DataScrapper.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataScrapper.DataScrapper.__init__" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>external_domain</strong> – Where do you want to get your data from? “<a class="reference external" href="https://opendata.dwd.de/">https://opendata.dwd.de/</a>”</p></li>
+<li><p><strong>external_path</strong> – </p></li>
+<li><p><strong>local_domain</strong> – </p></li>
+<li><p><strong>ending</strong> – </p></li>
+<li><p><strong>looking_for_ending</strong> – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="DwdDataScrapper.DataScrapper.download_loop">
 <span class="sig-name descname"><span class="pre">download_loop</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataScrapper.html#DataScrapper.download_loop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataScrapper.DataScrapper.download_loop" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
@@ -92,7 +110,15 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataScrapper.DataScrapper.external_directory_indicator">
 <span class="sig-name descname"><span class="pre">external_directory_indicator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pre_extend_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataScrapper.html#DataScrapper.external_directory_indicator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataScrapper.DataScrapper.external_directory_indicator" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>pre_extend_list</strong> – </p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Test</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataScrapper.DataScrapper.extract_zip">

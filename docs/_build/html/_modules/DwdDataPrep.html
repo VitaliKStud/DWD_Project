@@ -3,9 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DwdDataPrep &mdash; DWD Project 31.05.2022 documentation</title>
+  <title>DwdDataPrep &mdash; DWD Project  documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/my_theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -26,6 +27,9 @@
         <div class="wy-side-nav-search" >
             <a href="../index.html" class="icon icon-home"> DWD Project
           </a>
+              <div class="version">
+                0.0.1
+              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -72,7 +76,7 @@
 
 
 <div class="viewcode-block" id="Station"><a class="viewcode-back" href="../DwdDataPrep.html#DwdDataPrep.Station">[docs]</a><span class="k">class</span> <span class="nc">Station</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stations_array</span><span class="p">,</span> <span class="n">local_path</span><span class="p">,</span> <span class="n">data_type</span><span class="p">):</span>
+<div class="viewcode-block" id="Station.__init__"><a class="viewcode-back" href="../DwdDataPrep.html#DwdDataPrep.Station.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stations_array</span><span class="p">,</span> <span class="n">local_path</span><span class="p">,</span> <span class="n">data_type</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__data_type</span> <span class="o">=</span> <span class="n">data_type</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__stations_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__data_type</span> <span class="o">+</span> <span class="s2">&quot;_</span><span class="si">{:05d}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">stations_array</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__von_datum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">format_number_to_date</span><span class="p">(</span><span class="n">stations_array</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
@@ -82,7 +86,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__geoLaenge</span> <span class="o">=</span> <span class="n">stations_array</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__stationsname</span> <span class="o">=</span> <span class="n">stations_array</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__bundesland</span> <span class="o">=</span> <span class="n">stations_array</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__local_path</span> <span class="o">=</span> <span class="n">local_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__local_path</span> <span class="o">=</span> <span class="n">local_path</span></div>
 
 <div class="viewcode-block" id="Station.format_number_to_date"><a class="viewcode-back" href="../DwdDataPrep.html#DwdDataPrep.Station.format_number_to_date">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">format_number_to_date</span><span class="p">(</span><span class="n">number</span><span class="p">):</span>
@@ -220,10 +224,10 @@
 
 
 <div class="viewcode-block" id="Writer"><a class="viewcode-back" href="../DwdDataPrep.html#DwdDataPrep.Writer">[docs]</a><span class="k">class</span> <span class="nc">Writer</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_to_txt</span><span class="p">,</span> <span class="n">local_path</span><span class="p">,</span> <span class="n">data_type</span><span class="p">):</span>
+<div class="viewcode-block" id="Writer.__init__"><a class="viewcode-back" href="../DwdDataPrep.html#DwdDataPrep.Writer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_to_txt</span><span class="p">,</span> <span class="n">local_path</span><span class="p">,</span> <span class="n">data_type</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__path_to_txt</span> <span class="o">=</span> <span class="n">path_to_txt</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__local_path</span> <span class="o">=</span> <span class="n">local_path</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__data_type</span> <span class="o">=</span> <span class="n">data_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__data_type</span> <span class="o">=</span> <span class="n">data_type</span></div>
 
 <div class="viewcode-block" id="Writer.write_stations_paths"><a class="viewcode-back" href="../DwdDataPrep.html#DwdDataPrep.Writer.write_stations_paths">[docs]</a>    <span class="k">def</span> <span class="nf">write_stations_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">reader</span> <span class="o">=</span> <span class="n">Reader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__path_to_txt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__local_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__data_type</span><span class="p">)</span>
@@ -247,10 +251,10 @@
 
 
 <div class="viewcode-block" id="Reader"><a class="viewcode-back" href="../DwdDataPrep.html#DwdDataPrep.Reader">[docs]</a><span class="k">class</span> <span class="nc">Reader</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_to_txt</span><span class="p">,</span> <span class="n">local_path</span><span class="p">,</span> <span class="n">data_type</span><span class="p">):</span>
+<div class="viewcode-block" id="Reader.__init__"><a class="viewcode-back" href="../DwdDataPrep.html#DwdDataPrep.Reader.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path_to_txt</span><span class="p">,</span> <span class="n">local_path</span><span class="p">,</span> <span class="n">data_type</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__path_to_txt</span> <span class="o">=</span> <span class="n">path_to_txt</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__local_path</span> <span class="o">=</span> <span class="n">local_path</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">__data_type</span> <span class="o">=</span> <span class="n">data_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__data_type</span> <span class="o">=</span> <span class="n">data_type</span></div>
 
     <span class="k">def</span> <span class="nf">__get_station_headlines</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">station_headlines</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__path_to_txt</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;str&#39;</span><span class="p">,</span> <span class="n">max_rows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__path_to_txt</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s1">&#39;str&#39;</span><span class="p">,</span> <span class="n">max_rows</span><span class="o">=</span><span class="mi">1</span><span class="p">))))</span>

@@ -4,9 +4,10 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DwdDataPrep module &mdash; DWD Project 31.05.2022 documentation</title>
+  <title>DwdDataPrep module &mdash; DWD Project  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/my_theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -19,7 +20,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="DwdDataScrapper module" href="DwdDataScrapper.html" />
-    <link rel="prev" title="DwdCodeArchiv module" href="DwdCodeArchiv.html" /> 
+    <link rel="prev" title="DWD_Project" href="modules.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -29,6 +30,9 @@
         <div class="wy-side-nav-search" >
             <a href="index.html" class="icon icon-home"> DWD Project
           </a>
+              <div class="version">
+                0.0.1
+              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -40,11 +44,9 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">DWD_Project</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="DwdCodeArchiv.html">DwdCodeArchiv module</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">DwdDataPrep module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="DwdDataScrapper.html">DwdDataScrapper module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="DwdDict.html">DwdDict module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="DwdGui.html">DwdGui module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="DwdMain.html">DwdMain module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="DwdNearNeighbor.html">DwdNearNeighbor module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="DwdPlotter.html">DwdPlotter module</a></li>
@@ -84,6 +86,11 @@
 <dt class="sig sig-object py" id="DwdDataPrep.Reader">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">DwdDataPrep.</span></span><span class="sig-name descname"><span class="pre">Reader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_to_txt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Reader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Reader" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="DwdDataPrep.Reader.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_to_txt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Reader.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Reader.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataPrep.Reader.data_prep_for_new_location">
 <span class="sig-name descname"><span class="pre">data_prep_for_new_location</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_coordinate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_coordinate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_coordinate</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Reader.data_prep_for_new_location"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Reader.data_prep_for_new_location" title="Permalink to this definition"></a></dt>
@@ -126,6 +133,11 @@
 <dt class="sig sig-object py" id="DwdDataPrep.Station">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">DwdDataPrep.</span></span><span class="sig-name descname"><span class="pre">Station</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stations_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="DwdDataPrep.Station.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stations_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataPrep.Station.check_activ_in_date">
 <span class="sig-name descname"><span class="pre">check_activ_in_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_date</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station.check_activ_in_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station.check_activ_in_date" title="Permalink to this definition"></a></dt>
@@ -218,6 +230,11 @@
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">DwdDataPrep.</span></span><span class="sig-name descname"><span class="pre">Writer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_to_txt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Writer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Writer" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="py method">
+<dt class="sig sig-object py" id="DwdDataPrep.Writer.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_to_txt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Writer.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Writer.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="DwdDataPrep.Writer.write_stations_paths">
 <span class="sig-name descname"><span class="pre">write_stations_paths</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Writer.write_stations_paths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Writer.write_stations_paths" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
@@ -230,7 +247,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="DwdCodeArchiv.html" class="btn btn-neutral float-left" title="DwdCodeArchiv module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="modules.html" class="btn btn-neutral float-left" title="DWD_Project" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="DwdDataScrapper.html" class="btn btn-neutral float-right" title="DwdDataScrapper module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

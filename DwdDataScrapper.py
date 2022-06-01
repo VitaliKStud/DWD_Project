@@ -14,6 +14,13 @@ class DataScrapper:
                  local_domain="",
                  ending=None,
                  looking_for_ending=""):
+        """
+        :param external_domain: Where do you want to get your data from? "https://opendata.dwd.de/"
+        :param external_path:
+        :param local_domain:
+        :param ending:
+        :param looking_for_ending:
+        """
         self.__external_domain = external_domain
         self.__external_path = external_path
         self.__ending = ending
@@ -22,6 +29,11 @@ class DataScrapper:
         self.looking_for_ending = looking_for_ending
 
     def external_directory_indicator(self, pre_extend_list=""):
+        """
+        :param pre_extend_list:
+        :return: Test
+        """
+
         soup = BeautifulSoup(requests.get(self.__external_domain + self.__external_path).text, "html.parser")
         verzeichnis_list = [pre_extend_list + self.__external_path + n.get("href") for n in soup.find_all("a") if n.get("href") != "../"]
         return verzeichnis_list

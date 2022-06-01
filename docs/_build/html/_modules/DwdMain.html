@@ -3,9 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DwdMain &mdash; DWD Project 31.05.2022 documentation</title>
+  <title>DwdMain &mdash; DWD Project  documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/my_theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -26,6 +27,9 @@
         <div class="wy-side-nav-search" >
             <a href="../index.html" class="icon icon-home"> DWD Project
           </a>
+              <div class="version">
+                0.0.1
+              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -75,7 +79,7 @@
 
 
 <div class="viewcode-block" id="DwdMain"><a class="viewcode-back" href="../DwdMain.html#DwdMain.DwdMain">[docs]</a><span class="k">class</span> <span class="nc">DwdMain</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">external_domain</span><span class="p">,</span>
+<div class="viewcode-block" id="DwdMain.__init__"><a class="viewcode-back" href="../DwdMain.html#DwdMain.DwdMain.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">external_domain</span><span class="p">,</span>
                  <span class="n">external_path_global</span><span class="p">,</span>
                  <span class="n">local_domain</span><span class="p">,</span>
                  <span class="n">type_of_data</span><span class="p">,</span>
@@ -125,7 +129,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">title_dict</span> <span class="o">=</span> <span class="n">title_dict</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="n">Reader</span><span class="p">(</span><span class="n">path_to_txt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">load_txt</span><span class="p">,</span>
                              <span class="n">local_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">local_path</span><span class="p">,</span>
-                             <span class="n">data_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data_type</span><span class="p">)</span>
+                             <span class="n">data_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data_type</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">__transfrom_compare_station</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">compare_station</span><span class="p">):</span>
         <span class="n">compare_station_t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">type_of_data</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">compare_station</span>
@@ -357,9 +361,9 @@
 
 <div class="viewcode-block" id="DwdMain.main_station_information"><a class="viewcode-back" href="../DwdMain.html#DwdMain.DwdMain.main_station_information">[docs]</a>    <span class="k">def</span> <span class="nf">main_station_information</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">station_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
+
 <span class="sd">        :param station_id:</span>
 <span class="sd">        :return:</span>
-<span class="sd">        :test:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">read_station_list</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">station_id</span><span class="p">)</span><span class="o">.</span><span class="n">get_station_informations</span><span class="p">()</span></div>
 

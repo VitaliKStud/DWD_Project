@@ -3,9 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DwdDict &mdash; DWD Project 31.05.2022 documentation</title>
+  <title>DwdDict &mdash; DWD Project  documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/my_theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -26,6 +27,9 @@
         <div class="wy-side-nav-search" >
             <a href="../index.html" class="icon icon-home"> DWD Project
           </a>
+              <div class="version">
+                0.0.1
+              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -64,7 +68,48 @@
            <div itemprop="articleBody">
              
   <h1>Source code for DwdDict</h1><div class="highlight"><pre>
-<div class="viewcode-block" id="get_dwd_dict"><a class="viewcode-back" href="../DwdDict.html#DwdDict.get_dwd_dict">[docs]</a><span></span><span class="k">def</span> <span class="nf">get_dwd_dict</span><span class="p">():</span>
+<span></span><span class="sd">&quot;&quot;&quot;description</span>
+<span class="sd">:Describtion: Is a global dictionary for all data you are scraping for DWD/CDC. If you want to change from 10_minutes resolution to 1_minute resolution of your data, you might start here with few changes.</span>
+
+<span class="sd">+----------------------+------+------------------------------------------------+</span>
+<span class="sd">| Name                 | type | description                                    |</span>
+<span class="sd">+======================+======+================================================+</span>
+<span class="sd">| external_domain      | str  | What domain do you use for your data?          |</span>
+<span class="sd">|                      |      | Default:&quot;https://opendata.dwd.de/&quot;             |</span>
+<span class="sd">+----------------------+------+------------------------------------------------+</span>
+<span class="sd">| external_global_path | str  | What data did you choose from external_domain? |</span>
+<span class="sd">|                      |      | Default: &quot;climate_environment/CDC/             |</span>
+<span class="sd">|                      |      | observations_germany/climate/10_minutes/&quot;      |</span>
+<span class="sd">|                      |      |                                                |</span>
+<span class="sd">|                      |      | Note: Here you could change for 1_minute.      |</span>
+<span class="sd">+----------------------+------+------------------------------------------------+</span>
+<span class="sd">| ending               | list | Is important for DwdDataScraper, for the       |</span>
+<span class="sd">|                      |      | download. It will download all the data with   |</span>
+<span class="sd">|                      |      | this given endings.                            |</span>
+<span class="sd">|                      |      | Default: &quot;.zip&quot;, &quot;.pdf&quot;, &quot;.txt&quot;                |</span>
+<span class="sd">+----------------------+------+------------------------------------------------+</span>
+<span class="sd">| type_dict            | dict |                                                |</span>
+<span class="sd">+----------------------+------+------------------------------------------------+</span>
+<span class="sd">| load_txt_dict        | dict |                                                |</span>
+<span class="sd">+----------------------+------+------------------------------------------------+</span>
+<span class="sd">| rest_dict            | dict |                                                |</span>
+<span class="sd">+----------------------+------+------------------------------------------------+</span>
+<span class="sd">| title_dict           | dict |                                                |</span>
+<span class="sd">+----------------------+------+------------------------------------------------+</span>
+<span class="sd">| unit_dict            | dict |                                                |</span>
+<span class="sd">+----------------------+------+------------------------------------------------+</span>
+<span class="sd">| type_of_time_list    | list |                                                |</span>
+<span class="sd">+----------------------+------+------------------------------------------------+</span>
+<span class="sd">| type_of_data_list    | list |                                                |</span>
+<span class="sd">+----------------------+------+------------------------------------------------+</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="get_dwd_dict"><a class="viewcode-back" href="../DwdDict.html#DwdDict.get_dwd_dict">[docs]</a><span class="k">def</span> <span class="nf">get_dwd_dict</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :return: type_dict, load_txt_dict, rest_dict, title_dict, unit_dict, type_of_time_list, type_of_data_list, external_domain, external_path_global, ending</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">external_domain</span> <span class="o">=</span> <span class="s2">&quot;https://opendata.dwd.de/&quot;</span>
     <span class="n">external_path_global</span> <span class="o">=</span> <span class="s2">&quot;climate_environment/CDC/observations_germany/climate/10_minutes/&quot;</span>
     <span class="n">ending</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;.zip&quot;</span><span class="p">,</span> <span class="s2">&quot;.pdf&quot;</span><span class="p">,</span> <span class="s2">&quot;.txt&quot;</span><span class="p">]</span>
