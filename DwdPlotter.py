@@ -9,13 +9,29 @@ plt.style.use('default')
 
 
 class PlotterForStations:
+    """
+    :Description: This class will create plots of station locations
+    """
+
     def __init__(self, x, y, z=0, type_of_data=""):
+        """
+        :param x: x-coordinates: **as array**.
+        :param y: y-coordinates: **as array**.
+        :param z: z-coordinates: **as array**.
+        :param type_of_data: **as string**. Check DwdDict.py type_of_data_list
+        """
         self.__x = x
         self.__y = y
         self.__z = z
         self.type_of_data = type_of_data
 
     def plotting_3d(self, projection=False):
+        """
+        :Description: This method will plot all the stations in as a 3D-Version
+
+        :param projection: **as Boolean**. If projection==True, it will project the height of the stations.
+        :return: "plot saved" if succeeded.
+        """
         fig = plt.figure()
         fig.set_size_inches(12, 14)
 
@@ -47,6 +63,11 @@ class PlotterForStations:
         return print("plot saved")
 
     def plotting_height_2d(self):
+        """
+        :Description: This method will plot all the stations in as a 2D-Version
+
+        :return: "plot saved" if succeeded.
+        """
         fig = plt.figure(figsize=(12, 14), dpi=100)
         ax = fig.add_subplot(1, 1, 1)
         plt.scatter(self.__x, self.__y, c=self.__z, cmap=plt.cm.get_cmap("seismic", 5), marker="s")
@@ -75,7 +96,26 @@ class PlotterForStations:
 
 
 class PlotterForData:
+    """
+    :Description: This class will create plots of the data of chosen stations.
+    """
+
     def __init__(self, data_all, data_mean, index_for_plot, column_name_list, start_date_datetime, end_date_datetime, plot_name, k_factor, x_coordinate, y_coordinate, type_of_data, unit_dict, title_dict):
+        """
+        :param data_all: **as DataFrame**. All the datas in a DataFrame.
+        :param data_mean:  **as DataFrame**. Your calculation (average for example).
+        :param index_for_plot:  **as list**. The timedelta for x-axes.
+        :param column_name_list: **as list**. Names of plotted lines.
+        :param start_date_datetime: **as datetime**. Your chosen start-date (YYYY-MM-DD-HH:MM).
+        :param end_date_datetime: **as datetime**. Your chosen end-date (YYYY-MM-DD-HH:MM).
+        :param plot_name: **as string**.  Your chosen plot-title.
+        :param k_factor: **as int**. Your chosen k_factor.
+        :param x_coordinate: **as float**. Your chosen x-coordinate.
+        :param y_coordinate: **as float**. Your chosen y-coordinate.
+        :param type_of_data: **as string**. Check DwdDicht.py type_of_data_list
+        :param unit_dict: **as string**. Will get the correct type from self.type_of_data.
+        :param title_dict: **as string**. Will get the correct type from self.type_of_data.
+        """
         self.column_name_list = column_name_list
         self.data_all = data_all
         self.data_mean = data_mean
@@ -92,6 +132,18 @@ class PlotterForData:
 
 
     def plotting_compare(self, compare_station, data_to_compare, diff, maximum, avg_diff, type_of_method):
+        """
+        :Description: Will plot your data and the data with a station you are comparing with.
+
+        :param compare_station: **as string**. The name of the station with the right prefix.
+        :param data_to_compare: **as DataFrame**. The real data of a station.
+        :param diff: **as DataFrame**. The difference between your calculation and real data of a station.
+        :param maximum: **as int**. Maximum difference.
+        :param avg_diff: **as array**. Average difference. (Will plot a constant line)
+        :param type_of_method: **as string**. Name of your calculation method.
+        :return: "plot saved" if succeeded.
+        """
+
         fig, (ax1, ax2, ax3) = plt.subplots(nrows=3, figsize=(20, 10), dpi=100)
         plt.subplots_adjust(left=None, bottom=0.1, right=None, top=0.85, wspace=0.5, hspace=0.5)
 
@@ -147,6 +199,12 @@ class PlotterForData:
         return print("plot saved")
 
     def plotting_data(self, type_of_method):
+        """
+        :Description: Will plot your data.
+
+        :param type_of_method: **as string** Name of your calculation method
+        :return: "plot saved" if succeeded.
+        """
         print(self.data_all)
         print(self.data_mean)
         print(self.unit_dict)

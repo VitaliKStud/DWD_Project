@@ -46,16 +46,18 @@ dwd = main_dwd(local_domain=local_domain_,
 # dwd.main_datascrapper(all=True)
 
 # Prepare some stuff first
-# dwd.main_writer(all=True)
+# dwd.main_writer(type_of_data_list=["air_temperature"], type_of_time_list=["recent"], all=False)
 
 # Get some information about any station
-# dwd.main_station_information("TU_00003")["geoBreite"]
+# print(dwd.main_station_information("TU_00003"))
 # dwd.main_station_array()
+
+print(dwd.main_activ_stations_in_date())
 
 # Plot your data
 # dwd.main_plotter_data(qn_weight=True, distance_weight=False, compare=True, no_plot=False)
 # dwd.main_plotter_data(qn_weight=False, distance_weight=True, compare=True, no_plot=False)
-dwd.main_plotter_data(qn_weight=False, distance_weight=False, compare=True, no_plot=False)
+# dwd.main_plotter_data(qn_weight=False, distance_weight=False, compare=True, no_plot=False)
 # dwd.main_plotter_stations(projection=False)
 
 # Generate some data for DwdMapCreator

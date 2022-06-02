@@ -79,6 +79,9 @@
 
 
 <div class="viewcode-block" id="DwdMain"><a class="viewcode-back" href="../DwdMain.html#DwdMain.DwdMain">[docs]</a><span class="k">class</span> <span class="nc">DwdMain</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :Description: Compressing all the modules into one module for easier use.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="DwdMain.__init__"><a class="viewcode-back" href="../DwdMain.html#DwdMain.DwdMain.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">external_domain</span><span class="p">,</span>
                  <span class="n">external_path_global</span><span class="p">,</span>
                  <span class="n">local_domain</span><span class="p">,</span>
@@ -100,6 +103,29 @@
                  <span class="n">type_of_data_list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">unit_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">title_dict</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param external_domain: **as string**. Choose the domain.</span>
+<span class="sd">        :param external_path_global: **as string**.  Choose the path inside this domain.</span>
+<span class="sd">        :param local_domain: **as string**. Choose your local domain.</span>
+<span class="sd">        :param type_of_data: **as string**. Choose the type of data</span>
+<span class="sd">        :param type_of_time: **as string**. Choose the type of time</span>
+<span class="sd">        :param type_dict: **as dict**. Should be the dictionary from DwdDict.py type_dict.</span>
+<span class="sd">        :param load_txt_dict: **as dict**. Should be the dictionary from DwdDict.py load_txt_dict.</span>
+<span class="sd">        :param rest_dict: **as dict**. Should be the dictionary from DwdDict.py rest_dict.</span>
+<span class="sd">        :param ending: **as list**. Should be the list from DwdDict.py ending.</span>
+<span class="sd">        :param start_date: **as int**. YYYYMMDDHHMM. Your start date.</span>
+<span class="sd">        :param end_date: **as int**. YYYYMMDDHHMM. Your end date.</span>
+<span class="sd">        :param compare_station: **as string**. Only if you want to compare your calculation with a station.</span>
+<span class="sd">        :param x_coordinate: **as float**. X-coordinates for your chosen location.</span>
+<span class="sd">        :param y_coordinate: **as float**. Y-coordinates for your chosen location.</span>
+<span class="sd">        :param z_coordinate: **as float**. Z-coordinates for your chosen location. (Can be skipped for now, maybe important in the future)</span>
+<span class="sd">        :param k_factor: **as int**. How many station are you looking around your location?</span>
+<span class="sd">        :param looking_for: **as list**. What data you want to plot?</span>
+<span class="sd">        :param type_of_time_list: **as list**. Should be from DwdDict.py type_of_time_list.</span>
+<span class="sd">        :param type_of_data_list: **as list**. Should be from DwdDict.py type_of_data_list.</span>
+<span class="sd">        :param unit_dict: **as dict**. Should be from DwdDict.py unit_dict.</span>
+<span class="sd">        :param title_dict: **as dict**. Should be from DwdDict.py title_dict.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">external_domain</span> <span class="o">=</span> <span class="n">external_domain</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">external_path_global</span> <span class="o">=</span> <span class="n">external_path_global</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">local_domain</span> <span class="o">=</span> <span class="n">local_domain</span>
@@ -132,11 +158,25 @@
                              <span class="n">data_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data_type</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">__transfrom_compare_station</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">compare_station</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :Description: Will create a prefix for your station. Example: &quot;00003&quot; --&gt; &quot;TU_00003&quot;</span>
+
+<span class="sd">        :param compare_station: **as string**. The number of your station.</span>
+<span class="sd">        :return: compare_station_t **as string**</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">compare_station_t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">type_of_data</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">compare_station</span>
         <span class="k">return</span> <span class="n">compare_station_t</span>
 
-    <span class="k">def</span> <span class="nf">__main_path_loader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">type_of_data</span><span class="p">,</span> <span class="n">type_of_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">for_scarpping</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">for_scarpping</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__main_path_loader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">type_of_data</span><span class="p">,</span> <span class="n">type_of_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">for_scrapping</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :Description: Will generate the information-txt local path, external path and the prefix (data type)</span>
+
+<span class="sd">        :param type_of_data: *+as string**. Example: &quot;air_temperature&quot;.</span>
+<span class="sd">        :param type_of_time: **as string**.  Example: &quot;recent&quot;.</span>
+<span class="sd">        :param for_scrapping: **as Boolean**. If it is for DataScrapper, set True</span>
+<span class="sd">        :return: load_txt, local_path, external_path, data_type (**all as string**)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">for_scrapping</span><span class="p">:</span>
             <span class="n">external_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">external_path_global</span> <span class="o">+</span> <span class="n">type_of_data</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span>
             <span class="k">return</span> <span class="n">external_path</span>
         <span class="k">else</span><span class="p">:</span>
@@ -147,11 +187,17 @@
             <span class="k">return</span> <span class="n">load_txt</span><span class="p">,</span> <span class="n">local_path</span><span class="p">,</span> <span class="n">external_path</span><span class="p">,</span> <span class="n">data_type</span>
 
 <div class="viewcode-block" id="DwdMain.main_datascrapper"><a class="viewcode-back" href="../DwdMain.html#DwdMain.DwdMain.main_datascrapper">[docs]</a>    <span class="k">def</span> <span class="nf">main_datascrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">all</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :Description: Is the main-methode for DataScrapper.py the data. Check the DwdDataScrapper module for more information</span>
+
+<span class="sd">        :param all: **as Boolean**. If all==True, it will download all the data from DwdDict.py type_of_data_list.</span>
+<span class="sd">        :return: None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># looking_for = &quot;.zip&quot;</span>
         <span class="k">if</span> <span class="nb">all</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_of_data_list</span><span class="p">:</span>
                 <span class="n">DataScrapper</span><span class="p">(</span><span class="n">external_domain</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">external_domain</span><span class="p">,</span>
-                             <span class="n">external_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__main_path_loader</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">for_scarpping</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+                             <span class="n">external_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">__main_path_loader</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">for_scrapping</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
                              <span class="n">local_domain</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">local_domain</span><span class="p">,</span>
                              <span class="n">ending</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ending</span><span class="p">)</span><span class="o">.</span><span class="n">main_update_data</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
@@ -161,6 +207,14 @@
                          <span class="n">ending</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ending</span><span class="p">)</span><span class="o">.</span><span class="n">main_update_data</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DwdMain.main_writer"><a class="viewcode-back" href="../DwdMain.html#DwdMain.DwdMain.main_writer">[docs]</a>    <span class="k">def</span> <span class="nf">main_writer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">type_of_data_list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">type_of_time_list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">all</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :Description: Is the main-methode for DwdDataPrep.py class Writer. Check the DwdDataPrep module for more information</span>
+
+<span class="sd">        :param type_of_data_list: **as list**.</span>
+<span class="sd">        :param type_of_time_list: **as list**.</span>
+<span class="sd">        :param all: **as Boolean**. If all==True, it will write all the data from DwdDict.py type_of_data_list and type_of_time_list. Else you can give your own lists.</span>
+<span class="sd">        :return: &quot;data written&quot; if succeeded.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">all</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type_of_data_list</span><span class="p">)):</span>
                 <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type_of_time_list</span><span class="p">)):</span>
@@ -189,6 +243,11 @@
         <span class="k">return</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;data written&quot;</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">__main_data_prep</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :Description: Calling the method DataPrep.Reader(...).data_prep_for_new_location() and creating zip_data_active_in_date (zipped x_coordinates and y_coordinates in timedelta).</span>
+
+<span class="sd">        :return: x_active_in_date, y_active_in_date, z_active_in_date, zip_data_active_in_date, activ_id_in_date, station_list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">x_active_in_date</span><span class="p">,</span> <span class="n">y_active_in_date</span><span class="p">,</span> <span class="n">z_active_in_date</span><span class="p">,</span> <span class="n">activ_id_in_date</span><span class="p">,</span> <span class="n">station_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">data_prep_for_new_location</span><span class="p">(</span><span class="n">start_date</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">start_date</span><span class="p">,</span>
                                                                                                                                       <span class="n">end_date</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">end_date</span><span class="p">,</span>
                                                                                                                                       <span class="n">x_coordinate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">x_coordinate</span><span class="p">,</span>
@@ -199,6 +258,16 @@
         <span class="k">return</span> <span class="n">x_active_in_date</span><span class="p">,</span> <span class="n">y_active_in_date</span><span class="p">,</span> <span class="n">z_active_in_date</span><span class="p">,</span> <span class="n">zip_data_active_in_date</span><span class="p">,</span> <span class="n">activ_id_in_date</span><span class="p">,</span> <span class="n">station_list</span>
 
     <span class="k">def</span> <span class="nf">__main_nearneighbor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">look_for</span><span class="o">=</span><span class="s2">&quot;TT_10&quot;</span><span class="p">,</span> <span class="n">qn_weight_n</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">distance_weight_n</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">compare_n</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">no_plot_n</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :Description: Calling the method from DwdNearNeigbor.DwdNearNeighbor(...).average_for_coordinate(...) and return this.</span>
+
+<span class="sd">        :param look_for: **as string**. The type of data you are looking for (Example: &quot;TT_10&quot;.</span>
+<span class="sd">        :param qn_weight_n: **as Boolean**. If qn_weight_n == True it will weight the quality of data for the calculations.</span>
+<span class="sd">        :param distance_weight_n: **as Boolean**. If distance_weight_n == True it will weight the distance for the calculations.</span>
+<span class="sd">        :param compare_n:  **as Boolean**.  If you want to compare, how accurate your methods are, set True and choose coordinates for a station.</span>
+<span class="sd">        :param no_plot_n: **as Boolean**. If you want to see just the result, without the plot (saves a bit of time), you can set this True.</span>
+<span class="sd">        :return: DwdNearNeigbor.DwdNearNeighbor(...).average_for_coordinate(...)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">x_active_in_date</span><span class="p">,</span> <span class="n">y_active_in_date</span><span class="p">,</span> <span class="n">z_active_in_date</span><span class="p">,</span> <span class="n">zip_data_active_in_date</span><span class="p">,</span> <span class="n">activ_id_in_date</span><span class="p">,</span> <span class="n">station_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__main_data_prep</span><span class="p">()</span>
         <span class="n">nearneighbor</span> <span class="o">=</span> <span class="n">NearNeighbor</span><span class="p">(</span><span class="n">zip_data_active</span><span class="o">=</span><span class="n">zip_data_active_in_date</span><span class="p">,</span>
                                     <span class="n">x_active</span><span class="o">=</span><span class="n">x_active_in_date</span><span class="p">,</span>
@@ -212,6 +281,23 @@
         <span class="k">return</span> <span class="n">nearneighbor</span><span class="o">.</span><span class="n">average_for_coordinate</span><span class="p">(</span><span class="n">data_looking_for</span><span class="o">=</span><span class="n">look_for</span><span class="p">,</span> <span class="n">qn_weight_n_avg</span><span class="o">=</span><span class="n">qn_weight_n</span><span class="p">,</span> <span class="n">distance_weight_n_avg</span><span class="o">=</span><span class="n">distance_weight_n</span><span class="p">,</span> <span class="n">compare_n_avg</span><span class="o">=</span><span class="n">compare_n</span><span class="p">,</span> <span class="n">compare_station</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">compare_station</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__main_plotter_for_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_all</span><span class="p">,</span> <span class="n">data_mean</span><span class="p">,</span> <span class="n">index_for_plot</span><span class="p">,</span> <span class="n">column_name_list</span><span class="p">,</span> <span class="n">plot_name</span><span class="p">,</span> <span class="n">compare</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">no_plot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">data_to_compare</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">diff</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">maximum</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">avg_diff</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">type_of_method</span><span class="o">=</span><span class="s2">&quot;Durchschnitt&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :Description: Calling the method from DwdPlotter.PlotterForData(...).plotting_compare(...) or .plotting_data(...)</span>
+
+<span class="sd">        :param data_all: **as DataFrame**.</span>
+<span class="sd">        :param data_mean: **as DataFrame**. Your calculation (average for example).</span>
+<span class="sd">        :param index_for_plot: **as list**. The timedelta for x-axes.</span>
+<span class="sd">        :param column_name_list: as list. Names of plotted lines.</span>
+<span class="sd">        :param plot_name: as string. Your chosen plot-title.</span>
+<span class="sd">        :param compare: **as Boolean**. If you want to compare, how accurate your methods are, set True and choose coordinates for a station.</span>
+<span class="sd">        :param no_plot: **as Boolean**. If you want to see just the result, without the plot (saves a bit of time), you can set this True.</span>
+<span class="sd">        :param data_to_compare: **as DataFrame**. The real data of a station.</span>
+<span class="sd">        :param diff: **as DataFrame**. The difference between your calculation and real data of a station.</span>
+<span class="sd">        :param maximum: **as int**. Maximum difference.</span>
+<span class="sd">        :param avg_diff: **as array**. Average difference. (Will plot a constant line).</span>
+<span class="sd">        :param type_of_method: **as string**. Name of your calculation method.</span>
+<span class="sd">        :return: “plot saved” if succeeded.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">plotter</span> <span class="o">=</span> <span class="n">PlotterForData</span><span class="p">(</span><span class="n">data_all</span><span class="o">=</span><span class="n">data_all</span><span class="p">,</span>
                                  <span class="n">data_mean</span><span class="o">=</span><span class="n">data_mean</span><span class="p">,</span>
                                  <span class="n">index_for_plot</span><span class="o">=</span><span class="n">index_for_plot</span><span class="p">,</span>
@@ -234,11 +320,23 @@
             <span class="n">plotter</span><span class="o">.</span><span class="n">plotting_data</span><span class="p">(</span><span class="n">type_of_method</span><span class="o">=</span><span class="n">type_of_method</span><span class="p">)</span>
 
 <div class="viewcode-block" id="DwdMain.main_plotter_stations"><a class="viewcode-back" href="../DwdMain.html#DwdMain.DwdMain.main_plotter_stations">[docs]</a>    <span class="k">def</span> <span class="nf">main_plotter_stations</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :Description: Calling the method from DwdPlotter.PlotterForStations(...).plotting_3d(...) and .plotting_height_2d()</span>
+
+<span class="sd">        :param projection: **as Boolean**. If projection==True, it will project the height of the stations.</span>
+<span class="sd">        :return: two times “plot saved” if succeeded.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">x_active</span><span class="p">,</span> <span class="n">y_active</span><span class="p">,</span> <span class="n">z_active</span><span class="p">,</span> <span class="n">active_id</span><span class="p">,</span> <span class="n">x_not_active</span><span class="p">,</span> <span class="n">y_not_active</span><span class="p">,</span> <span class="n">z_not_active</span><span class="p">,</span> <span class="n">not_activ_id</span><span class="p">,</span> <span class="n">x_no_data</span><span class="p">,</span> <span class="n">y_no_data</span><span class="p">,</span> <span class="n">z_no_data</span><span class="p">,</span> <span class="n">no_data_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">get_active_stations</span><span class="p">()</span>
         <span class="n">PlotterForStations</span><span class="p">(</span><span class="n">x_active</span><span class="p">,</span> <span class="n">y_active</span><span class="p">,</span> <span class="n">z_active</span><span class="p">,</span> <span class="n">type_of_data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">type_of_data</span><span class="p">)</span><span class="o">.</span><span class="n">plotting_3d</span><span class="p">(</span><span class="n">projection</span><span class="p">)</span>
         <span class="n">PlotterForStations</span><span class="p">(</span><span class="n">x_active</span><span class="p">,</span> <span class="n">y_active</span><span class="p">,</span> <span class="n">z_active</span><span class="p">,</span> <span class="n">type_of_data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">type_of_data</span><span class="p">)</span><span class="o">.</span><span class="n">plotting_height_2d</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DwdMain.main_data_map"><a class="viewcode-back" href="../DwdMain.html#DwdMain.DwdMain.main_data_map">[docs]</a>    <span class="k">def</span> <span class="nf">main_data_map</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :Description: Will create some json files, with active stations, not activ stations, activ stations without data and the near station for your location and your timedelta</span>
+
+<span class="sd">        :return: &quot;zipped_data_for_active_map&quot; if succeeded.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">x_active</span><span class="p">,</span> <span class="n">y_active</span><span class="p">,</span> <span class="n">z_active</span><span class="p">,</span> <span class="n">active_id</span><span class="p">,</span> <span class="n">x_not_active</span><span class="p">,</span> <span class="n">y_not_active</span><span class="p">,</span> <span class="n">z_not_active</span><span class="p">,</span> <span class="n">not_activ_id</span><span class="p">,</span> <span class="n">x_no_data</span><span class="p">,</span> <span class="n">y_no_data</span><span class="p">,</span> <span class="n">z_no_data</span><span class="p">,</span> <span class="n">no_data_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">get_active_stations</span><span class="p">()</span>
         <span class="n">x_active_in_date</span><span class="p">,</span> <span class="n">y_active_in_date</span><span class="p">,</span> <span class="n">z_active_in_date</span><span class="p">,</span> <span class="n">zip_data_active_in_date</span><span class="p">,</span> <span class="n">activ_id_in_date</span><span class="p">,</span> <span class="n">station_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__main_data_prep</span><span class="p">()</span>
         <span class="n">x_near</span><span class="p">,</span> <span class="n">y_near</span><span class="p">,</span> <span class="n">z_near</span><span class="p">,</span> <span class="n">activ_near_id</span> <span class="o">=</span> <span class="n">NearNeighbor</span><span class="p">(</span><span class="n">zip_data_active</span><span class="o">=</span><span class="n">zip_data_active_in_date</span><span class="p">,</span>
@@ -265,6 +363,16 @@
         <span class="k">return</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;zipped_data_for_active_map&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DwdMain.main_plotter_data"><a class="viewcode-back" href="../DwdMain.html#DwdMain.DwdMain.main_plotter_data">[docs]</a>    <span class="k">def</span> <span class="nf">main_plotter_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">qn_weight</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">distance_weight</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">compare</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">no_plot</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :Description: Compressed method for plotting. qn_weight, distance_weight are the methods. If both are False, it will make simple average method.</span>
+
+<span class="sd">        :param qn_weight: **as Boolean**. If True weight the quality of data.</span>
+<span class="sd">        :param distance_weight: **as Boolean**. If True weight the distance of data.</span>
+<span class="sd">        :param compare: **as Boolean**. If you want to compare, how accurate your methods are, set True and choose coordinates for a station.</span>
+<span class="sd">        :param no_plot: **as Boolean**. If you want to see just the result, without the plot (saves a bit of time), you can set this True.</span>
+<span class="sd">        :return: calculations and graphs (&quot;plot saved&quot;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">looking_for</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">qn_weight</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">compare</span><span class="p">:</span>
@@ -361,16 +469,27 @@
 
 <div class="viewcode-block" id="DwdMain.main_station_information"><a class="viewcode-back" href="../DwdMain.html#DwdMain.DwdMain.main_station_information">[docs]</a>    <span class="k">def</span> <span class="nf">main_station_information</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">station_id</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :Description: Will return a dict for a station with all the important informations</span>
 
-<span class="sd">        :param station_id:</span>
-<span class="sd">        :return:</span>
+<span class="sd">        :param station_id: **as string**. The stationid with prefix.</span>
+<span class="sd">        :return: **as dict**</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">read_station_list</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">station_id</span><span class="p">)</span><span class="o">.</span><span class="n">get_station_informations</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DwdMain.main_station_array"><a class="viewcode-back" href="../DwdMain.html#DwdMain.DwdMain.main_station_array">[docs]</a>    <span class="k">def</span> <span class="nf">main_station_array</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :Description: Will return all the stations for your data type and your time type.</span>
+
+<span class="sd">        :return:**as array**</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">get_station_ids</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="DwdMain.main_activ_stations_in_date"><a class="viewcode-back" href="../DwdMain.html#DwdMain.DwdMain.main_activ_stations_in_date">[docs]</a>    <span class="k">def</span> <span class="nf">main_activ_stations_in_date</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :Description: Will return all the stations for your data type and your time type and your timedelta.</span>
+
+<span class="sd">        :return: x_coordinates, y_coordinate, station_ids: **all as array, station_ids as list**</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">reader</span><span class="o">.</span><span class="n">get_active_stations_in_date</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_date</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_date</span><span class="p">)</span></div></div>
 
 
@@ -387,6 +506,22 @@
              <span class="n">z_coordinate</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
              <span class="n">k_factor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
              <span class="n">looking_for</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :Description: To make your life easier, this grabs all the important informations from DwdDict automatically.</span>
+
+<span class="sd">    :param local_domain: **as string**. Choose your local domain.</span>
+<span class="sd">    :param type_of_data: **as string**. Choose the type of data</span>
+<span class="sd">    :param type_of_time: **as string**. Choose the type of time</span>
+<span class="sd">    :param start_date: **as int**. YYYYMMDDHHMM. Your start date.</span>
+<span class="sd">    :param end_date: **as int**. YYYYMMDDHHMM. Your end date.</span>
+<span class="sd">    :param compare_station: **as string**. Only if you want to compare your calculation with a station.</span>
+<span class="sd">    :param x_coordinate: **as float**. X-coordinates for your chosen location.</span>
+<span class="sd">    :param y_coordinate: **as float**. Y-coordinates for your chosen location.</span>
+<span class="sd">    :param z_coordinate: **as float**. Z-coordinates for your chosen location. (Can be skipped for now, maybe important in the future)</span>
+<span class="sd">    :param k_factor: **as int**. How many station are you looking around your location?</span>
+<span class="sd">    :param looking_for: **as list**. What data you want to plot?</span>
+<span class="sd">    :return: dwd ***as object***</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">type_dict</span><span class="p">,</span> <span class="n">load_txt_dict</span><span class="p">,</span> <span class="n">rest_dict</span><span class="p">,</span> <span class="n">title_dict</span><span class="p">,</span> <span class="n">unit_dict</span><span class="p">,</span> <span class="n">type_of_time_list</span><span class="p">,</span> <span class="n">type_of_data_list</span><span class="p">,</span> <span class="n">external_domain</span><span class="p">,</span> <span class="n">external_path_global</span><span class="p">,</span> <span class="n">ending</span> <span class="o">=</span> <span class="n">get_dwd_dict</span><span class="p">()</span>
     <span class="n">dwd</span> <span class="o">=</span> <span class="n">DwdMain</span><span class="p">(</span><span class="n">external_domain</span><span class="o">=</span><span class="n">external_domain</span><span class="p">,</span>
                   <span class="n">external_path_global</span><span class="o">=</span><span class="n">external_path_global</span><span class="p">,</span>
