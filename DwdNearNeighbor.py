@@ -2,20 +2,30 @@ from scipy.spatial import distance
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
-import matplotlib.pyplot as plt
 import os
 
 pd.set_option('display.max_rows', 500)
 pd.set_option('display.max_columns', 500)
 pd.set_option('display.width', 1000)
 pd.set_option('max_colwidth', 1000)
-plt.style.use('dark_background')
 
-
-# plt.style.use('default')
 
 class NearNeighbor:
+    """
+    :Description: This class is finding near neighbors for the location you choosed and creates all the needed data as a DataFrame
+    """
     def __init__(self, x_active, y_active, z_active, zip_data_active, k_factor, start_date, end_date, activ_id, station_list):
+        """
+        :param x_active: x-coordinates (geoLaenge): **as array**. Should be set from DwdDataPrep.data_prep_for_new_location()
+        :param y_active: y-coordinates (geoBreite): **as array**. Should be set from DwdDataPrep.data_prep_for_new_location()
+        :param z_active: z-coordinates (Stationshoehe): **as array**. Should be set from DwdDataPrep.data_prep_for_new_location()
+        :param zip_data_active: **as array**. Zipped x-coordinates and y-coordinates.
+        :param k_factor: **as int**. How many stations you want to find around your coordinates?
+        :param start_date: **as int**. --> YYYYMMDDHHMM
+        :param end_date: **as int**. --> YYYYMMDDHHMM
+        :param activ_id: **as list**. All the activ stations in timedelta
+        :param station_list: **as dict**. All the stations as an object in a dictionary
+        """
         self.zip_data_active = zip_data_active
         self.x_active = x_active
         self.y_active = y_active
@@ -28,10 +38,12 @@ class NearNeighbor:
         self.activ_id = activ_id
         self.station_list = station_list
 
-    def get_start_date(self):
-        return self.start_date
-
     def find_near(self):
+        """
+        :Description: Will find all the near stations around your location.
+
+        :return: x_near, y_near, z_near, activ_near_id: **as array - activ_near_id as list**
+        """
         x_near = np.array([])
         y_near = np.array([])
         z_near = np.array([])
@@ -47,6 +59,11 @@ class NearNeighbor:
         return x_near, y_near, z_near, activ_near_id
 
     def datapath_near(self):
+        """
+        :Description: Is getting all the paths for data of all the near stations in timedelta. Also creating a list with the columnnames for your DataFrame
+
+        :return: datapath_near_list, column_names_list, column_name_list: **all as list**
+        """
         datapath_near_list = []
         column_names_list = []
         column_name_list = []
@@ -60,6 +77,11 @@ class NearNeighbor:
         return datapath_near_list, column_names_list, column_name_list
 
     def dataframe_near_from_to(self):
+        """
+        :Description: Is generating a DataFrame with alle the dates inside your files (timedelta for every file) inside your timedelta. Also returning same lists from self.datapath_near()
+
+        :return: df_from_to, datapath_near_list, column_names_list, column_name_list: **as list, df_from_to as DataFrame**
+        """
         df_from = pd.DataFrame([])
         df_to = pd.DataFrame([])
         datapath_near_list, column_names_list, column_name_list = self.datapath_near()
@@ -76,6 +98,11 @@ class NearNeighbor:
         return df_from_to, datapath_near_list, column_names_list, column_name_list
 
     def dataframe_near_from_to_path(self):
+        """
+        :Description: Is connecting df_from_to with datapah_near_list for easier handling.
+
+        :return: df_from_to, column_names_list, column_name_list: **as list, df_from_to as DataFrame**
+        """
         df_from_to, datapath_near_list, column_names_list, column_name_list = self.dataframe_near_from_to()
         free_list = []
         for i in range(len(datapath_near_list)):
@@ -86,6 +113,11 @@ class NearNeighbor:
         return df_from_to, column_names_list, column_name_list
 
     def date_range_df(self):
+        """
+        :Description: Is generating an empty DataFrame for timedelta. If you want to change the resolution to 1 minute, you should make some changes here
+
+        :return: date_range_df: **as DataFrame**
+        """
         start_date = datetime.strptime(str(self.start_date), "%Y%m%d%H%M")
         end_date = datetime.strptime(str(self.end_date), "%Y%m%d%H%M")
         date_range_df = pd.DataFrame([])
@@ -96,6 +128,19 @@ class NearNeighbor:
         return date_range_df
 
     def average_for_coordinate(self, data_looking_for="TT_10", qn_weight_n_avg=False, distance_weight_n_avg=False, qn_distance_weight_n_avg=False, compare_n_avg=False, compare_station=None):
+        """
+        :Description: Is calculation different variants.
+
+        :param: data_looking_for="TT_10": **as string**. Check Dwd.Dict title_dict or unit_dict.
+        :param: qn_weight_n_avg=False: **as Boolean**. If True weight the quality of data.
+        :param: distance_weight_n_avg=False: **as Boolean**. If True weight the distance of data.
+        :param: qn_distance_weight_n_avg=False (not needed for now, maybe in future): **as Boolean**.
+        :param: compare_n_avg=False: **as Boolean**. If you want to compare, how accurate your methods are, set True and choose coordinates for a station.
+        :param: compare_station=None: **as string**. If compare_n_avg==True set this as the name of a station with the right prefix
+        :return: if compare_n_avg==True: data_all (**as DataFrame**), data_mean (**as DataFrame**), index_for_plot (**as list**), column_name_list (**as list**), data_to_compare (**as DataFrame**), diff (**as DataFrame**), maximum (**as int**), avg_diff (**as array**)
+        :return: if compare_n_avg==False: data_all (**as DataFrame**), data_mean (**as DataFrame**), index_for_plot (**as list**), column_name_list (**as list**)
+        """
+
         if qn_weight_n_avg:
             print("qn_weight")
             date_range_df = self.date_range_df().set_index('MESS_DATUM_GENERATED')

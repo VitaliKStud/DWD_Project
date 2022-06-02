@@ -415,7 +415,7 @@ class Reader:
         :param: x_coordinate: **as float**: (GeoLaenge) for the new location
         :param: y_coordinate: **as float**: (GeoBreite) for the new location
         :param: z_coordinate: **as float**: 0 for now (maybe needed in future) for the new location
-        :return: x_active_in_date, y_active_in_date, z_active_in_date, activ_id_in_date, station_list: *all as list**
+        :return: x_active_in_date, y_active_in_date, z_active_in_date, activ_id_in_date, station_list: **as list - station_list as dict**
         """
         new_point_name = "Find near TU for me"
         x_active_reader, y_active_reader, z_active_reader, activ_id_reader = self.get_active_stations_in_date(start_date, end_date)

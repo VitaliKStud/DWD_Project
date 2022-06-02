@@ -10,7 +10,7 @@ looking_for_ = ["PP_10"]
 # choose your data you need to plot #Check DwdDict
 
 start_date_ = 199401190000
-end_date_   = 199401210000
+end_date_   = 199501010000
 # yyyymmddhhmm
 
 x_coordinate_ = 6.0941
@@ -55,23 +55,21 @@ dwd = main_dwd(local_domain=local_domain_,
 # Plot your data
 # dwd.main_plotter_data(qn_weight=True, distance_weight=False, compare=True, no_plot=False)
 # dwd.main_plotter_data(qn_weight=False, distance_weight=True, compare=True, no_plot=False)
-# dwd.main_plotter_data(qn_weight=False, distance_weight=False, compare=True, no_plot=False)
+dwd.main_plotter_data(qn_weight=False, distance_weight=False, compare=True, no_plot=False)
 # dwd.main_plotter_stations(projection=False)
 
 # Generate some data for DwdMapCreator
 # dwd.main_data_map()
 
-path_to_txt = r"C:/Users/VID/Desktop/Betriebliche_Praxis/climate_environment/CDC/observations_germany/climate/10_minutes/air_temperature/historical/zehn_min_tu_Beschreibung_Stationen.txt"
-local_path = r"C:/Users/VID/Desktop/Betriebliche_Praxis/climate_environment/CDC/observations_germany/climate/10_minutes/air_temperature/historical/extracted_files/"
+# path_to_txt = r"C:/Users/VID/Desktop/Betriebliche_Praxis/climate_environment/CDC/observations_germany/climate/10_minutes/air_temperature/historical/zehn_min_tu_Beschreibung_Stationen.txt"
+# local_path = r"C:/Users/VID/Desktop/Betriebliche_Praxis/climate_environment/CDC/observations_germany/climate/10_minutes/air_temperature/historical/extracted_files/"
+#
+# a,b,c,d,e = Reader(path_to_txt=path_to_txt, local_path=local_path, data_type="TU").data_prep_for_new_location(199001010000,199901010000,50,10,0)
+#
+# print(type(a))
+# print(type(b))
+# print(type(c))
+# print(type(d))
+# print(type(e))
 
-a,b,c,d,e = Reader(path_to_txt=path_to_txt, local_path=local_path, data_type="TU").data_prep_for_new_location(199001010000,199901010000,50,10,0)
-
-print(type(a))
-print(type(b))
-print(type(c))
-print(type(d))
-print(type(e))
-
-
-print(a)
 

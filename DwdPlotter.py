@@ -107,7 +107,7 @@ class PlotterForData:
         for i in lgn_1.legendHandles:
             i.set_linewidth(5)
 
-        ax2.plot(self.index_for_plot, self.data_mean, label="Berechneter Durchschnitt")
+        ax2.plot(self.index_for_plot, self.data_mean, label="Berechneter Durchschnitt", linestyle="--")
         ax2.plot(self.index_for_plot, data_to_compare, label="Realwerte")
         ax2.set_xlim(self.start_date_datetime, self.end_date_datetime)
         lgn_2 = ax2.legend(bbox_to_anchor=(0, 1.02, 1, 0.2), loc='lower left', prop={'size': 10}, ncol=2)

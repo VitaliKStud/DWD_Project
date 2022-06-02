@@ -86,45 +86,129 @@
 <dt class="sig sig-object py" id="DwdNearNeighbor.NearNeighbor">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">DwdNearNeighbor.</span></span><span class="sig-name descname"><span class="pre">NearNeighbor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_active</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_active</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_active</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zip_data_active</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_factor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activ_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">station_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdNearNeighbor.html#NearNeighbor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdNearNeighbor.NearNeighbor" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description</dt>
+<dd class="field-odd"><p>This class is finding near neighbors for the location you choosed and creates all the needed data as a DataFrame</p>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdNearNeighbor.NearNeighbor.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_active</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_active</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_active</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zip_data_active</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_factor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activ_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">station_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdNearNeighbor.html#NearNeighbor.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdNearNeighbor.NearNeighbor.__init__" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x_active</strong> – x-coordinates (geoLaenge): <strong>as array</strong>. Should be set from DwdDataPrep.data_prep_for_new_location()</p></li>
+<li><p><strong>y_active</strong> – y-coordinates (geoBreite): <strong>as array</strong>. Should be set from DwdDataPrep.data_prep_for_new_location()</p></li>
+<li><p><strong>z_active</strong> – z-coordinates (Stationshoehe): <strong>as array</strong>. Should be set from DwdDataPrep.data_prep_for_new_location()</p></li>
+<li><p><strong>zip_data_active</strong> – <strong>as array</strong>. Zipped x-coordinates and y-coordinates.</p></li>
+<li><p><strong>k_factor</strong> – <strong>as int</strong>. How many stations you want to find around your coordinates?</p></li>
+<li><p><strong>start_date</strong> – <strong>as int</strong>. –&gt; YYYYMMDDHHMM</p></li>
+<li><p><strong>end_date</strong> – <strong>as int</strong>. –&gt; YYYYMMDDHHMM</p></li>
+<li><p><strong>activ_id</strong> – <strong>as list</strong>. All the activ stations in timedelta</p></li>
+<li><p><strong>station_list</strong> – <strong>as dict</strong>. All the stations as an object in a dictionary</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdNearNeighbor.NearNeighbor.average_for_coordinate">
 <span class="sig-name descname"><span class="pre">average_for_coordinate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_looking_for</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'TT_10'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qn_weight_n_avg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance_weight_n_avg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qn_distance_weight_n_avg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compare_n_avg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compare_station</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdNearNeighbor.html#NearNeighbor.average_for_coordinate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdNearNeighbor.NearNeighbor.average_for_coordinate" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description</dt>
+<dd class="field-odd"><p>Is calculation different variants.</p>
+</dd>
+<dt class="field-even">Param</dt>
+<dd class="field-even"><p>data_looking_for=”TT_10”: <strong>as string</strong>. Check Dwd.Dict title_dict or unit_dict.</p>
+</dd>
+<dt class="field-odd">Param</dt>
+<dd class="field-odd"><p>qn_weight_n_avg=False: <strong>as Boolean</strong>. If True weight the quality of data.</p>
+</dd>
+<dt class="field-even">Param</dt>
+<dd class="field-even"><p>distance_weight_n_avg=False: <strong>as Boolean</strong>. If True weight the distance of data.</p>
+</dd>
+<dt class="field-odd">Param</dt>
+<dd class="field-odd"><p>qn_distance_weight_n_avg=False (not needed for now, maybe in future): <strong>as Boolean</strong>.</p>
+</dd>
+<dt class="field-even">Param</dt>
+<dd class="field-even"><p>compare_n_avg=False: <strong>as Boolean</strong>. If you want to compare, how accurate your methods are, set True and choose coordinates for a station.</p>
+</dd>
+<dt class="field-odd">Param</dt>
+<dd class="field-odd"><p>compare_station=None: <strong>as string</strong>. If compare_n_avg==True set this as the name of a station with the right prefix</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>if compare_n_avg==True: data_all (<strong>as DataFrame</strong>), data_mean (<strong>as DataFrame</strong>), index_for_plot (<strong>as list</strong>), column_name_list (<strong>as list</strong>), data_to_compare (<strong>as DataFrame</strong>), diff (<strong>as DataFrame</strong>), maximum (<strong>as int</strong>), avg_diff (<strong>as array</strong>)</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>if compare_n_avg==False: data_all (<strong>as DataFrame</strong>), data_mean (<strong>as DataFrame</strong>), index_for_plot (<strong>as list</strong>), column_name_list (<strong>as list</strong>)</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdNearNeighbor.NearNeighbor.dataframe_near_from_to">
 <span class="sig-name descname"><span class="pre">dataframe_near_from_to</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdNearNeighbor.html#NearNeighbor.dataframe_near_from_to"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdNearNeighbor.NearNeighbor.dataframe_near_from_to" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description</dt>
+<dd class="field-odd"><p>Is generating a DataFrame with alle the dates inside your files (timedelta for every file) inside your timedelta. Also returning same lists from self.datapath_near()</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>df_from_to, datapath_near_list, column_names_list, column_name_list: <strong>as list, df_from_to as DataFrame</strong></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdNearNeighbor.NearNeighbor.dataframe_near_from_to_path">
 <span class="sig-name descname"><span class="pre">dataframe_near_from_to_path</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdNearNeighbor.html#NearNeighbor.dataframe_near_from_to_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdNearNeighbor.NearNeighbor.dataframe_near_from_to_path" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description</dt>
+<dd class="field-odd"><p>Is connecting df_from_to with datapah_near_list for easier handling.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>df_from_to, column_names_list, column_name_list: <strong>as list, df_from_to as DataFrame</strong></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdNearNeighbor.NearNeighbor.datapath_near">
 <span class="sig-name descname"><span class="pre">datapath_near</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdNearNeighbor.html#NearNeighbor.datapath_near"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdNearNeighbor.NearNeighbor.datapath_near" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description</dt>
+<dd class="field-odd"><p>Is getting all the paths for data of all the near stations in timedelta. Also creating a list with the columnnames for your DataFrame</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>datapath_near_list, column_names_list, column_name_list: <strong>all as list</strong></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdNearNeighbor.NearNeighbor.date_range_df">
 <span class="sig-name descname"><span class="pre">date_range_df</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdNearNeighbor.html#NearNeighbor.date_range_df"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdNearNeighbor.NearNeighbor.date_range_df" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description</dt>
+<dd class="field-odd"><p>Is generating an empty DataFrame for timedelta. If you want to change the resolution to 1 minute, you should make some changes here</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>date_range_df: <strong>as DataFrame</strong></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdNearNeighbor.NearNeighbor.find_near">
 <span class="sig-name descname"><span class="pre">find_near</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdNearNeighbor.html#NearNeighbor.find_near"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdNearNeighbor.NearNeighbor.find_near" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="DwdNearNeighbor.NearNeighbor.get_start_date">
-<span class="sig-name descname"><span class="pre">get_start_date</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdNearNeighbor.html#NearNeighbor.get_start_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdNearNeighbor.NearNeighbor.get_start_date" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description</dt>
+<dd class="field-odd"><p>Will find all the near stations around your location.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>x_near, y_near, z_near, activ_near_id: <strong>as array - activ_near_id as list</strong></p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 

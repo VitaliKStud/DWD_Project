@@ -72,20 +72,30 @@
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
 <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_rows&#39;</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
 <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_columns&#39;</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
 <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.width&#39;</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
 <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;max_colwidth&#39;</span><span class="p">,</span> <span class="mi">1000</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;dark_background&#39;</span><span class="p">)</span>
 
-
-<span class="c1"># plt.style.use(&#39;default&#39;)</span>
 
 <div class="viewcode-block" id="NearNeighbor"><a class="viewcode-back" href="../DwdNearNeighbor.html#DwdNearNeighbor.NearNeighbor">[docs]</a><span class="k">class</span> <span class="nc">NearNeighbor</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    :Description: This class is finding near neighbors for the location you choosed and creates all the needed data as a DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="NearNeighbor.__init__"><a class="viewcode-back" href="../DwdNearNeighbor.html#DwdNearNeighbor.NearNeighbor.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_active</span><span class="p">,</span> <span class="n">y_active</span><span class="p">,</span> <span class="n">z_active</span><span class="p">,</span> <span class="n">zip_data_active</span><span class="p">,</span> <span class="n">k_factor</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">,</span> <span class="n">activ_id</span><span class="p">,</span> <span class="n">station_list</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param x_active: x-coordinates (geoLaenge): **as array**. Should be set from DwdDataPrep.data_prep_for_new_location()</span>
+<span class="sd">        :param y_active: y-coordinates (geoBreite): **as array**. Should be set from DwdDataPrep.data_prep_for_new_location()</span>
+<span class="sd">        :param z_active: z-coordinates (Stationshoehe): **as array**. Should be set from DwdDataPrep.data_prep_for_new_location()</span>
+<span class="sd">        :param zip_data_active: **as array**. Zipped x-coordinates and y-coordinates.</span>
+<span class="sd">        :param k_factor: **as int**. How many stations you want to find around your coordinates?</span>
+<span class="sd">        :param start_date: **as int**. --&gt; YYYYMMDDHHMM</span>
+<span class="sd">        :param end_date: **as int**. --&gt; YYYYMMDDHHMM</span>
+<span class="sd">        :param activ_id: **as list**. All the activ stations in timedelta</span>
+<span class="sd">        :param station_list: **as dict**. All the stations as an object in a dictionary</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">zip_data_active</span> <span class="o">=</span> <span class="n">zip_data_active</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">x_active</span> <span class="o">=</span> <span class="n">x_active</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">y_active</span> <span class="o">=</span> <span class="n">y_active</span>
@@ -98,10 +108,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">activ_id</span> <span class="o">=</span> <span class="n">activ_id</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">station_list</span> <span class="o">=</span> <span class="n">station_list</span></div>
 
-<div class="viewcode-block" id="NearNeighbor.get_start_date"><a class="viewcode-back" href="../DwdNearNeighbor.html#DwdNearNeighbor.NearNeighbor.get_start_date">[docs]</a>    <span class="k">def</span> <span class="nf">get_start_date</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_date</span></div>
-
 <div class="viewcode-block" id="NearNeighbor.find_near"><a class="viewcode-back" href="../DwdNearNeighbor.html#DwdNearNeighbor.NearNeighbor.find_near">[docs]</a>    <span class="k">def</span> <span class="nf">find_near</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :Description: Will find all the near stations around your location.</span>
+
+<span class="sd">        :return: x_near, y_near, z_near, activ_near_id: **as array - activ_near_id as list**</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">x_near</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
         <span class="n">y_near</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
         <span class="n">z_near</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
@@ -117,6 +129,11 @@
         <span class="k">return</span> <span class="n">x_near</span><span class="p">,</span> <span class="n">y_near</span><span class="p">,</span> <span class="n">z_near</span><span class="p">,</span> <span class="n">activ_near_id</span></div>
 
 <div class="viewcode-block" id="NearNeighbor.datapath_near"><a class="viewcode-back" href="../DwdNearNeighbor.html#DwdNearNeighbor.NearNeighbor.datapath_near">[docs]</a>    <span class="k">def</span> <span class="nf">datapath_near</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :Description: Is getting all the paths for data of all the near stations in timedelta. Also creating a list with the columnnames for your DataFrame</span>
+
+<span class="sd">        :return: datapath_near_list, column_names_list, column_name_list: **all as list**</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">datapath_near_list</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">column_names_list</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">column_name_list</span> <span class="o">=</span> <span class="p">[]</span>
@@ -130,6 +147,11 @@
         <span class="k">return</span> <span class="n">datapath_near_list</span><span class="p">,</span> <span class="n">column_names_list</span><span class="p">,</span> <span class="n">column_name_list</span></div>
 
 <div class="viewcode-block" id="NearNeighbor.dataframe_near_from_to"><a class="viewcode-back" href="../DwdNearNeighbor.html#DwdNearNeighbor.NearNeighbor.dataframe_near_from_to">[docs]</a>    <span class="k">def</span> <span class="nf">dataframe_near_from_to</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :Description: Is generating a DataFrame with alle the dates inside your files (timedelta for every file) inside your timedelta. Also returning same lists from self.datapath_near()</span>
+
+<span class="sd">        :return: df_from_to, datapath_near_list, column_names_list, column_name_list: **as list, df_from_to as DataFrame**</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">df_from</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([])</span>
         <span class="n">df_to</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([])</span>
         <span class="n">datapath_near_list</span><span class="p">,</span> <span class="n">column_names_list</span><span class="p">,</span> <span class="n">column_name_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">datapath_near</span><span class="p">()</span>
@@ -146,6 +168,11 @@
         <span class="k">return</span> <span class="n">df_from_to</span><span class="p">,</span> <span class="n">datapath_near_list</span><span class="p">,</span> <span class="n">column_names_list</span><span class="p">,</span> <span class="n">column_name_list</span></div>
 
 <div class="viewcode-block" id="NearNeighbor.dataframe_near_from_to_path"><a class="viewcode-back" href="../DwdNearNeighbor.html#DwdNearNeighbor.NearNeighbor.dataframe_near_from_to_path">[docs]</a>    <span class="k">def</span> <span class="nf">dataframe_near_from_to_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :Description: Is connecting df_from_to with datapah_near_list for easier handling.</span>
+
+<span class="sd">        :return: df_from_to, column_names_list, column_name_list: **as list, df_from_to as DataFrame**</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">df_from_to</span><span class="p">,</span> <span class="n">datapath_near_list</span><span class="p">,</span> <span class="n">column_names_list</span><span class="p">,</span> <span class="n">column_name_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataframe_near_from_to</span><span class="p">()</span>
         <span class="n">free_list</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">datapath_near_list</span><span class="p">)):</span>
@@ -156,6 +183,11 @@
         <span class="k">return</span> <span class="n">df_from_to</span><span class="p">,</span> <span class="n">column_names_list</span><span class="p">,</span> <span class="n">column_name_list</span></div>
 
 <div class="viewcode-block" id="NearNeighbor.date_range_df"><a class="viewcode-back" href="../DwdNearNeighbor.html#DwdNearNeighbor.NearNeighbor.date_range_df">[docs]</a>    <span class="k">def</span> <span class="nf">date_range_df</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :Description: Is generating an empty DataFrame for timedelta. If you want to change the resolution to 1 minute, you should make some changes here</span>
+
+<span class="sd">        :return: date_range_df: **as DataFrame**</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">start_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_date</span><span class="p">),</span> <span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">%H%M&quot;</span><span class="p">)</span>
         <span class="n">end_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">end_date</span><span class="p">),</span> <span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">%H%M&quot;</span><span class="p">)</span>
         <span class="n">date_range_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([])</span>
@@ -166,6 +198,19 @@
         <span class="k">return</span> <span class="n">date_range_df</span></div>
 
 <div class="viewcode-block" id="NearNeighbor.average_for_coordinate"><a class="viewcode-back" href="../DwdNearNeighbor.html#DwdNearNeighbor.NearNeighbor.average_for_coordinate">[docs]</a>    <span class="k">def</span> <span class="nf">average_for_coordinate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_looking_for</span><span class="o">=</span><span class="s2">&quot;TT_10&quot;</span><span class="p">,</span> <span class="n">qn_weight_n_avg</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">distance_weight_n_avg</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">qn_distance_weight_n_avg</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">compare_n_avg</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">compare_station</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :Description: Is calculation different variants.</span>
+
+<span class="sd">        :param: data_looking_for=&quot;TT_10&quot;: **as string**. Check Dwd.Dict title_dict or unit_dict.</span>
+<span class="sd">        :param: qn_weight_n_avg=False: **as Boolean**. If True weight the quality of data.</span>
+<span class="sd">        :param: distance_weight_n_avg=False: **as Boolean**. If True weight the distance of data.</span>
+<span class="sd">        :param: qn_distance_weight_n_avg=False (not needed for now, maybe in future): **as Boolean**.</span>
+<span class="sd">        :param: compare_n_avg=False: **as Boolean**. If you want to compare, how accurate your methods are, set True and choose coordinates for a station.</span>
+<span class="sd">        :param: compare_station=None: **as string**. If compare_n_avg==True set this as the name of a station with the right prefix</span>
+<span class="sd">        :return: if compare_n_avg==True: data_all (**as DataFrame**), data_mean (**as DataFrame**), index_for_plot (**as list**), column_name_list (**as list**), data_to_compare (**as DataFrame**), diff (**as DataFrame**), maximum (**as int**), avg_diff (**as array**)</span>
+<span class="sd">        :return: if compare_n_avg==False: data_all (**as DataFrame**), data_mean (**as DataFrame**), index_for_plot (**as list**), column_name_list (**as list**)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">if</span> <span class="n">qn_weight_n_avg</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;qn_weight&quot;</span><span class="p">)</span>
             <span class="n">date_range_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">date_range_df</span><span class="p">()</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;MESS_DATUM_GENERATED&#39;</span><span class="p">)</span>
