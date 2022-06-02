@@ -86,46 +86,136 @@
 <dt class="sig sig-object py" id="DwdDataPrep.Reader">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">DwdDataPrep.</span></span><span class="sig-name descname"><span class="pre">Reader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_to_txt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Reader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Reader" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description</dt>
+<dd class="field-odd"><p>This class will read all the descriptions / informations of all the stations and will generate needed data.</p>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataPrep.Reader.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_to_txt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Reader.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Reader.__init__" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path_to_txt</strong> – <strong>as string</strong>: Is the path to the txt of station descriptions / informations</p></li>
+<li><p><strong>local_path</strong> – <strong>as string</strong>: Is the path to the extracted_files</p></li>
+<li><p><strong>data_type</strong> – <strong>as string</strong>: Is the type of data (Example: “TU” or “SOLAR”)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataPrep.Reader.data_prep_for_new_location">
 <span class="sig-name descname"><span class="pre">data_prep_for_new_location</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_coordinate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_coordinate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_coordinate</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Reader.data_prep_for_new_location"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Reader.data_prep_for_new_location" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description</dt>
+<dd class="field-odd"><p>Will prepare all the data that is available in timedelta for a new location</p>
+</dd>
+<dt class="field-even">Param</dt>
+<dd class="field-even"><p>x_coordinate: <strong>as float</strong>: (GeoLaenge) for the new location</p>
+</dd>
+<dt class="field-odd">Param</dt>
+<dd class="field-odd"><p>y_coordinate: <strong>as float</strong>: (GeoBreite) for the new location</p>
+</dd>
+<dt class="field-even">Param</dt>
+<dd class="field-even"><p>z_coordinate: <strong>as float</strong>: 0 for now (maybe needed in future) for the new location</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>x_active_in_date, y_active_in_date, z_active_in_date, activ_id_in_date, station_list: <em>all as list*</em></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataPrep.Reader.get_active_stations">
 <span class="sig-name descname"><span class="pre">get_active_stations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Reader.get_active_stations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Reader.get_active_stations" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description</dt>
+<dd class="field-odd"><p>Will create some important arrays (all active stations, not active stations and stations with no data) for past 10 days</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>x_active, y_active, z_active, active_id, x_not_active, y_not_active, z_not_active, not_activ_id, x_no_data, y_no_data, z_no_data, no_data_id: <strong>all as array</strong></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataPrep.Reader.get_active_stations_in_date">
 <span class="sig-name descname"><span class="pre">get_active_stations_in_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_date</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Reader.get_active_stations_in_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Reader.get_active_stations_in_date" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description</dt>
+<dd class="field-odd"><p>Will create some important arrays (all active stations, not active stations and stations with no data) in timedelta</p>
+</dd>
+<dt class="field-even">Param</dt>
+<dd class="field-even"><p>start_date: <strong>as int</strong>: YYYYMMDDHHMM</p>
+</dd>
+<dt class="field-odd">Param</dt>
+<dd class="field-odd"><p>end_date: <strong>as int</strong>: YYYYMMDDHHMM</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>x_active, y_active, z_active, active_id: <strong>all as array</strong></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataPrep.Reader.get_station_ids">
 <span class="sig-name descname"><span class="pre">get_station_ids</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Reader.get_station_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Reader.get_station_ids" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description</dt>
+<dd class="field-odd"><p>Will create an array with all the station_ids with a prefix</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>station_ids_array: <em>as array*</em></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataPrep.Reader.get_station_ids_in_date">
 <span class="sig-name descname"><span class="pre">get_station_ids_in_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_date</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Reader.get_station_ids_in_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Reader.get_station_ids_in_date" title="Permalink to this definition"></a></dt>
-<dd><p>test</p>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description</dt>
+<dd class="field-odd"><p>Will create a mask for active stations in timedelta</p>
+</dd>
+<dt class="field-even">Param</dt>
+<dd class="field-even"><p>start_date: <strong>as int</strong>: YYYYMMDDHHMM</p>
+</dd>
+<dt class="field-odd">Param</dt>
+<dd class="field-odd"><p>end_date: <strong>as int</strong>: YYYYMMDDHHMM</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>activ_stations_in_date_array: <em>as array*</em> (is a mask)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataPrep.Reader.get_station_information">
 <span class="sig-name descname"><span class="pre">get_station_information</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Reader.get_station_information"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Reader.get_station_information" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description</dt>
+<dd class="field-odd"><p>Will create an array with all the information from the informations-txt</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>station_information: <strong>as array (“i4”, “i4”, “i4”, “i4”, “f4”, “f4”, “S20”, “S20”)</strong></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataPrep.Reader.read_station_list">
 <span class="sig-name descname"><span class="pre">read_station_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Reader.read_station_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Reader.read_station_list" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description</dt>
+<dd class="field-odd"><p>Will create all the station objects in a dictionary</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>stations: <strong>as dict</strong></p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -133,95 +223,226 @@
 <dt class="sig sig-object py" id="DwdDataPrep.Station">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">DwdDataPrep.</span></span><span class="sig-name descname"><span class="pre">Station</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stations_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description</dt>
+<dd class="field-odd"><p>This class will generate stations as objects with all the given informations.</p>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataPrep.Station.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stations_array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station.__init__" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>stations_array</strong> – <strong>as array</strong>. Is generated by Reader(…).read_station_list()</p></li>
+<li><p><strong>local_path</strong> – <strong>as string</strong>. Is getting from Reader class</p></li>
+<li><p><strong>data_type</strong> – <strong>as string</strong>. Ss getting from Reader class</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataPrep.Station.check_activ_in_date">
 <span class="sig-name descname"><span class="pre">check_activ_in_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_date</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station.check_activ_in_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station.check_activ_in_date" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p><strong>Description:</strong> Will check the station activity in timedelta (True: is activ in timedelta, False: not activ in timedelta)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start_date</strong> – <strong>as int</strong>: YYYYMMDDHHMM</p></li>
+<li><p><strong>end_date</strong> – <strong>as int</strong>: YYYYMMDDHHMM</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Boolean</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataPrep.Station.check_activitiy">
 <span class="sig-name descname"><span class="pre">check_activitiy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station.check_activitiy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station.check_activitiy" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p><strong>Description:</strong> Will check the activity of the station (was this station activ past 10 days?)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>Boolean</strong></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataPrep.Station.check_data">
 <span class="sig-name descname"><span class="pre">check_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station.check_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station.check_data" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p><strong>Description:</strong> Is checking if this station got any data available (0 == no data, 1 == data available)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>0 or 1: <strong>as int</strong></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataPrep.Station.format_number_to_date">
 <em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">format_number_to_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station.format_number_to_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station.format_number_to_date" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p><strong>Description:</strong> formating the date yyymmddhhmm –&gt; YYYY-MM-DD</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>number</strong> – <strong>as int</strong>.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>date: <strong>as string</strong>.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataPrep.Station.generate_tu_data_path">
 <span class="sig-name descname"><span class="pre">generate_tu_data_path</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station.generate_tu_data_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station.generate_tu_data_path" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p><strong>Description:</strong> Will generate all the local paths for this station</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>local_list: <strong>as list</strong></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataPrep.Station.generate_tu_data_path_date">
 <span class="sig-name descname"><span class="pre">generate_tu_data_path_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_date</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_date</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station.generate_tu_data_path_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station.generate_tu_data_path_date" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p><strong>Description:</strong> Will generate all the data paths in timedelta. If no data available for this station, returns False</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start_date</strong> – <strong>as int</strong>: YYYYMMDDHHMM</p></li>
+<li><p><strong>end_date</strong> – <strong>as int</strong>: YYYYMMDDHHMM</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>generate_tu_data_path_date: <strong>as list</strong> or False</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataPrep.Station.generate_tu_date_array">
 <span class="sig-name descname"><span class="pre">generate_tu_date_array</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station.generate_tu_date_array"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station.generate_tu_date_array" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p><strong>Description:</strong> Will generate all the data paths and all the timedelta the station was activ in</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>from_list: <strong>as list</strong>, tu_data_path: <strong>as list</strong></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataPrep.Station.get_bis_datum">
 <span class="sig-name descname"><span class="pre">get_bis_datum</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station.get_bis_datum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station.get_bis_datum" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p><strong>Description:</strong> Here you can get the __bis_datum information</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>__bis_datum: <strong>as string</strong></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataPrep.Station.get_bundesland">
 <span class="sig-name descname"><span class="pre">get_bundesland</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station.get_bundesland"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station.get_bundesland" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p><strong>Description:</strong> Here you can get the __bundesland information</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>__bundesland: <strong>as string</strong></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataPrep.Station.get_geobreite">
 <span class="sig-name descname"><span class="pre">get_geobreite</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station.get_geobreite"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station.get_geobreite" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p><strong>Description:</strong> Here you can get the __geoBreite information</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>__geoBreite: <strong>as int</strong></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataPrep.Station.get_geolaenge">
 <span class="sig-name descname"><span class="pre">get_geolaenge</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station.get_geolaenge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station.get_geolaenge" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p><strong>Description:</strong> Here you can get the __geoLaenge information</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>__geoLaenge: <strong>as int</strong></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataPrep.Station.get_local_path">
 <span class="sig-name descname"><span class="pre">get_local_path</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station.get_local_path"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station.get_local_path" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p><strong>Description:</strong> Here you can get the local_path information</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>__local_path: <strong>as string</strong></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataPrep.Station.get_station_id">
 <span class="sig-name descname"><span class="pre">get_station_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station.get_station_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station.get_station_id" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p><strong>Description:</strong> Here you can get the stations_id information</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>__stations_id: <strong>as string</strong></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataPrep.Station.get_station_informations">
 <span class="sig-name descname"><span class="pre">get_station_informations</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station.get_station_informations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station.get_station_informations" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p><strong>Description:</strong> Will return all the informations of the station as a dict</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>station_information_dict: <strong>as dict</strong></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataPrep.Station.get_stationshoehe">
 <span class="sig-name descname"><span class="pre">get_stationshoehe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station.get_stationshoehe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station.get_stationshoehe" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p><strong>Description:</strong> Here you can get the __stationshoehe information</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>__stationshoehe: <strong>as int</strong></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataPrep.Station.get_stationsname">
 <span class="sig-name descname"><span class="pre">get_stationsname</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station.get_stationsname"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station.get_stationsname" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p><strong>Description:</strong> Here you can get the __stationsname information</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>__stationsname: <strong>as string</strong></p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataPrep.Station.get_von_datum">
 <span class="sig-name descname"><span class="pre">get_von_datum</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Station.get_von_datum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Station.get_von_datum" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p><strong>Description:</strong> Here you can get the von_dotum information</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>__von_datum: <strong>as string</strong></p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -229,15 +450,37 @@
 <dt class="sig sig-object py" id="DwdDataPrep.Writer">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">DwdDataPrep.</span></span><span class="sig-name descname"><span class="pre">Writer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_to_txt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Writer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Writer" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Description</dt>
+<dd class="field-odd"><p>This class write some json files. For faster loading times you should write this files after you downloaded and extracted your data.</p>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataPrep.Writer.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_to_txt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Writer.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Writer.__init__" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path_to_txt</strong> – <strong>as string</strong>: Is the path to the txt of station descriptions / informations</p></li>
+<li><p><strong>local_path</strong> – <strong>as string</strong>: Is the path to the extracted_files</p></li>
+<li><p><strong>data_type</strong> – <strong>as string</strong>: Is the type of data (Example: “TU” or “SOLAR”)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="DwdDataPrep.Writer.write_stations_paths">
 <span class="sig-name descname"><span class="pre">write_stations_paths</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/DwdDataPrep.html#Writer.write_stations_paths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#DwdDataPrep.Writer.write_stations_paths" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Description</dt>
+<dd class="field-odd"><p>Will write two json files in extracted_files (dict_tu_data_path and dict_from_list) with all the dates and all the paths for any station</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>path where the data was written</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 

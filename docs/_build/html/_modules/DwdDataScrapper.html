@@ -87,11 +87,11 @@
                  <span class="n">ending</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">looking_for_ending</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        :param external_domain: will be set from your DwdDict.py</span>
-<span class="sd">        :param external_path: will be set from your DwdDict.py</span>
-<span class="sd">        :param local_domain: tells where to save your downloading and unzipping data</span>
-<span class="sd">        :param ending: will be set from your DwdDict.py</span>
-<span class="sd">        :param looking_for_ending: skip this (not important for now, maybe in future)</span>
+<span class="sd">        :param external_domain: **as string**. Will be set from your DwdDict.py</span>
+<span class="sd">        :param external_path: **as string**. Will be set from your DwdDict.py</span>
+<span class="sd">        :param local_domain: **as string**. Tells where to save your downloading and unzipping</span>
+<span class="sd">        :param ending: **as list**. Will be set from your DwdDict.py</span>
+<span class="sd">        :param looking_for_ending: **as string**. Skip this (not important for now, maybe in future)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__external_domain</span> <span class="o">=</span> <span class="n">external_domain</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__external_path</span> <span class="o">=</span> <span class="n">external_path</span>
@@ -104,8 +104,8 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        **Description:** Will generate a list (verzeichnis_list) of oll the &quot;href&quot; (links and urls) on a given page</span>
 
-<span class="sd">        :param pre_extend_list: skip this (not important for now, maybe in future)</span>
-<span class="sd">        :return: verzeichnis_list</span>
+<span class="sd">        :param pre_extend_list: **as string**. Skip this (not important for now, maybe in future)</span>
+<span class="sd">        :return: verzeichnis_list **as list**</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__external_domain</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">__external_path</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s2">&quot;html.parser&quot;</span><span class="p">)</span>
         <span class="n">verzeichnis_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">pre_extend_list</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">__external_path</span> <span class="o">+</span> <span class="n">n</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;href&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">n</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;href&quot;</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">&quot;../&quot;</span><span class="p">]</span>
@@ -115,7 +115,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        **Description:** Will generate a list (text_elemnts) of all text elements on a page (here the date) (will be important in future).</span>
 
-<span class="sd">        :return: text_elements</span>
+<span class="sd">        :return: text_elements **as list**</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">text_elements</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">blacklist</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;h1&quot;</span><span class="p">,</span> <span class="s2">&quot;title&quot;</span><span class="p">]</span>
@@ -137,7 +137,7 @@
 <span class="sd">        that the path is in your local_domain (if not existing already). After the download it will create the needed .json file in the folder,</span>
 <span class="sd">        where the data was saved. It will be called &quot;last_download_date&quot; and it will include some information about the filepath download-date and filename.</span>
 
-<span class="sd">        :param download_path: can be generated by self.external_directory_indicator(). Or if you want to download something manually. The path would look like this: &quot;climate_environment/CDC/observations_germany/climate/10_minutes/air_temperature/historical/&quot;</span>
+<span class="sd">        :param download_path: **as string**. Can be generated by self.external_directory_indicator(). Or if you want to download something manually. The path would look like this: &quot;climate_environment/CDC/observations_germany/climate/10_minutes/air_temperature/historical/&quot;</span>
 <span class="sd">        :return: &quot;download finished&quot; if succeeded.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__external_domain</span> <span class="o">+</span> <span class="n">download_path</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s2">&quot;html.parser&quot;</span><span class="p">)</span>
@@ -186,7 +186,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        **Description:** Will generate a local_list with all filenames.</span>
 
-<span class="sd">        :return: local_list</span>
+<span class="sd">        :return: local_list **as list**</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">local_list</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">((</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__local_path</span><span class="p">)))):</span>
@@ -197,7 +197,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        **Description:** Extract all the files inside a path</span>
 
-<span class="sd">        :param looking_for: Should be &quot;.zip&quot;.</span>
+<span class="sd">        :param looking_for: **as string**. Should be &quot;.zip&quot;.</span>
 <span class="sd">        :return: &quot;Extracting finished&quot; if succeeded.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">path_i</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__local_path</span><span class="p">)</span>

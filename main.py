@@ -1,6 +1,7 @@
 import os
 from DwdMain import main_dwd
 from DwdDataScrapper import DataScrapper
+from DwdDataPrep import Reader
 
 local_domain_ = r"C:/Users/VID/Desktop/Betriebliche_Praxis/"
 os.chdir(local_domain_)
@@ -60,8 +61,17 @@ dwd = main_dwd(local_domain=local_domain_,
 # Generate some data for DwdMapCreator
 # dwd.main_data_map()
 
+path_to_txt = r"C:/Users/VID/Desktop/Betriebliche_Praxis/climate_environment/CDC/observations_germany/climate/10_minutes/air_temperature/historical/zehn_min_tu_Beschreibung_Stationen.txt"
+local_path = r"C:/Users/VID/Desktop/Betriebliche_Praxis/climate_environment/CDC/observations_germany/climate/10_minutes/air_temperature/historical/extracted_files/"
 
-a = DataScrapper("https://opendata.dwd.de/", "climate_environment/CDC/observations_germany/climate/10_minutes/air_temperature/", local_domain_, [".zip", ".pdf", ".txt"]).generate_local_list()
+a,b,c,d,e = Reader(path_to_txt=path_to_txt, local_path=local_path, data_type="TU").data_prep_for_new_location(199001010000,199901010000,50,10,0)
+
+print(type(a))
+print(type(b))
+print(type(c))
+print(type(d))
+print(type(e))
+
 
 print(a)
 
