@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
 import os
+import os
 
 pd.set_option('display.max_rows', 500)
 pd.set_option('display.max_columns', 500)
@@ -206,12 +207,20 @@ class NearNeighbor:
             if compare_n_avg:
                 sorted_distance = np.sort(self.distance[0], axis=0)[2:self.k_factor + 1]
                 mask_for_quality = date_range_df.iloc[:,2:].notnull()
-                quality_mask = mask_for_quality.multiply(sorted_distance, fill_value=np.nan).replace({0:np.nan})
-                data_quality = quality_mask.div(quality_mask.sum(axis=1, min_count=1), axis=0)
+                quality_mask = mask_for_quality.multiply(sorted_distance, fill_value=np.nan).replace({0: np.nan})
+                count_data_in_row = pd.DataFrame(quality_mask.count(axis=1), columns=[column_name_list[1]])
+                for i in range(0, self.k_factor-2):
+                    count_data_in_row[column_name_list[i+2]] = quality_mask.count(axis=1)
+                data_quality = (1-quality_mask.div(quality_mask.sum(axis=1, min_count=1), axis=0)).div(count_data_in_row-1)
+                print(data_quality.sum(axis=1, min_count=1).max())
+                print(data_quality.sum(axis=1, min_count=1).min())
+                print(len(data_quality))
+                avg_data_quality = data_quality.sum(axis=1, min_count=1).sum()/(len(data_quality)-data_quality.sum().isna().sum())
+                print("avg:", avg_data_quality)
                 data_all = date_range_df
                 data_all_distance = data_all.iloc[:, 2:].mul(data_quality)
                 data_mean = data_all_distance.sum(axis=1, min_count=1)
-                distance_quality = (1 - sorted_distance / np.sum(sorted_distance)) / (self.k_factor - 2)
+                distance_quality = (1 - (sorted_distance / np.sum(sorted_distance))) / (self.k_factor-2)
                 data_to_compare = data_all[compare_station]
                 diff = (data_mean - data_to_compare).abs()
                 maximum = diff.max()
