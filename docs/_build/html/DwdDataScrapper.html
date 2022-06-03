@@ -45,7 +45,10 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">DWD_Project</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="DwdDataPrep.html">DwdDataPrep module</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">DwdDataScrapper module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">DwdDataScrapper module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#getting-started-download-all-air-temperatur-solar-wind-precipitation">getting started: download all (air_temperatur, solar, wind, precipitation)</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="DwdDict.html">DwdDict module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="DwdMain.html">DwdMain module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="DwdNearNeighbor.html">DwdNearNeighbor module</a></li>
@@ -197,6 +200,16 @@ where the data was saved. It will be called “last_download_date” and it will
 
 </dd></dl>
 
+<section id="getting-started-download-all-air-temperatur-solar-wind-precipitation">
+<h2>getting started: download all (air_temperatur, solar, wind, precipitation)<a class="headerlink" href="#getting-started-download-all-air-temperatur-solar-wind-precipitation" title="Permalink to this headline"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">DwdMain</span> <span class="kn">import</span> <span class="n">main_dwd</span>
+<span class="n">main_dwd</span><span class="p">(</span><span class="n">local_domain</span><span class="o">=</span><span class="s2">&quot;YOUR_PATH/&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">main_datascrapper</span><span class="p">(</span><span class="nb">all</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># Will download and unzip all the data for air_temperatur, solar, wind, precipitation (historical, meta_data, now and recent) to YOUR_PATH/.</span>
+<span class="n">main_dwd</span><span class="p">(</span><span class="n">local_domain</span><span class="o">=</span><span class="s2">&quot;YOUR_PATH/&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">main_writer</span><span class="p">(</span><span class="nb">all</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># Will create some .json files inside .../extracted_files/ for faster loading times. This step is important. Inside this .json files will dates and paths for every station.</span>
+</pre></div>
+</div>
+</section>
 </section>
 
 

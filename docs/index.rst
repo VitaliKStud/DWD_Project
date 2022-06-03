@@ -59,6 +59,7 @@ getting started: some station information
 
 .. code-block:: python
 
+
    print(main_dwd(local_domain="YOUR_PATH/",type_of_data="air_temperature", type_of_time="historical").main_station_information("TU_00003"))
    # Let's get some information about a station.
 
@@ -93,8 +94,14 @@ getting started: some station information
    array3: [ 202,   54,   42,  164,  393,    3,...]
    array4: ['TU_00003', 'TU_00164', 'TU_00183', 'TU_00198',...]
 
-getting started: some station information
+getting started: plots
 *****************************************
+
+.. code-block:: python
+
+   #
+
+
 Indices and tables
 ==================
 

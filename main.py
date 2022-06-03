@@ -49,7 +49,7 @@ dwd = main_dwd(local_domain=local_domain_,
 # dwd.main_writer(type_of_data_list=["air_temperature"], type_of_time_list=["recent"], all=False)
 
 # Get some information about any station
-print(main_dwd(local_domain=local_domain_,type_of_data=type_of_data_, type_of_time=type_of_time_, start_date=start_date_, end_date=end_date_).main_activ_stations_in_date())
+# print(main_dwd(local_domain=local_domain_,type_of_data=type_of_data_, type_of_time=type_of_time_, start_date=start_date_, end_date=end_date_).main_activ_stations_in_date())
 # dwd.main_station_array()
 
 # print(dwd.main_activ_stations_in_date())
