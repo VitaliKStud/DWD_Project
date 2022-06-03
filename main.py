@@ -49,10 +49,10 @@ dwd = main_dwd(local_domain=local_domain_,
 # dwd.main_writer(type_of_data_list=["air_temperature"], type_of_time_list=["recent"], all=False)
 
 # Get some information about any station
-# print(dwd.main_station_information("TU_00003"))
+print(main_dwd(local_domain=local_domain_,type_of_data=type_of_data_, type_of_time=type_of_time_, start_date=start_date_, end_date=end_date_).main_activ_stations_in_date())
 # dwd.main_station_array()
 
-print(dwd.main_activ_stations_in_date())
+# print(dwd.main_activ_stations_in_date())
 
 # Plot your data
 # dwd.main_plotter_data(qn_weight=True, distance_weight=False, compare=True, no_plot=False)
@@ -62,16 +62,3 @@ print(dwd.main_activ_stations_in_date())
 
 # Generate some data for DwdMapCreator
 # dwd.main_data_map()
-
-# path_to_txt = r"C:/Users/VID/Desktop/Betriebliche_Praxis/climate_environment/CDC/observations_germany/climate/10_minutes/air_temperature/historical/zehn_min_tu_Beschreibung_Stationen.txt"
-# local_path = r"C:/Users/VID/Desktop/Betriebliche_Praxis/climate_environment/CDC/observations_germany/climate/10_minutes/air_temperature/historical/extracted_files/"
-#
-# a,b,c,d,e = Reader(path_to_txt=path_to_txt, local_path=local_path, data_type="TU").data_prep_for_new_location(199001010000,199901010000,50,10,0)
-#
-# print(type(a))
-# print(type(b))
-# print(type(c))
-# print(type(d))
-# print(type(e))
-
-

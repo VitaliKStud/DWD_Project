@@ -77,15 +77,19 @@ class DwdMain:
         else:
             self.start_date_datetime = datetime.strptime(str(self.start_date), "%Y%m%d%H%M")
             self.end_date_datetime = datetime.strptime(str(self.end_date), "%Y%m%d%H%M")
-        self.load_txt, self.local_path, self.external_path, self.data_type = self.__main_path_loader(self.type_of_data, self.type_of_time)
+        if self.type_of_time == None:
+            pass
+        else:
+            self.load_txt, self.local_path, self.external_path, self.data_type = self.__main_path_loader(self.type_of_data, self.type_of_time)
+            self.reader = Reader(path_to_txt=self.load_txt,
+                                 local_path=self.local_path,
+                                 data_type=self.data_type)
         self.looking_for = looking_for
         self.type_of_time_list = type_of_time_list
         self.type_of_data_list = type_of_data_list
         self.unit_dict = unit_dict
         self.title_dict = title_dict
-        self.reader = Reader(path_to_txt=self.load_txt,
-                             local_path=self.local_path,
-                             data_type=self.data_type)
+
 
     def __transfrom_compare_station(self, compare_station):
         """
@@ -131,8 +135,12 @@ class DwdMain:
                              local_domain=self.local_domain,
                              ending=self.ending).main_update_data()
         else:
+            print(self.external_domain)
+            print(self.external_path_global)
+            print(self.local_domain)
+            print(self.ending)
             DataScrapper(external_domain=self.external_domain,
-                         external_path=self.external_path,
+                         external_path=self.external_path_global+"/"+self.type_of_data+"/",
                          local_domain=self.local_domain,
                          ending=self.ending).main_update_data()
 
@@ -426,8 +434,8 @@ class DwdMain:
 
 
 def main_dwd(local_domain,
-             type_of_data,
-             type_of_time,
+             type_of_data=None,
+             type_of_time=None,
              start_date=None,
              end_date=None,
              compare_station=None,

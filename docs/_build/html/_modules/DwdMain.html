@@ -147,15 +147,19 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">start_date_datetime</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_date</span><span class="p">),</span> <span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">%H%M&quot;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">end_date_datetime</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">end_date</span><span class="p">),</span> <span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">%H%M&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">load_txt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">local_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">external_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__main_path_loader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type_of_data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_of_time</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_of_time</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load_txt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">local_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">external_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__main_path_loader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">type_of_data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">type_of_time</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="n">Reader</span><span class="p">(</span><span class="n">path_to_txt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">load_txt</span><span class="p">,</span>
+                                 <span class="n">local_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">local_path</span><span class="p">,</span>
+                                 <span class="n">data_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data_type</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">looking_for</span> <span class="o">=</span> <span class="n">looking_for</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">type_of_time_list</span> <span class="o">=</span> <span class="n">type_of_time_list</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">type_of_data_list</span> <span class="o">=</span> <span class="n">type_of_data_list</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">unit_dict</span> <span class="o">=</span> <span class="n">unit_dict</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">title_dict</span> <span class="o">=</span> <span class="n">title_dict</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">reader</span> <span class="o">=</span> <span class="n">Reader</span><span class="p">(</span><span class="n">path_to_txt</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">load_txt</span><span class="p">,</span>
-                             <span class="n">local_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">local_path</span><span class="p">,</span>
-                             <span class="n">data_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data_type</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">title_dict</span> <span class="o">=</span> <span class="n">title_dict</span></div>
+
 
     <span class="k">def</span> <span class="nf">__transfrom_compare_station</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">compare_station</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -201,8 +205,12 @@
                              <span class="n">local_domain</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">local_domain</span><span class="p">,</span>
                              <span class="n">ending</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ending</span><span class="p">)</span><span class="o">.</span><span class="n">main_update_data</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">external_domain</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">external_path_global</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">local_domain</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ending</span><span class="p">)</span>
             <span class="n">DataScrapper</span><span class="p">(</span><span class="n">external_domain</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">external_domain</span><span class="p">,</span>
-                         <span class="n">external_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">external_path</span><span class="p">,</span>
+                         <span class="n">external_path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">external_path_global</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">type_of_data</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="p">,</span>
                          <span class="n">local_domain</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">local_domain</span><span class="p">,</span>
                          <span class="n">ending</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ending</span><span class="p">)</span><span class="o">.</span><span class="n">main_update_data</span><span class="p">()</span></div>
 
@@ -496,8 +504,8 @@
 
 
 <div class="viewcode-block" id="main_dwd"><a class="viewcode-back" href="../DwdMain.html#DwdMain.main_dwd">[docs]</a><span class="k">def</span> <span class="nf">main_dwd</span><span class="p">(</span><span class="n">local_domain</span><span class="p">,</span>
-             <span class="n">type_of_data</span><span class="p">,</span>
-             <span class="n">type_of_time</span><span class="p">,</span>
+             <span class="n">type_of_data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+             <span class="n">type_of_time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
              <span class="n">start_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
              <span class="n">end_date</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
              <span class="n">compare_station</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -520,7 +528,7 @@
 <span class="sd">    :param z_coordinate: **as float**. Z-coordinates for your chosen location. (Can be skipped for now, maybe important in the future)</span>
 <span class="sd">    :param k_factor: **as int**. How many station are you looking around your location?</span>
 <span class="sd">    :param looking_for: **as list**. What data you want to plot?</span>
-<span class="sd">    :return: dwd ***as object***</span>
+<span class="sd">    :return: dwd **as object**</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">type_dict</span><span class="p">,</span> <span class="n">load_txt_dict</span><span class="p">,</span> <span class="n">rest_dict</span><span class="p">,</span> <span class="n">title_dict</span><span class="p">,</span> <span class="n">unit_dict</span><span class="p">,</span> <span class="n">type_of_time_list</span><span class="p">,</span> <span class="n">type_of_data_list</span><span class="p">,</span> <span class="n">external_domain</span><span class="p">,</span> <span class="n">external_path_global</span><span class="p">,</span> <span class="n">ending</span> <span class="o">=</span> <span class="n">get_dwd_dict</span><span class="p">()</span>
     <span class="n">dwd</span> <span class="o">=</span> <span class="n">DwdMain</span><span class="p">(</span><span class="n">external_domain</span><span class="o">=</span><span class="n">external_domain</span><span class="p">,</span>
