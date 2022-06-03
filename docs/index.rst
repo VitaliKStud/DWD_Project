@@ -60,6 +60,7 @@ getting started: some station information
 .. code-block:: python
 
 
+   from DwdMain import main_dwd
    print(main_dwd(local_domain="YOUR_PATH/",type_of_data="air_temperature", type_of_time="historical").main_station_information("TU_00003"))
    # Let's get some information about a station.
 
@@ -95,12 +96,84 @@ getting started: some station information
    array4: ['TU_00003', 'TU_00164', 'TU_00183', 'TU_00198',...]
 
 getting started: plots
-*****************************************
+***********************
 
 .. code-block:: python
 
-   #
+   from DwdMain import main_dwd
+   main_dwd(local_domain="YOUR_PATH/", type_of_data="air_temperature", type_of_time="historical",).main_plotter_stations(projection=False)
+   # Will plot two graphs. 3D and 2D as a "heatmap" for all the station of this type of data and this type of time.
 
+.. image:: _image/german_stations_3dair_temperature.png
+  :width: 500
+  :alt: Alternative text
+
+.. image:: _image/german_stations_2d_air_temperature.png
+  :width: 500
+  :alt: Alternative text
+
+.. note::
+   If projection == True, it will project heights in created 3D-plot on the "Stationshoehe" - axe.
+
+getting started: maps
+***********************
+
+.. code-block:: python
+
+   from DwdMain import main_dwd
+   local_domain_ = r"YOUR_PATH/"
+   looking_for_ = ["PP_10"]
+   start_date_ = 199401190000
+   end_date_   = 199501010000
+   x_coordinate_ = 6.0941
+   y_coordinate_ = 50.7827
+   z_coordinate_ = 0
+   k_factor_ = 10
+   type_of_data_ = "air_temperature"
+   type_of_time_ = "historical"
+   dwd = main_dwd( local_domain=local_domain_,
+                   type_of_data=type_of_data_,
+                   type_of_time=type_of_time_,
+                   start_date=start_date_,
+                   end_date=end_date_,
+                   x_coordinate=x_coordinate_,
+                   y_coordinate=y_coordinate_,
+                   z_coordinate=z_coordinate_,
+                   k_factor=k_factor_)
+   dwd.main_data_map()
+   # Is creating some .json files inside the .../MapCreater/
+   # zip_data_activ: All the activ stations. (From "information".txt)
+   # zip_data_active_in_date: All the activ stations in your date.
+   # zip_data_near: Alle the activ stations around your location.
+   # zip_data_not_activ: All the not activ stations. (From "information".txt)
+   # zip_no_data: Alle the stations without data. (From "information".txt)
+   # Is important for DwdMapCreator
+
+   # now we saved the data. Let's show it on a map.
+   from DwdMap import DwdMap
+   DwdMap("NearStations").create_map()
+   DwdMap("Stations").create_map()
+   DwdMap("ActivInDate").create_map()
+   # choose between "NearStations" , "Stations" , "ActivInDate"
+   # "NearStations": Will plot all the stations (k_factor) near your location.
+   # "Stations": Will plot all the available stations (for all times)
+   # "ActivInDate": Will plot all the activ stations for your timedelta (end_time - start_time)
+
+.. image:: _image/near_stations.png
+  :width: 500
+  :alt: Alternative text
+
+.. image:: _image/stations.png
+  :width: 500
+  :alt: Alternative text
+
+.. image:: _image/activ_in_date.png
+  :width: 500
+  :alt: test
+
+.. note::
+   You should open DwdMapCreator with Jupyter Notebooks. Otherwise it won't show the locations on a map. A lot of red locations on the second map. It means
+   the data probably not up to date. You should update your data.
 
 Indices and tables
 ==================

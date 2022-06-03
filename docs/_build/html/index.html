@@ -70,7 +70,7 @@
            <div itemprop="articleBody">
              
   <section id="welcome-to-dwd-projects-documentation">
-<h1><a class="toc-backref" href="#id2">Welcome to DWD Project’s documentation!</a><a class="headerlink" href="#welcome-to-dwd-projects-documentation" title="Permalink to this headline"></a></h1>
+<h1><a class="toc-backref" href="#id1">Welcome to DWD Project’s documentation!</a><a class="headerlink" href="#welcome-to-dwd-projects-documentation" title="Permalink to this headline"></a></h1>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
@@ -92,15 +92,16 @@
 <div class="contents topic" id="table-of-contents-for-quick-start">
 <p class="topic-title">Table of Contents (for quick start)</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#welcome-to-dwd-projects-documentation" id="id2">Welcome to DWD Project’s documentation!</a></p></li>
-<li><p><a class="reference internal" href="#quick-start" id="id3">Quick-Start</a></p>
+<li><p><a class="reference internal" href="#welcome-to-dwd-projects-documentation" id="id1">Welcome to DWD Project’s documentation!</a></p></li>
+<li><p><a class="reference internal" href="#quick-start" id="id2">Quick-Start</a></p>
 <ul>
-<li><p><a class="reference internal" href="#getting-started-with-dwdmain-module" id="id4">getting started with DwdMain module</a></p>
+<li><p><a class="reference internal" href="#getting-started-with-dwdmain-module" id="id3">getting started with DwdMain module</a></p>
 <ul>
-<li><p><a class="reference internal" href="#getting-started-download-air-temperature" id="id5">getting started: download air_temperature</a></p></li>
-<li><p><a class="reference internal" href="#getting-started-download-all-air-temperatur-solar-wind-precipitation" id="id6">getting started: download all (air_temperatur, solar, wind, precipitation)</a></p></li>
-<li><p><a class="reference internal" href="#getting-started-some-station-information" id="id7">getting started: some station information</a></p></li>
-<li><p><a class="reference internal" href="#id1" id="id8">getting started: some station information</a></p></li>
+<li><p><a class="reference internal" href="#getting-started-download-air-temperature" id="id4">getting started: download air_temperature</a></p></li>
+<li><p><a class="reference internal" href="#getting-started-download-all-air-temperatur-solar-wind-precipitation" id="id5">getting started: download all (air_temperatur, solar, wind, precipitation)</a></p></li>
+<li><p><a class="reference internal" href="#getting-started-some-station-information" id="id6">getting started: some station information</a></p></li>
+<li><p><a class="reference internal" href="#getting-started-plots" id="id7">getting started: plots</a></p></li>
+<li><p><a class="reference internal" href="#getting-started-maps" id="id8">getting started: maps</a></p></li>
 </ul>
 </li>
 </ul>
@@ -110,11 +111,11 @@
 </div>
 </section>
 <section id="quick-start">
-<h1><a class="toc-backref" href="#id3">Quick-Start</a><a class="headerlink" href="#quick-start" title="Permalink to this headline"></a></h1>
+<h1><a class="toc-backref" href="#id2">Quick-Start</a><a class="headerlink" href="#quick-start" title="Permalink to this headline"></a></h1>
 <section id="getting-started-with-dwdmain-module">
-<h2><a class="toc-backref" href="#id4">getting started with DwdMain module</a><a class="headerlink" href="#getting-started-with-dwdmain-module" title="Permalink to this headline"></a></h2>
+<h2><a class="toc-backref" href="#id3">getting started with DwdMain module</a><a class="headerlink" href="#getting-started-with-dwdmain-module" title="Permalink to this headline"></a></h2>
 <section id="getting-started-download-air-temperature">
-<h3><a class="toc-backref" href="#id5">getting started: download air_temperature</a><a class="headerlink" href="#getting-started-download-air-temperature" title="Permalink to this headline"></a></h3>
+<h3><a class="toc-backref" href="#id4">getting started: download air_temperature</a><a class="headerlink" href="#getting-started-download-air-temperature" title="Permalink to this headline"></a></h3>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>for windows user</p>
@@ -128,7 +129,7 @@
 </div>
 </section>
 <section id="getting-started-download-all-air-temperatur-solar-wind-precipitation">
-<h3><a class="toc-backref" href="#id6">getting started: download all (air_temperatur, solar, wind, precipitation)</a><a class="headerlink" href="#getting-started-download-all-air-temperatur-solar-wind-precipitation" title="Permalink to this headline"></a></h3>
+<h3><a class="toc-backref" href="#id5">getting started: download all (air_temperatur, solar, wind, precipitation)</a><a class="headerlink" href="#getting-started-download-all-air-temperatur-solar-wind-precipitation" title="Permalink to this headline"></a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">DwdMain</span> <span class="kn">import</span> <span class="n">main_dwd</span>
 <span class="n">main_dwd</span><span class="p">(</span><span class="n">local_domain</span><span class="o">=</span><span class="s2">&quot;YOUR_PATH/&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">main_datascrapper</span><span class="p">(</span><span class="nb">all</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="c1"># Will download and unzip all the data for air_temperatur, solar, wind, precipitation (historical, meta_data, now and recent) to YOUR_PATH/.</span>
@@ -138,8 +139,9 @@
 </div>
 </section>
 <section id="getting-started-some-station-information">
-<h3><a class="toc-backref" href="#id7">getting started: some station information</a><a class="headerlink" href="#getting-started-some-station-information" title="Permalink to this headline"></a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">main_dwd</span><span class="p">(</span><span class="n">local_domain</span><span class="o">=</span><span class="s2">&quot;YOUR_PATH/&quot;</span><span class="p">,</span><span class="n">type_of_data</span><span class="o">=</span><span class="s2">&quot;air_temperature&quot;</span><span class="p">,</span> <span class="n">type_of_time</span><span class="o">=</span><span class="s2">&quot;historical&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">main_station_information</span><span class="p">(</span><span class="s2">&quot;TU_00003&quot;</span><span class="p">))</span>
+<h3><a class="toc-backref" href="#id6">getting started: some station information</a><a class="headerlink" href="#getting-started-some-station-information" title="Permalink to this headline"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">DwdMain</span> <span class="kn">import</span> <span class="n">main_dwd</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">main_dwd</span><span class="p">(</span><span class="n">local_domain</span><span class="o">=</span><span class="s2">&quot;YOUR_PATH/&quot;</span><span class="p">,</span><span class="n">type_of_data</span><span class="o">=</span><span class="s2">&quot;air_temperature&quot;</span><span class="p">,</span> <span class="n">type_of_time</span><span class="o">=</span><span class="s2">&quot;historical&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">main_station_information</span><span class="p">(</span><span class="s2">&quot;TU_00003&quot;</span><span class="p">))</span>
 <span class="c1"># Let&#39;s get some information about a station.</span>
 
 <span class="k">return</span><span class="p">:</span>
@@ -175,8 +177,70 @@
 </pre></div>
 </div>
 </section>
-<section id="id1">
-<h3><a class="toc-backref" href="#id8">getting started: some station information</a><a class="headerlink" href="#id1" title="Permalink to this headline"></a></h3>
+<section id="getting-started-plots">
+<h3><a class="toc-backref" href="#id7">getting started: plots</a><a class="headerlink" href="#getting-started-plots" title="Permalink to this headline"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">DwdMain</span> <span class="kn">import</span> <span class="n">main_dwd</span>
+<span class="n">main_dwd</span><span class="p">(</span><span class="n">local_domain</span><span class="o">=</span><span class="s2">&quot;YOUR_PATH/&quot;</span><span class="p">,</span> <span class="n">type_of_data</span><span class="o">=</span><span class="s2">&quot;air_temperature&quot;</span><span class="p">,</span> <span class="n">type_of_time</span><span class="o">=</span><span class="s2">&quot;historical&quot;</span><span class="p">,)</span><span class="o">.</span><span class="n">main_plotter_stations</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="c1"># Will plot two graphs. 3D and 2D as a &quot;heatmap&quot; for all the station of this type of data and this type of time.</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/german_stations_3dair_temperature.png"><img alt="Alternative text" src="_images/german_stations_3dair_temperature.png" style="width: 500px;" /></a>
+<a class="reference internal image-reference" href="_images/german_stations_2d_air_temperature.png"><img alt="Alternative text" src="_images/german_stations_2d_air_temperature.png" style="width: 500px;" /></a>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If projection == True, it will project heights in created 3D-plot on the “Stationshoehe” - axe.</p>
+</div>
+</section>
+<section id="getting-started-maps">
+<h3><a class="toc-backref" href="#id8">getting started: maps</a><a class="headerlink" href="#getting-started-maps" title="Permalink to this headline"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">DwdMain</span> <span class="kn">import</span> <span class="n">main_dwd</span>
+<span class="n">local_domain_</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;YOUR_PATH/&quot;</span>
+<span class="n">looking_for_</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;PP_10&quot;</span><span class="p">]</span>
+<span class="n">start_date_</span> <span class="o">=</span> <span class="mi">199401190000</span>
+<span class="n">end_date_</span>   <span class="o">=</span> <span class="mi">199501010000</span>
+<span class="n">x_coordinate_</span> <span class="o">=</span> <span class="mf">6.0941</span>
+<span class="n">y_coordinate_</span> <span class="o">=</span> <span class="mf">50.7827</span>
+<span class="n">z_coordinate_</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">k_factor_</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">type_of_data_</span> <span class="o">=</span> <span class="s2">&quot;air_temperature&quot;</span>
+<span class="n">type_of_time_</span> <span class="o">=</span> <span class="s2">&quot;historical&quot;</span>
+<span class="n">dwd</span> <span class="o">=</span> <span class="n">main_dwd</span><span class="p">(</span> <span class="n">local_domain</span><span class="o">=</span><span class="n">local_domain_</span><span class="p">,</span>
+                <span class="n">type_of_data</span><span class="o">=</span><span class="n">type_of_data_</span><span class="p">,</span>
+                <span class="n">type_of_time</span><span class="o">=</span><span class="n">type_of_time_</span><span class="p">,</span>
+                <span class="n">start_date</span><span class="o">=</span><span class="n">start_date_</span><span class="p">,</span>
+                <span class="n">end_date</span><span class="o">=</span><span class="n">end_date_</span><span class="p">,</span>
+                <span class="n">x_coordinate</span><span class="o">=</span><span class="n">x_coordinate_</span><span class="p">,</span>
+                <span class="n">y_coordinate</span><span class="o">=</span><span class="n">y_coordinate_</span><span class="p">,</span>
+                <span class="n">z_coordinate</span><span class="o">=</span><span class="n">z_coordinate_</span><span class="p">,</span>
+                <span class="n">k_factor</span><span class="o">=</span><span class="n">k_factor_</span><span class="p">)</span>
+<span class="n">dwd</span><span class="o">.</span><span class="n">main_data_map</span><span class="p">()</span>
+<span class="c1"># Is creating some .json files inside the .../MapCreater/</span>
+<span class="c1"># zip_data_activ: All the activ stations. (From &quot;information&quot;.txt)</span>
+<span class="c1"># zip_data_active_in_date: All the activ stations in your date.</span>
+<span class="c1"># zip_data_near: Alle the activ stations around your location.</span>
+<span class="c1"># zip_data_not_activ: All the not activ stations. (From &quot;information&quot;.txt)</span>
+<span class="c1"># zip_no_data: Alle the stations without data. (From &quot;information&quot;.txt)</span>
+<span class="c1"># Is important for DwdMapCreator</span>
+
+<span class="c1"># now we saved the data. Let&#39;s show it on a map.</span>
+<span class="kn">from</span> <span class="nn">DwdMap</span> <span class="kn">import</span> <span class="n">DwdMap</span>
+<span class="n">DwdMap</span><span class="p">(</span><span class="s2">&quot;NearStations&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">create_map</span><span class="p">()</span>
+<span class="n">DwdMap</span><span class="p">(</span><span class="s2">&quot;Stations&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">create_map</span><span class="p">()</span>
+<span class="n">DwdMap</span><span class="p">(</span><span class="s2">&quot;ActivInDate&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">create_map</span><span class="p">()</span>
+<span class="c1"># choose between &quot;NearStations&quot; , &quot;Stations&quot; , &quot;ActivInDate&quot;</span>
+<span class="c1"># &quot;NearStations&quot;: Will plot all the stations (k_factor) near your location.</span>
+<span class="c1"># &quot;Stations&quot;: Will plot all the available stations (for all times)</span>
+<span class="c1"># &quot;ActivInDate&quot;: Will plot all the activ stations for your timedelta (end_time - start_time)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/near_stations.png"><img alt="Alternative text" src="_images/near_stations.png" style="width: 500px;" /></a>
+<a class="reference internal image-reference" href="_images/stations.png"><img alt="Alternative text" src="_images/stations.png" style="width: 500px;" /></a>
+<a class="reference internal image-reference" href="_images/activ_in_date.png"><img alt="test" src="_images/activ_in_date.png" style="width: 500px;" /></a>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You should open DwdMapCreator with Jupyter Notebooks. Otherwise it won’t show the locations on a map. A lot of red locations on the second map. It means
+the data probably not up to date. You should update your data.</p>
+</div>
 </section>
 </section>
 </section>

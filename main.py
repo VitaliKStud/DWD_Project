@@ -58,7 +58,18 @@ dwd = main_dwd(local_domain=local_domain_,
 # dwd.main_plotter_data(qn_weight=True, distance_weight=False, compare=True, no_plot=False)
 # dwd.main_plotter_data(qn_weight=False, distance_weight=True, compare=True, no_plot=False)
 # dwd.main_plotter_data(qn_weight=False, distance_weight=False, compare=True, no_plot=False)
-# dwd.main_plotter_stations(projection=False)
+# main_dwd(local_domain=local_domain_, type_of_data=type_of_data_, type_of_time=type_of_time_,).main_plotter_stations(projection=False)
+
+
+main_dwd(local_domain=local_domain_,
+         type_of_data=type_of_data_,
+         type_of_time=type_of_time_,
+         start_date=start_date_,
+         end_date=end_date_,
+         x_coordinate=x_coordinate_,
+         y_coordinate=y_coordinate_,
+         z_coordinate=z_coordinate_,
+         k_factor=k_factor_).main_data_map()
 
 # Generate some data for DwdMapCreator
 # dwd.main_data_map()
