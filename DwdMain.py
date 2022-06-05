@@ -251,11 +251,15 @@ class DwdMain:
                                  title_dict=self.title_dict)
         if compare:
             if no_plot:
-                pass
+                my_list = [maximum, avg_diff[0]]
+                return my_list
             else:
                 plotter.plotting_compare(compare_station=self.compare_station, data_to_compare=data_to_compare, diff=diff, maximum=maximum, avg_diff=avg_diff, type_of_method=type_of_method)
         else:
-            plotter.plotting_data(type_of_method=type_of_method)
+            if no_plot:
+                return data_all, data_mean
+            else:
+                plotter.plotting_data(type_of_method=type_of_method)
 
     def main_plotter_stations(self, projection=False):
         """
@@ -348,7 +352,7 @@ class DwdMain:
                                                                                                                                                                distance_weight_n=distance_weight,
                                                                                                                                                                compare_n=compare,
                                                                                                                                                                no_plot_n=no_plot)
-                    self.__main_plotter_for_data(data_all=data_all_n,
+                    return self.__main_plotter_for_data(data_all=data_all_n,
                                                  data_mean=data_mean_n,
                                                  index_for_plot=index_for_plot_n,
                                                  column_name_list=column_name_list_n,
@@ -381,7 +385,7 @@ class DwdMain:
                                                                                                                                                                distance_weight_n=distance_weight,
                                                                                                                                                                compare_n=compare,
                                                                                                                                                                no_plot_n=no_plot)
-                    self.__main_plotter_for_data(data_all=data_all_n,
+                    return self.__main_plotter_for_data(data_all=data_all_n,
                                                  data_mean=data_mean_n,
                                                  index_for_plot=index_for_plot_n,
                                                  column_name_list=column_name_list_n,
