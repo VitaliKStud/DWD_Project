@@ -162,7 +162,7 @@ end_date_ = 199402191020
 x_coordinate_ = 6.0941  # 7 for compare == False
 y_coordinate_ = 50.7827  # 51 for compare == False
 z_coordinate_ = 0  # not needed for now (maybe in future)
-k_factor_ = 10 # how many station are you looking for around your location? 7 means, it will find 7 next stations for your location
+k_factor_ = 2 # how many station are you looking for around your location? 7 means, it will find 7 next stations for your location
 compare_station_ = "wind_00003"  # needed for comparing (don't forget to set the prefix (wind_)
 type_of_data_ = "wind"
 type_of_time_ = "historical"
@@ -179,5 +179,5 @@ dwd = main_dwd(local_domain=local_domain_,
                looking_for=looking_for_)
 
 # dwd.main_plotter_data(qn_weight=False, distance_weight=True, compare=False, no_plot=False)
-# dwd.main_plotter_data(qn_weight=False, distance_weight=False, compare=True, no_plot=True)
+dwd.main_plotter_data(qn_weight=False, distance_weight=False, compare=False, no_plot=True)
 # dwd.main_plotter_data(qn_weight=False, distance_weight=True, compare=True, no_plot=True)

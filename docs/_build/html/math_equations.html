@@ -17,6 +17,7 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
         <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script>window.MathJax = {"chtml": {"displayAlign": "left"}}</script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -46,7 +47,10 @@
 <li class="toctree-l1"><a class="reference internal" href="modules.html">DWD_Project</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quick_start.html">Quick-Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quick_start.html#indices-and-tables">Indices and tables</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Mathematical equations</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Mathematical equations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#calculations">Calculations</a></li>
+</ul>
+</li>
 </ul>
 
         </div>
@@ -75,7 +79,59 @@
              
   <section id="mathematical-equations">
 <h1>Mathematical equations<a class="headerlink" href="#mathematical-equations" title="Permalink to this headline"></a></h1>
+<section id="calculations">
+<h2>Calculations<a class="headerlink" href="#calculations" title="Permalink to this headline"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">DwdMain</span> <span class="kn">import</span> <span class="n">main_dwd</span>
+<span class="n">local_domain_</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;YOUR_PATH/&quot;</span>
+<span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">local_domain_</span><span class="p">)</span>
+<span class="n">looking_for_</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;FF_10&quot;</span><span class="p">]</span>
+<span class="n">start_date_</span> <span class="o">=</span> <span class="mi">199401190000</span>
+<span class="n">end_date_</span>   <span class="o">=</span> <span class="mi">199402191020</span>
+<span class="n">x_coordinate_</span> <span class="o">=</span> <span class="mf">6.0941</span> <span class="c1"># 7 for compare == False</span>
+<span class="n">y_coordinate_</span> <span class="o">=</span> <span class="mf">50.7827</span> <span class="c1"># 51 for compare == False</span>
+<span class="n">z_coordinate_</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># not needed for now (maybe in future)</span>
+<span class="n">k_factor_</span> <span class="o">=</span> <span class="mi">7</span> <span class="c1"># how many station are you looking for around your location? 7 means, it will find 7 next stations for your location</span>
+<span class="n">compare_station_</span> <span class="o">=</span> <span class="s2">&quot;wind_00003&quot;</span> <span class="c1"># needed for comparing (don&#39;t forget to set the prefix (wind_)</span>
+<span class="n">type_of_data_</span> <span class="o">=</span> <span class="s2">&quot;wind&quot;</span>
+<span class="n">type_of_time_</span> <span class="o">=</span> <span class="s2">&quot;historical&quot;</span>
+<span class="n">dwd</span> <span class="o">=</span> <span class="n">main_dwd</span><span class="p">(</span><span class="n">local_domain</span><span class="o">=</span><span class="n">local_domain_</span><span class="p">,</span>
+               <span class="n">type_of_data</span><span class="o">=</span><span class="n">type_of_data_</span><span class="p">,</span>
+               <span class="n">type_of_time</span><span class="o">=</span><span class="n">type_of_time_</span><span class="p">,</span>
+               <span class="n">start_date</span><span class="o">=</span><span class="n">start_date_</span><span class="p">,</span>
+               <span class="n">end_date</span><span class="o">=</span><span class="n">end_date_</span><span class="p">,</span>
+               <span class="n">compare_station</span><span class="o">=</span><span class="n">compare_station_</span><span class="p">,</span>
+               <span class="n">x_coordinate</span><span class="o">=</span><span class="n">x_coordinate_</span><span class="p">,</span>
+               <span class="n">y_coordinate</span><span class="o">=</span><span class="n">y_coordinate_</span><span class="p">,</span>
+               <span class="n">z_coordinate</span><span class="o">=</span><span class="n">z_coordinate_</span><span class="p">,</span>
+               <span class="n">k_factor</span><span class="o">=</span><span class="n">k_factor_</span><span class="p">,</span>
+               <span class="n">looking_for</span><span class="o">=</span><span class="n">looking_for_</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dwd</span><span class="o">.</span><span class="n">main_plotter_data</span><span class="p">(</span><span class="n">qn_weight</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">distance_weight</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">compare</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">no_plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\begin{split}A:= Matrix \ with \ your \ data \\
+A =
+\left[ \begin{array}{rrr}
+x_{11} &amp; x_{12} &amp; ... &amp; x_{1j}\\
+x_{21} &amp; x_{22} &amp; ... &amp; x_{2j}\\
+...    &amp; ... &amp; ...    &amp; ...   \\
+x_{i1} &amp; x_{i2} &amp; ... &amp; x_{ij} \\
+\end{array}\right]\\\end{split}\\y(i) = \frac{\displaystyle\sum\limits_{j=0}^{kfactor} x_{ij}}{kfactor}\end{aligned}\end{align} \]</div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dwd</span><span class="o">.</span><span class="n">main_plotter_data</span><span class="p">(</span><span class="n">qn_weight</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">distance_weight</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">compare</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">no_plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
 <p>If <span class="math notranslate nohighlight">\(\sigma_{1}\)</span> equals <span class="math notranslate nohighlight">\(\sigma_{2}\)</span> then etc, etc.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dwd</span><span class="o">.</span><span class="n">main_plotter_data</span><span class="p">(</span><span class="n">qn_weight</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">distance_weight</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">compare</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">no_plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If <span class="math notranslate nohighlight">\(\sigma_{1}\)</span> equals <span class="math notranslate nohighlight">\(\sigma_{2}\)</span> then etc, etc.</p>
+</section>
 </section>
 
 
