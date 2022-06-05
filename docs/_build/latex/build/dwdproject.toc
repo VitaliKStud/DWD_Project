@@ -19,5 +19,6 @@
 \contentsline {chapter}{\numberline {3}Indices and tables}{23}{chapter.3}%
 \contentsline {chapter}{\numberline {4}Mathematical equations}{25}{chapter.4}%
 \contentsline {section}{\numberline {4.1}Calculations}{25}{section.4.1}%
-\contentsline {chapter}{\numberline {5}Indices and tables}{27}{chapter.5}%
-\contentsline {chapter}{Python Module Index}{29}{section*.80}%
+\contentsline {subsection}{\numberline {4.1.1}method: standard average}{26}{subsection.4.1.1}%
+\contentsline {chapter}{\numberline {5}Indices and tables}{29}{chapter.5}%
+\contentsline {chapter}{Python Module Index}{31}{section*.80}%

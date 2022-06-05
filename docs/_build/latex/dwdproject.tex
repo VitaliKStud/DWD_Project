@@ -2060,22 +2060,64 @@ If you are comparing your calculations, make sure, that the x\_coordinate and y\
                \PYG{n}{looking\PYGZus{}for}\PYG{o}{=}\PYG{n}{looking\PYGZus{}for\PYGZus{}}\PYG{p}{)}
 \end{sphinxVerbatim}
 
+
+\subsection{method: standard average}
+\label{\detokenize{math_equations:method-standard-average}}
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{n}{dwd}\PYG{o}{.}\PYG{n}{main\PYGZus{}plotter\PYGZus{}data}\PYG{p}{(}\PYG{n}{qn\PYGZus{}weight}\PYG{o}{=}\PYG{k+kc}{False}\PYG{p}{,} \PYG{n}{distance\PYGZus{}weight}\PYG{o}{=}\PYG{k+kc}{False}\PYG{p}{,} \PYG{n}{compare}\PYG{o}{=}\PYG{k+kc}{True}\PYG{p}{,} \PYG{n}{no\PYGZus{}plot}\PYG{o}{=}\PYG{k+kc}{False}\PYG{p}{)}
 \end{sphinxVerbatim}
 
-\begin{sphinxadmonition}{note}{Note:}\begin{align*}\!\begin{aligned}
-A:= Matrix \ with \ your \ data \\
+\sphinxAtStartPar
+\sphinxstylestrong{if compare == False}
+\begin{equation*}
+\begin{split}\begin{eqnarray}
+     A =
+     \left[ \begin{array}{rrr}
+     x_{11} & x_{12} & ... & x_{1j}\\
+     x_{21} & x_{22} & ... & x_{2j}\\
+     ...    & ... & ...    & ...   \\
+     x_{i1} & x_{i2} & ... & x_{ij} \\
+     \end{array}\right]\\
+     y(i) = \frac{\displaystyle\sum\limits_{j=1}^{kfactor} x_{ij}}{kfactor}\\
+     \triangle time = endDate - startDate\\
+     A:= Matrix \ with \ your \ data \\
+     kfactor := number \ of \ stations \ around \ your \ location\\
+     y(i) := function \ for \ every \ point \ in \ your \  \triangle time \\
+ \end{eqnarray}\end{split}
+\end{equation*}
+\sphinxAtStartPar
+\sphinxstylestrong{if compare == True}
+\begin{align*}\!\begin{aligned}
 A =
-\left[ \begin{array}{rrr}
-x_{11} & x_{12} & ... & x_{1j}\\
-x_{21} & x_{22} & ... & x_{2j}\\
-...    & ... & ...    & ...   \\
-x_{i1} & x_{i2} & ... & x_{ij} \\
-\end{array}\right]\\\\
-y(i) = \frac{\displaystyle\sum\limits_{j=0}^{kfactor} x_{ij}}{kfactor}\\
-\end{aligned}\end{align*}\end{sphinxadmonition}
-
+  \left[ \begin{array}{rrr}
+  x_{11} & x_{12} & ... & x_{1j}\\
+  x_{21} & x_{22} & ... & x_{2j}\\
+  ...    & ... & ...    & ...   \\
+  x_{i1} & x_{i2} & ... & x_{ij} \\
+  \end{array}\right]\\
+  y(i) = \frac{\displaystyle\sum\limits_{j=2}^{kfactor-1} x_{ij}}{kfactor-1}\\\\
+y = \left(\begin{array}{c}y(1)\\ y(2)\\ y(3) \\ ...\\ y(n)\end{array}\right)\\\\
+c = \left(\begin{array}{c}x_{11}\\ x_{21}\\ x_{31} \\ ...\\ x_{n1}\end{array}\right)\\\\
+\Rightarrow diff = \left(\begin{array}{c}
+ \arrowvert y(1) - x_{11} \arrowvert\\
+ \arrowvert y(2) - x_{21} \arrowvert\\
+ \arrowvert y(3) - x_{31} \arrowvert\\
+ ...\\
+ \arrowvert y(n) - x_{n1} \arrowvert\\
+ \end{array}\right) = \left(\begin{array}{c}
+ d_{1}\\
+ d_{2}\\
+ d_{3} \\
+ ...\\
+ d_{n}\end{array}\right)\\ \\\\
+\Rightarrow avgdiff = \frac{\displaystyle\sum\limits_{i=1}^{n} d_{i}}{n}\\\\
+\triangle time = endDate - startDate\\
+  A:= Matrix \ with \ your \ data \\
+  kfactor := number \ of \ stations \ around \ your \ location\\
+  y(i) := averageFunction \ for \ every \ point \ in \ your \  \triangle time \\
+  y := averageVector \\
+  c := data \ of \ the \ station \ you \ are \ comparing \ with\\\\
+\end{aligned}\end{align*}
 \begin{sphinxVerbatim}[commandchars=\\\{\}]
 \PYG{n}{dwd}\PYG{o}{.}\PYG{n}{main\PYGZus{}plotter\PYGZus{}data}\PYG{p}{(}\PYG{n}{qn\PYGZus{}weight}\PYG{o}{=}\PYG{k+kc}{False}\PYG{p}{,} \PYG{n}{distance\PYGZus{}weight}\PYG{o}{=}\PYG{k+kc}{True}\PYG{p}{,} \PYG{n}{compare}\PYG{o}{=}\PYG{k+kc}{True}\PYG{p}{,} \PYG{n}{no\PYGZus{}plot}\PYG{o}{=}\PYG{k+kc}{False}\PYG{p}{)}
 \end{sphinxVerbatim}
