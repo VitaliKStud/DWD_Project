@@ -41,15 +41,36 @@ method: standard average
 .. code-block:: python
 
 
+   dwd.main_plotter_data(qn_weight=False, distance_weight=False, compare=False, no_plot=False)
    dwd.main_plotter_data(qn_weight=False, distance_weight=False, compare=True, no_plot=False)
 
 
 
-**if compare == False**
+.. note::
+    **if compare == False**
 
-..  math::
+    ..  math::
 
-   \begin{eqnarray}
+       \begin{eqnarray}
+            A =
+            \left[ \begin{array}{rrr}
+            x_{11} & x_{12} & ... & x_{1j}\\
+            x_{21} & x_{22} & ... & x_{2j}\\
+            ...    & ... & ...    & ...   \\
+            x_{i1} & x_{i2} & ... & x_{ij} \\
+            \end{array}\right]\\
+            y(i) = \frac{\displaystyle\sum\limits_{j=1}^{kfactor} x_{ij}}{kfactor}\\
+            \triangle time = endDate - startDate\\
+            A:= Matrix \ with \ your \ data \\
+            kfactor := number \ of \ stations \ around \ your \ location\\
+            y(i) := function \ for \ every \ point \ in \ your \  \triangle time \\
+        \end{eqnarray}
+
+.. note::
+    **if compare == True**
+
+    ..  math::
+
         A =
         \left[ \begin{array}{rrr}
         x_{11} & x_{12} & ... & x_{1j}\\
@@ -57,30 +78,12 @@ method: standard average
         ...    & ... & ...    & ...   \\
         x_{i1} & x_{i2} & ... & x_{ij} \\
         \end{array}\right]\\
-        y(i) = \frac{\displaystyle\sum\limits_{j=1}^{kfactor} x_{ij}}{kfactor}\\
-        \triangle time = endDate - startDate\\
-        A:= Matrix \ with \ your \ data \\
-        kfactor := number \ of \ stations \ around \ your \ location\\
-        y(i) := function \ for \ every \ point \ in \ your \  \triangle time \\
-    \end{eqnarray}
 
-**if compare == True**
+        y(i) = \frac{\displaystyle\sum\limits_{j=2}^{kfactor-1} x_{ij}}{kfactor-1}\\[200mm]
 
-..  math::
+        y = \left(\begin{array}{c}y(1)\\ y(2)\\ y(3) \\ ...\\ y(n)\end{array}\right)\\
 
-        A =
-        \left[ \begin{array}{rrr}
-        x_{11} & x_{12} & ... & x_{1j}\\
-        x_{21} & x_{22} & ... & x_{2j}\\
-        ...    & ... & ...    & ...   \\
-        x_{i1} & x_{i2} & ... & x_{ij} \\
-        \end{array}\right]\\
-        y(i) = \frac{\displaystyle\sum\limits_{j=2}^{kfactor-1} x_{ij}}{kfactor-1}\\
-
-
-      y = \left(\begin{array}{c}y(1)\\ y(2)\\ y(3) \\ ...\\ y(n)\end{array}\right)\\
-
-      c = \left(\begin{array}{c}x_{11}\\ x_{21}\\ x_{31} \\ ...\\ x_{n1}\end{array}\right)\\
+        c = \left(\begin{array}{c}x_{11}\\ x_{21}\\ x_{31} \\ ...\\ x_{n1}\end{array}\right)\\
 
        \Rightarrow diff = \left(\begin{array}{c}
        \arrowvert y(1) - x_{11} \arrowvert\\
@@ -98,18 +101,19 @@ method: standard average
 
         \Rightarrow avgdiff = \frac{\displaystyle\sum\limits_{i=1}^{n} d_{i}}{n}\\
 
-        \triangle time = endDate - startDate\\
-        A:= Matrix \ with \ your \ data \\
-        kfactor := number \ of \ stations \ around \ your \ location\\
-        y(i) := averageFunction \ for \ every \ point \ in \ your \  \triangle time \\
-        y := averageVector \\
-        c := data \ of \ the \ station \ you \ are \ comparing \ with\\
+        \triangle time = \ & endDate - startDate\\
+        A:= \ & Matrix \ with \ your \ data \\
+        kfactor := \ & number \ of \ stations \ around \ your \ location\\
+        y(i) := \ &averageFunction \ for \ every \ point \ in \ your \  \triangle time \\
+        y := \ &averageVector \\
+        c := \ &data \ of \ the \ station \ you \ are \ comparing \ with\\
+
 .. code-block:: python
 
 
     dwd.main_plotter_data(qn_weight=False, distance_weight=True, compare=True, no_plot=False)
 
-If :math:`\sigma_{1}` equals :math:`\sigma_{2}` then etc, etc.
+If :math:`A =\left[ \begin{array}{rrr} x_{11} & x_{12} & ... & x_{1j}\\ x_{21} & x_{22} & ... & x_{2j}\\ ...    & ... & ...    & ...   \\ x_{i1} & x_{i2} & ... & x_{ij} \\ \end{array}\right]` equals :math:`\sigma_{2}` then etc, etc.
 
 .. code-block:: python
 
