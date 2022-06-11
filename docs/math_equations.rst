@@ -44,76 +44,44 @@ method: standard average
    dwd.main_plotter_data(qn_weight=False, distance_weight=False, compare=False, no_plot=False)
    dwd.main_plotter_data(qn_weight=False, distance_weight=False, compare=True, no_plot=False)
 
+.. note::
 
+    **If compare == False:** With a matrix :math:`A =\left[ \begin{array}{rrr} x_{11} & x_{12} & ... & x_{1j}\\ x_{21} & x_{22} & ... & x_{2j}\\ ...    & ... & ...    & ...
+    \\ x_{i1} & x_{i2} & ... & x_{ij} \\ \end{array}\right]`, which includes your data, it will calculate the average for every row:
+    :math:`y(i) = \frac{\displaystyle\sum\limits_{j=1}^{kfactor} x_{ij}}{kfactor}`
 
 .. note::
-    **if compare == False**
+    **if compare == True:** With a matrix :math:`A =\left[ \begin{array}{rrr} x_{11} & x_{12} & ... & x_{1j}\\ x_{21} & x_{22} & ... & x_{2j}\\ ...    & ... & ...    & ...
+    \\ x_{i1} & x_{i2} & ... & x_{ij} \\ \end{array}\right]`, which includes your data, it will calculate the average for every row:
+    :math:`y(i) = \frac{\displaystyle\sum\limits_{j=1}^{kfactor} x_{ij}}{kfactor}`. The result :math:`y = \left(\begin{array}{c}y(1)\\ y(2)\\ y(3) \\ ...\\ y(n)\end{array}\right)\\`
+    represent the average of every row of your matrix A. With the first column of your matrix A, you got the vector :math:`c = \left(\begin{array}{c}x_{11}\\ x_{21}\\ x_{31} \\ ...\\ x_{n1}\end{array}\right)\\`.
+    Vector c describes the station you are comparing your calculations with (distance = 0).
+    So the absolute differences are calculated as following: :math:`diff = \left(\begin{array}{c} \arrowvert y(1) - x_{11} \arrowvert\\
+    \arrowvert y(2) - x_{21} \arrowvert\\
+    \arrowvert y(3) - x_{31} \arrowvert\\
+    ...\\
+    \arrowvert y(n) - x_{n1} \arrowvert\\
+    \end{array}\right) = \left(\begin{array}{c}
+    d_{1}\\
+    d_{2}\\
+    d_{3} \\
+    ...\\
+    d_{n}\end{array}\right)\\ \\`.
+    So the average difference is calculated as: :math:`avgdiff = \frac{\displaystyle\sum\limits_{i=1}^{n} d_{i}}{n}\\`. While kfactor describes the number of stations around your location.
 
-    ..  math::
-
-       \begin{eqnarray}
-            A =
-            \left[ \begin{array}{rrr}
-            x_{11} & x_{12} & ... & x_{1j}\\
-            x_{21} & x_{22} & ... & x_{2j}\\
-            ...    & ... & ...    & ...   \\
-            x_{i1} & x_{i2} & ... & x_{ij} \\
-            \end{array}\right]\\
-            y(i) = \frac{\displaystyle\sum\limits_{j=1}^{kfactor} x_{ij}}{kfactor}\\
-            \triangle time = endDate - startDate\\
-            A:= Matrix \ with \ your \ data \\
-            kfactor := number \ of \ stations \ around \ your \ location\\
-            y(i) := function \ for \ every \ point \ in \ your \  \triangle time \\
-        \end{eqnarray}
-
-.. note::
-    **if compare == True**
-
-    ..  math::
-
-        A =
-        \left[ \begin{array}{rrr}
-        x_{11} & x_{12} & ... & x_{1j}\\
-        x_{21} & x_{22} & ... & x_{2j}\\
-        ...    & ... & ...    & ...   \\
-        x_{i1} & x_{i2} & ... & x_{ij} \\
-        \end{array}\right]\\
-
-        y(i) = \frac{\displaystyle\sum\limits_{j=2}^{kfactor-1} x_{ij}}{kfactor-1}\\[200mm]
-
-        y = \left(\begin{array}{c}y(1)\\ y(2)\\ y(3) \\ ...\\ y(n)\end{array}\right)\\
-
-        c = \left(\begin{array}{c}x_{11}\\ x_{21}\\ x_{31} \\ ...\\ x_{n1}\end{array}\right)\\
-
-       \Rightarrow diff = \left(\begin{array}{c}
-       \arrowvert y(1) - x_{11} \arrowvert\\
-       \arrowvert y(2) - x_{21} \arrowvert\\
-       \arrowvert y(3) - x_{31} \arrowvert\\
-       ...\\
-       \arrowvert y(n) - x_{n1} \arrowvert\\
-       \end{array}\right) = \left(\begin{array}{c}
-       d_{1}\\
-       d_{2}\\
-       d_{3} \\
-       ...\\
-       d_{n}\end{array}\right)\\ \\
-
-
-        \Rightarrow avgdiff = \frac{\displaystyle\sum\limits_{i=1}^{n} d_{i}}{n}\\
-
-        \triangle time = \ & endDate - startDate\\
-        A:= \ & Matrix \ with \ your \ data \\
-        kfactor := \ & number \ of \ stations \ around \ your \ location\\
-        y(i) := \ &averageFunction \ for \ every \ point \ in \ your \  \triangle time \\
-        y := \ &averageVector \\
-        c := \ &data \ of \ the \ station \ you \ are \ comparing \ with\\
-
+method: weighted average (distance)
+***********************************
 .. code-block:: python
 
 
+    dwd.main_plotter_data(qn_weight=False, distance_weight=True, compare=False, no_plot=False)
     dwd.main_plotter_data(qn_weight=False, distance_weight=True, compare=True, no_plot=False)
 
-If :math:`A =\left[ \begin{array}{rrr} x_{11} & x_{12} & ... & x_{1j}\\ x_{21} & x_{22} & ... & x_{2j}\\ ...    & ... & ...    & ...   \\ x_{i1} & x_{i2} & ... & x_{ij} \\ \end{array}\right]` equals :math:`\sigma_{2}` then etc, etc.
+
+.. note::
+    **If compare == False:** With the vector :math:`D = \left(\begin{array}{c}d_{1}\\  ...\\ d_{kfactor}\end{array}\right)\\` as the euclidean distance between a station and your location. It will calculate the weight for the distance as
+    following: :math:`w(i) = \frac{1- \frac{D}{\displaystyle\sum\limits_{i=1}^{kfactor} d_{i}}}{kfactor-1}` for every row in vector D.
+
 
 .. code-block:: python
 

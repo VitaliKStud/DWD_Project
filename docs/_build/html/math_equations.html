@@ -50,6 +50,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Mathematical equations</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#calculations">Calculations</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#method-standard-average">method: standard average</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#method-weighted-average-distance">method: weighted average (distance)</a></li>
 </ul>
 </li>
 </ul>
@@ -119,35 +120,18 @@
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><strong>if compare == False</strong></p>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{eqnarray}
-     A =
-     \left[ \begin{array}{rrr}
-     x_{11} &amp; x_{12} &amp; ... &amp; x_{1j}\\
-     x_{21} &amp; x_{22} &amp; ... &amp; x_{2j}\\
-     ...    &amp; ... &amp; ...    &amp; ...   \\
-     x_{i1} &amp; x_{i2} &amp; ... &amp; x_{ij} \\
-     \end{array}\right]\\
-     y(i) = \frac{\displaystyle\sum\limits_{j=1}^{kfactor} x_{ij}}{kfactor}\\
-     \triangle time = endDate - startDate\\
-     A:= Matrix \ with \ your \ data \\
-     kfactor := number \ of \ stations \ around \ your \ location\\
-     y(i) := function \ for \ every \ point \ in \ your \  \triangle time \\
- \end{eqnarray}\end{split}\]</div>
+<p><strong>If compare == False:</strong> With a matrix <span class="math notranslate nohighlight">\(A =\left[ \begin{array}{rrr} x_{11} &amp; x_{12} &amp; ... &amp; x_{1j}\\ x_{21} &amp; x_{22} &amp; ... &amp; x_{2j}\\ ...    &amp; ... &amp; ...    &amp; ...
+\\ x_{i1} &amp; x_{i2} &amp; ... &amp; x_{ij} \\ \end{array}\right]\)</span>, which includes your data, it will calculate the average for every row:
+<span class="math notranslate nohighlight">\(y(i) = \frac{\displaystyle\sum\limits_{j=1}^{kfactor} x_{ij}}{kfactor}\)</span></p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><strong>if compare == True</strong></p>
-<div class="math notranslate nohighlight">
-\[ \begin{align}\begin{aligned}\begin{split} A =
- \left[ \begin{array}{rrr}
- x_{11} &amp; x_{12} &amp; ... &amp; x_{1j}\\
- x_{21} &amp; x_{22} &amp; ... &amp; x_{2j}\\
- ...    &amp; ... &amp; ...    &amp; ...   \\
- x_{i1} &amp; x_{i2} &amp; ... &amp; x_{ij} \\
- \end{array}\right]\\\end{split}\\\begin{split} y(i) = \frac{\displaystyle\sum\limits_{j=2}^{kfactor-1} x_{ij}}{kfactor-1}\\[200mm]\end{split}\\\begin{split} y = \left(\begin{array}{c}y(1)\\ y(2)\\ y(3) \\ ...\\ y(n)\end{array}\right)\\\end{split}\\\begin{split} c = \left(\begin{array}{c}x_{11}\\ x_{21}\\ x_{31} \\ ...\\ x_{n1}\end{array}\right)\\\end{split}\\\begin{split}\Rightarrow diff = \left(\begin{array}{c}
-\arrowvert y(1) - x_{11} \arrowvert\\
+<p><strong>if compare == True:</strong> With a matrix <span class="math notranslate nohighlight">\(A =\left[ \begin{array}{rrr} x_{11} &amp; x_{12} &amp; ... &amp; x_{1j}\\ x_{21} &amp; x_{22} &amp; ... &amp; x_{2j}\\ ...    &amp; ... &amp; ...    &amp; ...
+\\ x_{i1} &amp; x_{i2} &amp; ... &amp; x_{ij} \\ \end{array}\right]\)</span>, which includes your data, it will calculate the average for every row:
+<span class="math notranslate nohighlight">\(y(i) = \frac{\displaystyle\sum\limits_{j=1}^{kfactor} x_{ij}}{kfactor}\)</span>. The result <span class="math notranslate nohighlight">\(y = \left(\begin{array}{c}y(1)\\ y(2)\\ y(3) \\ ...\\ y(n)\end{array}\right)\\\)</span>
+represent the average of every row of your matrix A. With the first column of your matrix A, you got the vector <span class="math notranslate nohighlight">\(c = \left(\begin{array}{c}x_{11}\\ x_{21}\\ x_{31} \\ ...\\ x_{n1}\end{array}\right)\\\)</span>.
+Vector c describes the station you are comparing your calculations with (distance = 0).
+So the absolute differences are calculated as following: <span class="math notranslate nohighlight">\(diff = \left(\begin{array}{c} \arrowvert y(1) - x_{11} \arrowvert\\
 \arrowvert y(2) - x_{21} \arrowvert\\
 \arrowvert y(3) - x_{31} \arrowvert\\
 ...\\
@@ -157,18 +141,21 @@ d_{1}\\
 d_{2}\\
 d_{3} \\
 ...\\
-d_{n}\end{array}\right)\\ \\\end{split}\\\begin{split}
- \Rightarrow avgdiff = \frac{\displaystyle\sum\limits_{i=1}^{n} d_{i}}{n}\\\end{split}\\\begin{split} \triangle time = \ &amp; endDate - startDate\\
- A:= \ &amp; Matrix \ with \ your \ data \\
- kfactor := \ &amp; number \ of \ stations \ around \ your \ location\\
- y(i) := \ &amp;averageFunction \ for \ every \ point \ in \ your \  \triangle time \\
- y := \ &amp;averageVector \\
- c := \ &amp;data \ of \ the \ station \ you \ are \ comparing \ with\\\end{split}\end{aligned}\end{align} \]</div>
+d_{n}\end{array}\right)\\ \\\)</span>.
+So the average difference is calculated as: <span class="math notranslate nohighlight">\(avgdiff = \frac{\displaystyle\sum\limits_{i=1}^{n} d_{i}}{n}\\\)</span>. While kfactor describes the number of stations around your location.</p>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dwd</span><span class="o">.</span><span class="n">main_plotter_data</span><span class="p">(</span><span class="n">qn_weight</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">distance_weight</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">compare</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">no_plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</section>
+<section id="method-weighted-average-distance">
+<h3>method: weighted average (distance)<a class="headerlink" href="#method-weighted-average-distance" title="Permalink to this headline"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dwd</span><span class="o">.</span><span class="n">main_plotter_data</span><span class="p">(</span><span class="n">qn_weight</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">distance_weight</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">compare</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">no_plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">dwd</span><span class="o">.</span><span class="n">main_plotter_data</span><span class="p">(</span><span class="n">qn_weight</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">distance_weight</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">compare</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">no_plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>If <span class="math notranslate nohighlight">\(A =\left[ \begin{array}{rrr} x_{11} &amp; x_{12} &amp; ... &amp; x_{1j}\\ x_{21} &amp; x_{22} &amp; ... &amp; x_{2j}\\ ...    &amp; ... &amp; ...    &amp; ...   \\ x_{i1} &amp; x_{i2} &amp; ... &amp; x_{ij} \\ \end{array}\right]\)</span> equals <span class="math notranslate nohighlight">\(\sigma_{2}\)</span> then etc, etc.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>If compare == False:</strong> With the vector <span class="math notranslate nohighlight">\(D = \left(\begin{array}{c}d_{1}\\  ...\\ d_{kfactor}\end{array}\right)\\\)</span> as the euclidean distance between a station and your location. It will calculate the weight for the distance as
+following: <span class="math notranslate nohighlight">\(w(i) = \frac{1- \frac{D}{\displaystyle\sum\limits_{i=1}^{kfactor} d_{i}}}{kfactor-1}\)</span> for every row in vector D.</p>
+</div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dwd</span><span class="o">.</span><span class="n">main_plotter_data</span><span class="p">(</span><span class="n">qn_weight</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">distance_weight</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">compare</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">no_plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>

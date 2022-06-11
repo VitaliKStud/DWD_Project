@@ -220,7 +220,7 @@ class NearNeighbor:
                 index_for_plot = data_all.index
                 index_for_plot = pd.to_datetime(index_for_plot, format='%Y%m%d%H%M')
                 print(f"max of data-quality (approx. 1 is correct): {data_quality.sum(axis=1, min_count=1).max()}")
-                print(f"max of data-quality (approx. 1 is correct): {data_quality.sum(axis=1, min_count=1).min()}")
+                print(f"min of data-quality (approx. 1 is correct): {data_quality.sum(axis=1, min_count=1).min()}")
                 print(f"sum of distance_quality: {np.sum(distance_quality)}\n")
                 print(f"sorted distance: {sorted_distance}\n")
                 print(f"distance_quality: {distance_quality}\n")
@@ -231,8 +231,11 @@ class NearNeighbor:
                 return data_all, data_mean, index_for_plot, column_name_list, data_to_compare, diff, maximum, avg_diff
             else:
                 sorted_distance = np.sort(self.distance[0], axis=0)[1:self.k_factor + 1]
+                print(sorted_distance)
                 distance_quality = (1 - sorted_distance / np.sum(sorted_distance)) / (self.k_factor - 1)
+                print(distance_quality)
                 mask_for_quality = date_range_df.iloc[:, 1:].notnull()
+                print(mask_for_quality)
                 quality_mask = mask_for_quality.multiply(distance_quality, fill_value=np.nan).replace({0: np.nan})
                 print(quality_mask)
                 data_quality = quality_mask.div(quality_mask.sum(axis=1, min_count=1), axis=0)
