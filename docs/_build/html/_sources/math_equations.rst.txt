@@ -48,15 +48,16 @@ method: standard average
 
     **If compare == False:** With a matrix :math:`A =\left[ \begin{array}{rrr} x_{11} & x_{12} & ... & x_{1j}\\ x_{21} & x_{22} & ... & x_{2j}\\ ...    & ... & ...    & ...
     \\ x_{i1} & x_{i2} & ... & x_{ij} \\ \end{array}\right]`, which includes your data, it will calculate the average for every row:
-    :math:`y(i) = \frac{\displaystyle\sum\limits_{j=1}^{kfactor} x_{ij}}{kfactor}`
+    :math:`y(i) = \frac{\displaystyle\sum\limits_{j=1}^{kfactor} x_{ij}}{kfactor}`. While kfactor describes the number of stations around your location.
 
 .. note::
     **if compare == True:** With a matrix :math:`A =\left[ \begin{array}{rrr} x_{11} & x_{12} & ... & x_{1j}\\ x_{21} & x_{22} & ... & x_{2j}\\ ...    & ... & ...    & ...
     \\ x_{i1} & x_{i2} & ... & x_{ij} \\ \end{array}\right]`, which includes your data, it will calculate the average for every row:
-    :math:`y(i) = \frac{\displaystyle\sum\limits_{j=1}^{kfactor} x_{ij}}{kfactor}`. The result :math:`y = \left(\begin{array}{c}y(1)\\ y(2)\\ y(3) \\ ...\\ y(n)\end{array}\right)\\`
-    represent the average of every row of your matrix A. With the first column of your matrix A, you got the vector :math:`c = \left(\begin{array}{c}x_{11}\\ x_{21}\\ x_{31} \\ ...\\ x_{n1}\end{array}\right)\\`.
+    :math:`y(i) = \frac{\displaystyle\sum\limits_{j=1}^{kfactor-1} x_{ij}}{kfactor-1}`. While kfactor-1 describes the number of stations around your location.
+    The result :math:`\vec{y} = \left(\begin{array}{c}y(1)\\ y(2)\\ y(3) \\ ...\\ y(n)\end{array}\right)\\`
+    represent the average of every row of your matrix A. With the first column of your matrix A, you got the vector :math:`\vec{c} = \left(\begin{array}{c}x_{11}\\ x_{21}\\ x_{31} \\ ...\\ x_{n1}\end{array}\right)\\`.
     Vector c describes the station you are comparing your calculations with (distance = 0).
-    So the absolute differences are calculated as following: :math:`diff = \left(\begin{array}{c} \arrowvert y(1) - x_{11} \arrowvert\\
+    So the absolute differences are calculated as following: :math:`\vec{d} = \left(\begin{array}{c} \arrowvert y(1) - x_{11} \arrowvert\\
     \arrowvert y(2) - x_{21} \arrowvert\\
     \arrowvert y(3) - x_{31} \arrowvert\\
     ...\\
@@ -67,7 +68,7 @@ method: standard average
     d_{3} \\
     ...\\
     d_{n}\end{array}\right)\\ \\`.
-    So the average difference is calculated as: :math:`avgdiff = \frac{\displaystyle\sum\limits_{i=1}^{n} d_{i}}{n}\\`. While kfactor describes the number of stations around your location.
+    So the average difference is calculated as: :math:`avgdiff = \frac{\displaystyle\sum\limits_{i=1}^{n} d_{i}}{n}\\`
 
 method: weighted average (distance)
 ***********************************
@@ -79,8 +80,35 @@ method: weighted average (distance)
 
 
 .. note::
-    **If compare == False:** With the vector :math:`D = \left(\begin{array}{c}d_{1}\\  ...\\ d_{kfactor}\end{array}\right)\\` as the euclidean distance between a station and your location. It will calculate the weight for the distance as
-    following: :math:`w(i) = \frac{1- \frac{D}{\displaystyle\sum\limits_{i=1}^{kfactor} d_{i}}}{kfactor-1}` for every row in vector D.
+
+    **If compare == False:** With the vector :math:`\vec{d} = \left(\begin{array}{c}d_{1}\\  ...\\ d_{kfactor}\end{array}\right)\\` as the euclidean distance between a station and your location. It will calculate the weight for the distance as
+    following: :math:`w(i) = \frac{1- \frac{\huge{d_{i}}}{\displaystyle\sum\limits_{i=1}^{kfactor} d_{i}}}{kfactor-1}` for every row in vector :math:`\vec{d}`. Note, that the kfactor for this method must be :math:`\geq 2` and describes, how many
+    stations are around your location. With a matrix :math:`A =\left[ \begin{array}{rrr} x_{11} & x_{12} & ... & x_{1j}\\ x_{21} & x_{22} & ... & x_{2j}\\ ...    & ... & ...    & ...
+    \\ x_{i1} & x_{i2} & ... & x_{ij} \\ \end{array}\right]`, which includes your data, it will calculate elementwise the weighted average as following:
+    :math:`W =\left[ \begin{array}{rrr} x_{11}*w(1) \ + \ x_{12}*w(2) \ + \  ... \ + \ x_{1j}*w(j)\\ x_{21}*w(1)  \ + \  x_{22}*w(2)  \ + \  ...  \ + \  x_{2j}*w(j)\\ ... \\
+    x_{i1}*w(1)  \ + \  x_{i2}*w(2)  \ + \  ...  \ + \  x_{ij}*w(j) \\ \end{array}\right]`.
+
+.. note::
+
+    **if compare == True:** With the vector :math:`\vec{e} = \left(\begin{array}{c}e_{1}\\  ...\\ e_{kfactor-1}\end{array}\right)\\` as the euclidean distance between a station and your location. It will calculate the weight for the distance as
+    following: :math:`w(i) = \frac{1- \frac{\huge{d_{i}}}{\displaystyle\sum\limits_{i=2}^{kfactor-1} d_{i}}}{kfactor-2}` for every row in vector :math:`\vec{e}`. Note, that the kfactor for this method must be :math:`\geq 3` and describes, how many
+    stations are around your location. With a matrix :math:`A =\left[ \begin{array}{rrr} x_{11} & x_{12} & ... & x_{1j}\\ x_{21} & x_{22} & ... & x_{2j}\\ ...    & ... & ...    & ...
+    \\ x_{i1} & x_{i2} & ... & x_{ij} \\ \end{array}\right]`, which includes your data, it will calculate elementwise the weighted average as following:
+    :math:`W =\left[ \begin{array}{rrr} x_{12}*w(2) \ + \  ... \ + \ x_{1j}*w(j)\\ x_{22}*w(2)  \ + \  ...  \ + \  x_{2j}*w(j)\\ ... \\
+    x_{i2}*w(2)  \ + \  ...  \ + \  x_{ij}*w(j) \\ \end{array}\right] = \vec{w} = \left(\begin{array}{c}w_{1}\\  w_{2} \\...\\ w_{n}\end{array}\right)\\`. With the first column of your matrix A you got the vector
+    :math:`\vec{c} = \left(\begin{array}{c}x_{11}\\ x_{21}\\ x_{31} \\ ...\\ x_{n1}\end{array}\right)\\`. Vector :math:`\vec{c}` describes the station you are comparing your calculations with (distance = 0).
+    So the absolute differences are calculated as following: :math:`\vec{d} = \left(\begin{array}{c} \arrowvert w_{1} - x_{11} \arrowvert\\
+    \arrowvert w_{2} - x_{21} \arrowvert\\
+    \arrowvert w_{3} - x_{31} \arrowvert\\
+    ...\\
+    \arrowvert w_{n} - x_{n1} \arrowvert\\
+    \end{array}\right) = \left(\begin{array}{c}
+    d_{1}\\
+    d_{2}\\
+    d_{3} \\
+    ...\\
+    d_{n}\end{array}\right)\\ \\`.
+    So the average difference is calculated as: :math:`avgdiff = \frac{\displaystyle\sum\limits_{i=1}^{n} d_{i}}{n}\\`
 
 
 .. code-block:: python
