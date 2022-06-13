@@ -51,6 +51,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#calculations">Calculations</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#method-standard-average">method: standard average</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#method-weighted-average-distance">method: weighted average (distance)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#method-weighted-data-quality-qn">method: weighted data-quality (qn)</a></li>
 </ul>
 </li>
 </ul>
@@ -155,7 +156,7 @@ So the average difference is calculated as: <span class="math notranslate nohigh
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><strong>If compare == False:</strong> With the vector <span class="math notranslate nohighlight">\(\vec{d} = \left(\begin{array}{c}d_{1}\\  ...\\ d_{kfactor}\end{array}\right)\\\)</span> as the euclidean distance between a station and your location. It will calculate the weight for the distance as
-following: <span class="math notranslate nohighlight">\(w(i) = \frac{1- \frac{\huge{d_{i}}}{\displaystyle\sum\limits_{i=1}^{kfactor} d_{i}}}{kfactor-1}\)</span> for every row in vector <span class="math notranslate nohighlight">\(\vec{d}\)</span>. Note, that the kfactor for this method must be <span class="math notranslate nohighlight">\(\geq 2\)</span> and describes, how many
+following: <span class="math notranslate nohighlight">\(w(i) = \frac{1- \frac{\huge{d_{i}}}{\displaystyle\sum\limits_{j=1}^{kfactor} d_{j}}}{kfactor-1}\)</span> for every row in vector <span class="math notranslate nohighlight">\(\vec{d}\)</span>. Note, that the kfactor for this method must be <span class="math notranslate nohighlight">\(\geq 2\)</span> and describes, how many
 stations are around your location. With a matrix <span class="math notranslate nohighlight">\(A =\left[ \begin{array}{rrr} x_{11} &amp; x_{12} &amp; ... &amp; x_{1j}\\ x_{21} &amp; x_{22} &amp; ... &amp; x_{2j}\\ ...    &amp; ... &amp; ...    &amp; ...
 \\ x_{i1} &amp; x_{i2} &amp; ... &amp; x_{ij} \\ \end{array}\right]\)</span>, which includes your data, it will calculate elementwise the weighted average as following:
 <span class="math notranslate nohighlight">\(W =\left[ \begin{array}{rrr} x_{11}*w(1) \ + \ x_{12}*w(2) \ + \  ... \ + \ x_{1j}*w(j)\\ x_{21}*w(1)  \ + \  x_{22}*w(2)  \ + \  ...  \ + \  x_{2j}*w(j)\\ ... \\
@@ -164,7 +165,7 @@ x_{i1}*w(1)  \ + \  x_{i2}*w(2)  \ + \  ...  \ + \  x_{ij}*w(j) \\ \end{array}\r
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p><strong>if compare == True:</strong> With the vector <span class="math notranslate nohighlight">\(\vec{e} = \left(\begin{array}{c}e_{1}\\  ...\\ e_{kfactor-1}\end{array}\right)\\\)</span> as the euclidean distance between a station and your location. It will calculate the weight for the distance as
-following: <span class="math notranslate nohighlight">\(w(i) = \frac{1- \frac{\huge{d_{i}}}{\displaystyle\sum\limits_{i=2}^{kfactor-1} d_{i}}}{kfactor-2}\)</span> for every row in vector <span class="math notranslate nohighlight">\(\vec{e}\)</span>. Note, that the kfactor for this method must be <span class="math notranslate nohighlight">\(\geq 3\)</span> and describes, how many
+following: <span class="math notranslate nohighlight">\(w(i) = \frac{1- \frac{\huge{e_{i}}}{\displaystyle\sum\limits_{j=2}^{kfactor-1} e_{j}}}{kfactor-2}\)</span> for every row in vector <span class="math notranslate nohighlight">\(\vec{e}\)</span>. Note, that the kfactor for this method must be <span class="math notranslate nohighlight">\(\geq 3\)</span> and describes, how many
 stations are around your location. With a matrix <span class="math notranslate nohighlight">\(A =\left[ \begin{array}{rrr} x_{11} &amp; x_{12} &amp; ... &amp; x_{1j}\\ x_{21} &amp; x_{22} &amp; ... &amp; x_{2j}\\ ...    &amp; ... &amp; ...    &amp; ...
 \\ x_{i1} &amp; x_{i2} &amp; ... &amp; x_{ij} \\ \end{array}\right]\)</span>, which includes your data, it will calculate elementwise the weighted average as following:
 <span class="math notranslate nohighlight">\(W =\left[ \begin{array}{rrr} x_{12}*w(2) \ + \  ... \ + \ x_{1j}*w(j)\\ x_{22}*w(2)  \ + \  ...  \ + \  x_{2j}*w(j)\\ ... \\
@@ -183,8 +184,17 @@ d_{3} \\
 d_{n}\end{array}\right)\\ \\\)</span>.
 So the average difference is calculated as: <span class="math notranslate nohighlight">\(avgdiff = \frac{\displaystyle\sum\limits_{i=1}^{n} d_{i}}{n}\\\)</span></p>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dwd</span><span class="o">.</span><span class="n">main_plotter_data</span><span class="p">(</span><span class="n">qn_weight</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">distance_weight</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">compare</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">no_plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</section>
+<section id="method-weighted-data-quality-qn">
+<h3>method: weighted data-quality (qn)<a class="headerlink" href="#method-weighted-data-quality-qn" title="Permalink to this headline"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dwd</span><span class="o">.</span><span class="n">main_plotter_data</span><span class="p">(</span><span class="n">qn_weight</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">distance_weight</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">compare</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">no_plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">dwd</span><span class="o">.</span><span class="n">main_plotter_data</span><span class="p">(</span><span class="n">qn_weight</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">distance_weight</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">compare</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">no_plot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>If compare == False:</strong> With <span class="math notranslate nohighlight">\(0&lt;QN&lt;4\)</span> as a mark for data quality (higher is better) for every data point. So the vector <span class="math notranslate nohighlight">\(\vec{q} =  \left(\begin{array}{c}q_{1}\\  ...\\ q_{kfactor}\end{array}\right)\\\)</span> describes the quality of data
+for every station. It will calculate the weighted quality of data as following: <span class="math notranslate nohighlight">\(q(i) = \frac{\Large q_{i}}{\displaystyle\sum\limits_{j=1}^{kfactor} q_{j}}\)</span> for every row in <span class="math notranslate nohighlight">\(\vec{q}\)</span>.</p>
 </div>
 <p>If <span class="math notranslate nohighlight">\(\sigma_{1}\)</span> equals <span class="math notranslate nohighlight">\(\sigma_{2}\)</span> then etc, etc.</p>
 </section>

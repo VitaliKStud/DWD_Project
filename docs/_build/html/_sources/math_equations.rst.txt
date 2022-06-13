@@ -78,11 +78,10 @@ method: weighted average (distance)
     dwd.main_plotter_data(qn_weight=False, distance_weight=True, compare=False, no_plot=False)
     dwd.main_plotter_data(qn_weight=False, distance_weight=True, compare=True, no_plot=False)
 
-
 .. note::
 
     **If compare == False:** With the vector :math:`\vec{d} = \left(\begin{array}{c}d_{1}\\  ...\\ d_{kfactor}\end{array}\right)\\` as the euclidean distance between a station and your location. It will calculate the weight for the distance as
-    following: :math:`w(i) = \frac{1- \frac{\huge{d_{i}}}{\displaystyle\sum\limits_{i=1}^{kfactor} d_{i}}}{kfactor-1}` for every row in vector :math:`\vec{d}`. Note, that the kfactor for this method must be :math:`\geq 2` and describes, how many
+    following: :math:`w(i) = \frac{1- \frac{\huge{d_{i}}}{\displaystyle\sum\limits_{j=1}^{kfactor} d_{j}}}{kfactor-1}` for every row in vector :math:`\vec{d}`. Note, that the kfactor for this method must be :math:`\geq 2` and describes, how many
     stations are around your location. With a matrix :math:`A =\left[ \begin{array}{rrr} x_{11} & x_{12} & ... & x_{1j}\\ x_{21} & x_{22} & ... & x_{2j}\\ ...    & ... & ...    & ...
     \\ x_{i1} & x_{i2} & ... & x_{ij} \\ \end{array}\right]`, which includes your data, it will calculate elementwise the weighted average as following:
     :math:`W =\left[ \begin{array}{rrr} x_{11}*w(1) \ + \ x_{12}*w(2) \ + \  ... \ + \ x_{1j}*w(j)\\ x_{21}*w(1)  \ + \  x_{22}*w(2)  \ + \  ...  \ + \  x_{2j}*w(j)\\ ... \\
@@ -91,7 +90,7 @@ method: weighted average (distance)
 .. note::
 
     **if compare == True:** With the vector :math:`\vec{e} = \left(\begin{array}{c}e_{1}\\  ...\\ e_{kfactor-1}\end{array}\right)\\` as the euclidean distance between a station and your location. It will calculate the weight for the distance as
-    following: :math:`w(i) = \frac{1- \frac{\huge{d_{i}}}{\displaystyle\sum\limits_{i=2}^{kfactor-1} d_{i}}}{kfactor-2}` for every row in vector :math:`\vec{e}`. Note, that the kfactor for this method must be :math:`\geq 3` and describes, how many
+    following: :math:`w(i) = \frac{1- \frac{\huge{e_{i}}}{\displaystyle\sum\limits_{j=2}^{kfactor-1} e_{j}}}{kfactor-2}` for every row in vector :math:`\vec{e}`. Note, that the kfactor for this method must be :math:`\geq 3` and describes, how many
     stations are around your location. With a matrix :math:`A =\left[ \begin{array}{rrr} x_{11} & x_{12} & ... & x_{1j}\\ x_{21} & x_{22} & ... & x_{2j}\\ ...    & ... & ...    & ...
     \\ x_{i1} & x_{i2} & ... & x_{ij} \\ \end{array}\right]`, which includes your data, it will calculate elementwise the weighted average as following:
     :math:`W =\left[ \begin{array}{rrr} x_{12}*w(2) \ + \  ... \ + \ x_{1j}*w(j)\\ x_{22}*w(2)  \ + \  ...  \ + \  x_{2j}*w(j)\\ ... \\
@@ -111,9 +110,16 @@ method: weighted average (distance)
     So the average difference is calculated as: :math:`avgdiff = \frac{\displaystyle\sum\limits_{i=1}^{n} d_{i}}{n}\\`
 
 
+method: weighted data-quality (qn)
+***********************************
 .. code-block:: python
 
 
-     dwd.main_plotter_data(qn_weight=False, distance_weight=False, compare=True, no_plot=False)
+     dwd.main_plotter_data(qn_weight=True, distance_weight=False, compare=False, no_plot=False)
+     dwd.main_plotter_data(qn_weight=True, distance_weight=False, compare=True, no_plot=False)
+
+.. note::
+    **If compare == False:** With :math:`0<QN<4` as a mark for data quality (higher is better) for every data point. So the vector :math:`\vec{q} =  \left(\begin{array}{c}q_{1}\\  ...\\ q_{kfactor}\end{array}\right)\\` describes the quality of data
+    for every station. It will calculate the weighted quality of data as following: :math:`q(i) = \frac{\Large q_{i}}{\displaystyle\sum\limits_{j=1}^{kfactor} q_{j}}` for every row in :math:`\vec{q}`.
 
 If :math:`\sigma_{1}` equals :math:`\sigma_{2}` then etc, etc.

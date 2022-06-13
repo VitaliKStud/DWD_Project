@@ -179,5 +179,5 @@ dwd = main_dwd(local_domain=local_domain_,
                looking_for=looking_for_)
 
 # dwd.main_plotter_data(qn_weight=False, distance_weight=True, compare=False, no_plot=False)
-dwd.main_plotter_data(qn_weight=False, distance_weight=True, compare=False, no_plot=True)
+dwd.main_plotter_data(qn_weight=True, distance_weight=False, compare=False, no_plot=True)
 # dwd.main_plotter_data(qn_weight=False, distance_weight=True, compare=True, no_plot=True)
