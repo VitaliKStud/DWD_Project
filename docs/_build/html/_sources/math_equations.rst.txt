@@ -120,6 +120,31 @@ method: weighted data-quality (qn)
 
 .. note::
     **If compare == False:** With :math:`0<QN<4` as a mark for data quality (higher is better) for every data point. So the vector :math:`\vec{q} =  \left(\begin{array}{c}q_{1}\\  ...\\ q_{kfactor}\end{array}\right)\\` describes the quality of data
-    for every station. It will calculate the weighted quality of data as following: :math:`q(i) = \frac{\Large q_{i}}{\displaystyle\sum\limits_{j=1}^{kfactor} q_{j}}` for every row in :math:`\vec{q}`.
+    for every station. It will calculate the weighted quality of data as following: :math:`q(i) = \frac{\Large q_{i}}{\displaystyle\sum\limits_{j=1}^{kfactor} q_{j}}` for every row in :math:`\vec{q}`.  With a matrix
+    :math:`A =\left[ \begin{array}{rrr} x_{11} & x_{12} & ... & x_{1j}\\ x_{21} & x_{22} & ... & x_{2j}\\ ...    & ... & ...    & ...
+    \\ x_{i1} & x_{i2} & ... & x_{ij} \\ \end{array}\right]`, which includes your data, it will calculate elementwise the weighted average as following:
+    :math:`Q =\left[ \begin{array}{rrr} x_{11}*q(1) \ + \ x_{12}*q(2) \ + \  ... \ + \ x_{1j}*w(j)\\ x_{21}*q(1)  \ + \  x_{22}*q(2)  \ + \  ...  \ + \  x_{2j}*q(j)\\ ... \\
+    x_{i1}*q(1)  \ + \  x_{i2}*q(2)  \ + \  ...  \ + \  x_{ij}*q(j) \\ \end{array}\right]`.
 
-If :math:`\sigma_{1}` equals :math:`\sigma_{2}` then etc, etc.
+
+.. note::
+
+    **If compare == True:** With :math:`0<QN<4` as a mark for data quality (higher is better) for every data point. So the vector :math:`\vec{q} =  \left(\begin{array}{c}q_{1}\\  ...\\ q_{kfactor-1}\end{array}\right)\\` describes the quality of data
+    for every station. It will calculate the weighted quality of data as following: :math:`q(i) = \frac{\Large q_{i}}{\displaystyle\sum\limits_{j=1}^{kfactor-1} q_{j}}` for every row in :math:`\vec{q}`.  With a matrix
+    :math:`A =\left[ \begin{array}{rrr} x_{11} & x_{12} & ... & x_{1j}\\ x_{21} & x_{22} & ... & x_{2j}\\ ...    & ... & ...    & ...
+    \\ x_{i1} & x_{i2} & ... & x_{ij} \\ \end{array}\right]`, which includes your data, it will calculate elementwise the weighted average as following:
+    :math:`Q =\left[ \begin{array}{rrr} x_{12}*q(2) \ + \  ... \ + \ x_{1j}*q(j)\\ x_{22}*q(2)  \ + \  ...  \ + \  x_{2j}*q(j)\\ ... \\
+    x_{i2}*q(2)  \ + \  ...  \ + \  x_{ij}*q(j) \\ \end{array}\right] = \vec{q} = \left(\begin{array}{c}q_{1}\\  q_{2} \\...\\ q_{n}\end{array}\right)\\`. With the first column of your matrix A you got the vector
+    :math:`\vec{c} = \left(\begin{array}{c}x_{11}\\ x_{21}\\ x_{31} \\ ...\\ x_{n1}\end{array}\right)\\`. Vector :math:`\vec{c}` describes the station you are comparing your calculations with (distance = 0).
+    So the absolute differences are calculated as following: :math:`\vec{d} = \left(\begin{array}{c} \arrowvert q_{1} - x_{11} \arrowvert\\
+    \arrowvert q_{2} - x_{21} \arrowvert\\
+    \arrowvert q_{3} - x_{31} \arrowvert\\
+    ...\\
+    \arrowvert q_{n} - x_{n1} \arrowvert\\
+    \end{array}\right) = \left(\begin{array}{c}
+    d_{1}\\
+    d_{2}\\
+    d_{3} \\
+    ...\\
+    d_{n}\end{array}\right)\\ \\`.
+    So the average difference is calculated as: :math:`avgdiff = \frac{\displaystyle\sum\limits_{i=1}^{n} d_{i}}{n}\\`
