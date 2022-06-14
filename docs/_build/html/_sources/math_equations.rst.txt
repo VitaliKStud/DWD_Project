@@ -2,10 +2,6 @@ Mathematical equations
 =======================
 
 
-=============
-Calculations
-=============
-
 .. code-block:: python
 
 

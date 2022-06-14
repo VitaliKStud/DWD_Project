@@ -155,13 +155,17 @@ getting started: maps
   :width: 500
   :alt: Alternative text
 
+
 .. image:: _image/stations.png
   :width: 500
   :alt: Alternative text
 
+
 .. image:: _image/activ_in_date.png
   :width: 500
   :alt: test
+
+© OpenStreetMap-Mitwirkende siehe www.openstreetmap.org/copyright und www.opendatacommons.org
 
 .. note::
    You should open DwdMapCreator with Jupyter Notebooks. Otherwise it won't show the locations on a map. A lot of red locations on the second map. It means
@@ -215,6 +219,9 @@ getting started: data-plots and calculations
 .. image:: _image/wind_FF_10_no_compare.png
   :width: 1000
   :alt: test
+
+.. image:: _image/dwd_copy.png
+   :width: 300
 
 Indices and tables
 ==================

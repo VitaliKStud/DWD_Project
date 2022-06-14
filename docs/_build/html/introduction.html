@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>main module &mdash; DWD Project  documentation</title>
+  <title>Introduction &mdash; DWD Project  documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/my_theme.css" type="text/css" />
@@ -20,7 +20,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Quick-Start" href="quick_start.html" />
-    <link rel="prev" title="DwdPlotter module" href="DwdPlotter.html" /> 
+    <link rel="prev" title="Welcome to DWD Project’s documentation!" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -43,18 +43,10 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="reference internal" href="modules.html">DWD_Project</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="DwdDataPrep.html">DwdDataPrep module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="DwdDataScrapper.html">DwdDataScrapper module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="DwdDict.html">DwdDict module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="DwdMain.html">DwdMain module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="DwdNearNeighbor.html">DwdNearNeighbor module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="DwdPlotter.html">DwdPlotter module</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">main module</a></li>
-</ul>
-</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quick_start.html">Quick-Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="quick_start.html#indices-and-tables">Indices and tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">DWD_Project</a></li>
 <li class="toctree-l1"><a class="reference internal" href="math_equations.html">Mathematical equations</a></li>
 </ul>
 
@@ -72,10 +64,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="modules.html">DWD_Project</a> &raquo;</li>
-      <li>main module</li>
+      <li>Introduction</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="_sources/main.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/introduction.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -83,15 +74,31 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-main">
-<span id="main-module"></span><h1>main module<a class="headerlink" href="#module-main" title="Permalink to this headline"></a></h1>
+  <div class="contents topic" id="table-of-contents-for-introduction">
+<p class="topic-title">Table of Contents (for introduction)</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#introduction" id="id1">Introduction</a></p></li>
+</ul>
+</div>
+<section id="introduction">
+<h1><a class="toc-backref" href="#id1">Introduction</a><a class="headerlink" href="#introduction" title="Permalink to this headline"></a></h1>
+<p>The goal of the whole project is to find a solid calculation for a chosen geolocation in germany. So for example, if we choose a geolocation in germany, we want to feed this location with some data to generate a curve.
+Here we choose for example the method “standard average”. It means, it will find k-stations (number) around your location and get the data from this stations to generate a curve for your location. See following figure.</p>
+<a class="reference internal image-reference" href="_images/example.png"><img alt="_images/example.png" src="_images/example.png" style="width: 600px;" /></a>
+<p>So this figure tells us, that our chosen location is 7°E and 53°N and we found 3 next stations around our location. Now we can get the data of this 3 stations and make an average of this data. So we can feed our location
+with this data.</p>
+<p>For achieving this goal, we have some structure in this project. The two following figures describing the structure and the functions of our project. To understand how this project works in detail, you need to understand
+the structure of DWD/CDC. So you should go to the following URL: <a class="reference external" href="https://www.dwd.de/DE/leistungen/opendata/opendata.html">https://www.dwd.de/DE/leistungen/opendata/opendata.html</a> and try to understand the structure first. What data do we have? What is the resolution?
+Where do i find information about any station? […]. So make a picture for your own first, before you start working on this project.</p>
+<a class="reference internal image-reference" href="_images/folder_structure.png"><img alt="_images/folder_structure.png" src="_images/folder_structure.png" style="width: 300px;" /></a>
+<a class="reference internal image-reference" href="_images/overview.png"><img alt="_images/overview.png" src="_images/overview.png" style="width: 1000px;" /></a>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="DwdPlotter.html" class="btn btn-neutral float-left" title="DwdPlotter module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to DWD Project’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="quick_start.html" class="btn btn-neutral float-right" title="Quick-Start" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
