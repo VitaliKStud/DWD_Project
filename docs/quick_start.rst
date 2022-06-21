@@ -28,9 +28,12 @@ getting started: download air_temperature
 
 
    from DwdMain import main_dwd
-   main_dwd(local_domain="YOUR_PATH/", type_of_data="air_temperature").main_datascrapper(all=False)
+   import os
+   local_domain_ = r"YOUR_PATH/"
+   os.chdir(local_domain_)
+   main_dwd(local_domain=local_domain_, type_of_data="air_temperature").main_datascrapper(all=False)
    # Will download and unzip the data for air_temperature (historical, meta_data, now and recent) to YOUR_PATH/.
-   main_dwd(local_domain="YOUR_PATH/", type_of_data="air_temperature").main_writer(type_of_data_list=["air_temperature"], all=False)
+   main_dwd(local_domain=local_domain_, type_of_data="air_temperature").main_writer(type_of_data_list=["air_temperature"], all=False)
    # Will create some .json files inside .../extracted_files/ for faster loading times. This step is important. This .json files includes dates and paths for every station.
 
 getting started: download all (air_temperatur, solar, wind, precipitation)
@@ -40,9 +43,12 @@ getting started: download all (air_temperatur, solar, wind, precipitation)
 
 
    from DwdMain import main_dwd
-   main_dwd(local_domain="YOUR_PATH/").main_datascrapper(all=True)
+   import os
+   local_domain_ = r"YOUR_PATH/"
+   os.chdir(local_domain_)
+   main_dwd(local_domain=local_domain_).main_datascrapper(all=True)
    # Will download and unzip all the data for air_temperatur, solar, wind, precipitation (historical, meta_data, now and recent) to YOUR_PATH/.
-   main_dwd(local_domain="YOUR_PATH/").main_writer(all=True)
+   main_dwd(local_domain=local_domain_).main_writer(all=True)
    # Will create some .json files inside .../extracted_files/ for faster loading times. This step is important. Inside this .json files will dates and paths for every station.
 
 getting started: some station information

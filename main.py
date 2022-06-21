@@ -1,4 +1,4 @@
-# import os
+import os
 # from DwdMain import main_dwd
 # import json
 # import numpy as np
@@ -6,7 +6,7 @@
 # from DwdDataPrep import Reader
 #
 local_domain_ = r"C:/Users/VID/Desktop/Betriebliche_Praxis/"
-# os.chdir(local_domain_)
+os.chdir(local_domain_)
 #
 # looking_for_ = ["FF_10"]
 # # choose your data you need to plot #Check DwdDict
@@ -152,32 +152,8 @@ local_domain_ = r"C:/Users/VID/Desktop/Betriebliche_Praxis/"
 # Generate some data for DwdMapCreator
 # dwd.main_data_map()
 
-import os
 from DwdMain import main_dwd
-
-os.chdir(local_domain_)
-looking_for_ = ["FF_10"]
-start_date_ = 199401190000
-end_date_ = 199402191020
-x_coordinate_ = 6.0941  # 7 for compare == False
-y_coordinate_ = 51.7827  # 51 for compare == False
-z_coordinate_ = 0  # not needed for now (maybe in future)
-k_factor_ = 2 # how many station are you looking for around your location? 7 means, it will find 7 next stations for your location
-compare_station_ = "wind_00003"  # needed for comparing (don't forget to set the prefix (wind_)
-type_of_data_ = "wind"
-type_of_time_ = "historical"
-dwd = main_dwd(local_domain=local_domain_,
-               type_of_data=type_of_data_,
-               type_of_time=type_of_time_,
-               start_date=start_date_,
-               end_date=end_date_,
-               compare_station=compare_station_,
-               x_coordinate=x_coordinate_,
-               y_coordinate=y_coordinate_,
-               z_coordinate=z_coordinate_,
-               k_factor=k_factor_,
-               looking_for=looking_for_)
-
-# dwd.main_plotter_data(qn_weight=False, distance_weight=True, compare=False, no_plot=False)
-dwd.main_plotter_data(qn_weight=True, distance_weight=False, compare=False, no_plot=True)
-# dwd.main_plotter_data(qn_weight=False, distance_weight=True, compare=True, no_plot=True)
+main_dwd(local_domain=local_domain_).main_datascrapper(all=True)
+# Will download and unzip all the data for air_temperatur, solar, wind, precipitation (historical, meta_data, now and recent) to YOUR_PATH/.
+main_dwd(local_domain=local_domain_).main_writer(all=True)
+# Will create some .json files inside .../extracted_files/ for faster loading times. This step is important. Inside this .json files will dates and paths for every station.
