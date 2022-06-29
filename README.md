@@ -1,4 +1,3 @@
-# Readme  still in progress
 # DWD_Project
 
 Code created with PyCharm Professional Student Version.
