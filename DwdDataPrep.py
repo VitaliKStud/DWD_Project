@@ -178,12 +178,17 @@ class Station:
                     with open(tu_data_path[i], "r") as file:
                         file.readline()
                         first_line = file.readline()
+                        counter = 0
                         for last_line in file:
+                            counter = counter + 1
                             pass
-                    from_date = first_line.split(";")[1]
-                    to_date = last_line.split(";")[1]
-                    from_list.append(int(from_date))
-                    from_list.append(int(to_date) + 1)
+                    if counter == 0:
+                        pass
+                    else:
+                        from_date = first_line.split(";")[1]
+                        to_date = last_line.split(";")[1]
+                        from_list.append(int(from_date))
+                        from_list.append(int(to_date) + 1)
                 else:
                     with open(tu_data_path[i], "r") as file:
                         file.readline()

@@ -143,60 +143,62 @@ class PlotterForData:
         :param type_of_method: **as string**. Name of your calculation method.
         :return: "plot saved" if succeeded.
         """
+        if np.isnan(avg_diff[0]):
+            pass
+        else:
+            fig, (ax1, ax2, ax3) = plt.subplots(nrows=3, figsize=(20, 10), dpi=100)
+            plt.subplots_adjust(left=None, bottom=0.1, right=None, top=0.85, wspace=0.5, hspace=0.5)
 
-        fig, (ax1, ax2, ax3) = plt.subplots(nrows=3, figsize=(20, 10), dpi=100)
-        plt.subplots_adjust(left=None, bottom=0.1, right=None, top=0.85, wspace=0.5, hspace=0.5)
+            for i in self.column_name_list[1:]:
+                ax1.plot(self.index_for_plot, self.data_all[i], linewidth=0.5)
+            ax1.set_xlim(self.start_date_datetime, self.end_date_datetime)
+            lgn_1 = ax1.legend(self.column_name_list[1:], bbox_to_anchor=(0, 1.02, 1, 0.2), loc='lower left', ncol=10, prop={'size': 8})
+            ax1.set_title(f"{self.title_dict[self.plot_name]}" , pad=60, weight='bold', size=18)
+            ax1.grid(True, linestyle='--', linewidth=0.25, color="grey")
+            ax1.set_ylabel(self.unit_dict[self.plot_name], color='black', weight='normal', size=14, labelpad=30, rotation=0)
+            ax1.xaxis.set_tick_params(labelsize=10, pad=10)
+            ax1.yaxis.set_tick_params(labelsize=10, pad=15)
+            for i in lgn_1.legendHandles:
+                i.set_linewidth(5)
 
-        for i in self.column_name_list[1:]:
-            ax1.plot(self.index_for_plot, self.data_all[i], linewidth=0.5)
-        ax1.set_xlim(self.start_date_datetime, self.end_date_datetime)
-        lgn_1 = ax1.legend(self.column_name_list[1:], bbox_to_anchor=(0, 1.02, 1, 0.2), loc='lower left', ncol=10, prop={'size': 8})
-        ax1.set_title(f"{self.title_dict[self.plot_name]}" , pad=60, weight='bold', size=18)
-        ax1.grid(True, linestyle='--', linewidth=0.25, color="grey")
-        ax1.set_ylabel(self.unit_dict[self.plot_name], color='black', weight='normal', size=14, labelpad=30, rotation=0)
-        ax1.xaxis.set_tick_params(labelsize=10, pad=10)
-        ax1.yaxis.set_tick_params(labelsize=10, pad=15)
-        for i in lgn_1.legendHandles:
-            i.set_linewidth(5)
+            ax2.plot(self.index_for_plot, self.data_mean, label="Berechneter Durchschnitt", linestyle="--")
+            ax2.plot(self.index_for_plot, data_to_compare, label="Realwerte")
+            ax2.set_xlim(self.start_date_datetime, self.end_date_datetime)
+            lgn_2 = ax2.legend(bbox_to_anchor=(0, 1.02, 1, 0.2), loc='lower left', prop={'size': 10}, ncol=2)
+            ax2.set_title(f"{type_of_method} der Stationen verglichen mit den Realwerten der Station {compare_station}", pad=10, weight='bold', loc="right")
+            ax2.grid(True, linestyle='--', linewidth=0.25, color="grey")
+            ax2.set_ylabel(self.unit_dict[self.plot_name], color='black', weight='normal', size=14, labelpad=30, rotation=0)
+            ax2.xaxis.set_tick_params(labelsize=10, pad=10)
+            ax2.yaxis.set_tick_params(labelsize=10, pad=15)
+            for i in lgn_2.legendHandles:
+                i.set_linewidth(5)
 
-        ax2.plot(self.index_for_plot, self.data_mean, label="Berechneter Durchschnitt", linestyle="--")
-        ax2.plot(self.index_for_plot, data_to_compare, label="Realwerte")
-        ax2.set_xlim(self.start_date_datetime, self.end_date_datetime)
-        lgn_2 = ax2.legend(bbox_to_anchor=(0, 1.02, 1, 0.2), loc='lower left', prop={'size': 10}, ncol=2)
-        ax2.set_title(f"{type_of_method} der Stationen verglichen mit den Realwerten der Station {compare_station}", pad=10, weight='bold', loc="right")
-        ax2.grid(True, linestyle='--', linewidth=0.25, color="grey")
-        ax2.set_ylabel(self.unit_dict[self.plot_name], color='black', weight='normal', size=14, labelpad=30, rotation=0)
-        ax2.xaxis.set_tick_params(labelsize=10, pad=10)
-        ax2.yaxis.set_tick_params(labelsize=10, pad=15)
-        for i in lgn_2.legendHandles:
-            i.set_linewidth(5)
+            ax3.bar(self.index_for_plot, diff, width=np.timedelta64(9, 'm'), label="Abweichung von Realwerten", color="darkred")
+            ax3.plot(self.index_for_plot, avg_diff, label="Durchschnittliche Abweichung", color="b")
+            ax3.set_xlim(self.start_date_datetime, self.end_date_datetime)
+            ax3.set_ylim(0, maximum+1)
+            lgn_3 = ax3.legend(bbox_to_anchor=(0, 1.02, 1, 0.2), loc='lower left', prop={'size': 10}, ncol=2)
+            ax3.set_title(f"Absolute Abweichung von den Realwerten", pad=10, weight='bold', loc="right")
+            ax3.grid(True, linestyle='--', linewidth=0.25, color="grey")
+            ax3.set_xlabel("Datum", color='black', weight='normal', size=12, labelpad=20)
+            ax3.set_ylabel(self.unit_dict[self.plot_name], color='black', weight='normal', size=14, labelpad=35, rotation=0)
+            ax3.xaxis.set_tick_params(labelsize=10, pad=10)
+            ax3.yaxis.set_tick_params(labelsize=10, pad=15)
+            for i in lgn_3.legendHandles:
+                i.set_linewidth(5)
 
-        ax3.bar(self.index_for_plot, diff, width=np.timedelta64(9, 'm'), label="Abweichung von Realwerten", color="darkred")
-        ax3.plot(self.index_for_plot, avg_diff, label="Durchschnittliche Abweichung", color="b")
-        ax3.set_xlim(self.start_date_datetime, self.end_date_datetime)
-        ax3.set_ylim(0, maximum+1)
-        lgn_3 = ax3.legend(bbox_to_anchor=(0, 1.02, 1, 0.2), loc='lower left', prop={'size': 10}, ncol=2)
-        ax3.set_title(f"Absolute Abweichung von den Realwerten", pad=10, weight='bold', loc="right")
-        ax3.grid(True, linestyle='--', linewidth=0.25, color="grey")
-        ax3.set_xlabel("Datum", color='black', weight='normal', size=12, labelpad=20)
-        ax3.set_ylabel(self.unit_dict[self.plot_name], color='black', weight='normal', size=14, labelpad=35, rotation=0)
-        ax3.xaxis.set_tick_params(labelsize=10, pad=10)
-        ax3.yaxis.set_tick_params(labelsize=10, pad=15)
-        for i in lgn_3.legendHandles:
-            i.set_linewidth(5)
+            textstr = (f"Parameter: [k-Faktor: {self.k_factor-1}], [geoLaenge: {self.x_coordinate:.4f}], "
+                          f"[geoBreite: {self.y_coordinate:.4f}], [Startdatum: {self.start_date_datetime}], [Enddatum: {self.end_date_datetime}] Ergebnis: [Maximale absolute Abweichung: {maximum:.4f}], [Durchschnittliche Abweichung: {avg_diff[0]:.4f}]")
+            props = dict(boxstyle='round', facecolor='salmon', alpha=0.2)
+            plt.text(0.5, 0.99, textstr, transform=plt.gcf().transFigure, fontsize=10, bbox=props, ha='center', va="center")
 
-        textstr = (f"Parameter: [k-Faktor: {self.k_factor-1}], [geoLaenge: {self.x_coordinate:.4f}], "
-                      f"[geoBreite: {self.y_coordinate:.4f}], [Startdatum: {self.start_date_datetime}], [Enddatum: {self.end_date_datetime}] Ergebnis: [Maximale absolute Abweichung: {maximum:.4f}], [Durchschnittliche Abweichung: {avg_diff[0]:.4f}]")
-        props = dict(boxstyle='round', facecolor='salmon', alpha=0.2)
-        plt.text(0.5, 0.99, textstr, transform=plt.gcf().transFigure, fontsize=10, bbox=props, ha='center', va="center")
+            fig.savefig("Graphs/" + "compare_" + type_of_method + self.plot_name + ".png")
+            plt.cla()
+            plt.clf()
+            plt.close('all')
+            gc.collect()
 
-        fig.savefig("Graphs/" + "compare_" + type_of_method + ".png")
-        plt.cla()
-        plt.clf()
-        plt.close('all')
-        gc.collect()
-
-        return print("plot saved")
+            return print("plot saved")
 
     def plotting_data(self, type_of_method):
         """
