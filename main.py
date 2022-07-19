@@ -5,8 +5,7 @@ import os
 # from DwdDataScrapper import DataScrapper
 # from DwdDataPrep import Reader
 #
-local_domain_ = r"C:/Users/VID/Desktop/Betriebliche_Praxis/"
-os.chdir(local_domain_)
+#test
 #
 # looking_for_ = ["FF_10"]
 # # choose your data you need to plot #Check DwdDict
