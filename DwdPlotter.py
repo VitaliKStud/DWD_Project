@@ -173,7 +173,7 @@ class PlotterForData:
             for i in lgn_2.legendHandles:
                 i.set_linewidth(5)
 
-            ax3.bar(self.index_for_plot, diff, width=np.timedelta64(9, 'm'), label="Abweichung von Realwerten", color="darkred")
+            ax3.bar(self.index_for_plot, diff, width=np.timedelta64(20, 'm'), label="Abweichung von Realwerten", color="darkred")
             ax3.plot(self.index_for_plot, avg_diff, label="Durchschnittliche Abweichung", color="b")
             ax3.set_xlim(self.start_date_datetime, self.end_date_datetime)
             ax3.set_ylim(0, maximum+1)
