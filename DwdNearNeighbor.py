@@ -219,6 +219,7 @@ class NearNeighbor:
                 rmse = np.sqrt(np.full((len(diff_sqr)), diff_sqr.sum()/(len(diff_sqr)-diff_sqr.isna().sum())))
                 maximum = diff.max()
                 avg_diff = np.full((len(diff)), diff.sum()/(len(diff)-diff.isna().sum()))
+                data_density = 1 - diff.isna().sum()/len(diff)
                 index_for_plot = data_all.index
                 index_for_plot = pd.to_datetime(index_for_plot, format='%Y%m%d%H%M')
                 print(f"max of data-quality (approx. 1 is correct): {data_quality.sum(axis=1, min_count=1).max()}")
@@ -231,7 +232,7 @@ class NearNeighbor:
                 print(f"maximum: \n{maximum}\n")
                 print(f"avg_diff: \n{avg_diff[0]}\n")
                 print(f"rmse: \n{rmse[0]}\n")
-                return data_all, data_mean, index_for_plot, column_name_list, data_to_compare, diff, maximum, avg_diff, rmse[0]
+                return data_all, data_mean, index_for_plot, column_name_list, data_to_compare, diff, maximum, avg_diff, rmse[0], data_density
             else:
                 sorted_distance = np.sort(self.distance[0], axis=0)[1:self.k_factor + 1]
                 print(sorted_distance)
@@ -278,6 +279,7 @@ class NearNeighbor:
                 rmse = np.sqrt(np.full((len(diff_sqr)), diff_sqr.sum()/(len(diff_sqr)-diff_sqr.isna().sum())))
                 maximum = diff.max()
                 avg_diff = np.full((len(diff)), diff.sum()/(len(diff)-diff.isna().sum()))
+                data_density = 1 - diff.isna().sum() / len(diff)
                 print(avg_diff)
                 index_for_plot = data_all.index
                 index_for_plot = pd.to_datetime(index_for_plot, format='%Y%m%d%H%M')
@@ -286,7 +288,7 @@ class NearNeighbor:
                 print(f"maximum: \n{maximum}\n")
                 print(f"avg_diff: \n{avg_diff[0]}\n")
                 print(f"rmse: \n{rmse[0]}\n")
-                return data_all, data_mean, index_for_plot, column_name_list, data_to_compare, diff, maximum, avg_diff, rmse[0]
+                return data_all, data_mean, index_for_plot, column_name_list, data_to_compare, diff, maximum, avg_diff, rmse[0], data_density
             else:
                 data_all = date_range_df
                 data_mean = date_range_df.mean(axis=1)
