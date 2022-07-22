@@ -18,6 +18,17 @@ print(unit_dict)
 #         main_dwd(local_domain=local_domain_, type_of_data=j, type_of_time=i,).main_plotter_stations(projection=True)
 
 data = []
+
+for y in range (0,31,1):
+    for m in range(1,13,1):
+        start_date_ = int(str(1990+y)+str(f"{m:02d}")+str(0)+str(1))*10000
+        if m == 12:
+            end_date_ = int(str(1990 + y+1) + str(f"{1:02d}") + str(0) + str(1)) * 10000
+        else:
+            end_date_ = int(str(1990+y)+str(f"{m+1:02d}")+str(0)+str(1))*10000
+        print(start_date_)
+        print(end_date_)
+
 for i in type_of_data_list:
     keys = unit_dict[i].keys()
     start_date_ = 200001010000
@@ -66,4 +77,4 @@ with open("C:/Users/VID/Desktop/Betriebliche_Praxis/Ergebnisse/ergebnisse_gewich
     writer.writerow(header)
     writer.writerows(data)
 
-# print(my_list_outside)
+print(my_list_outside)
