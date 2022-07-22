@@ -210,6 +210,9 @@ class NearNeighbor:
                 mask_for_quality = date_range_df.iloc[:,2:].notnull()
                 quality_mask = mask_for_quality.multiply(distance_quality, fill_value=np.nan).replace({0: np.nan})
                 data_quality = quality_mask.div(quality_mask.sum(axis=1, min_count=1), axis=0)
+                data_number = mask_for_quality.multiply(1, fill_value=np.nan).replace({0: np.nan})
+                data_factor = (data_number.sum(axis=1, min_count=1))/(self.k_factor-1)
+                data_density = data_factor.sum()/(len(data_factor) - data_factor.isna().sum())
                 data_all = date_range_df
                 data_all_distance = data_all.iloc[:, 2:].mul(data_quality)
                 data_mean = data_all_distance.sum(axis=1, min_count=1)
@@ -219,9 +222,9 @@ class NearNeighbor:
                 rmse = np.sqrt(np.full((len(diff_sqr)), diff_sqr.sum()/(len(diff_sqr)-diff_sqr.isna().sum())))
                 maximum = diff.max()
                 avg_diff = np.full((len(diff)), diff.sum()/(len(diff)-diff.isna().sum()))
-                data_density = 1 - diff.isna().sum()/len(diff)
                 index_for_plot = data_all.index
                 index_for_plot = pd.to_datetime(index_for_plot, format='%Y%m%d%H%M')
+                print(f"data density: {data_density:.8f}")
                 print(f"max of data-quality (approx. 1 is correct): {data_quality.sum(axis=1, min_count=1).max()}")
                 print(f"min of data-quality (approx. 1 is correct): {data_quality.sum(axis=1, min_count=1).min()}")
                 print(f"sum of distance_quality: {np.sum(distance_quality)}\n")

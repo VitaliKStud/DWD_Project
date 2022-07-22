@@ -20,25 +20,26 @@ print(unit_dict)
 data = []
 for i in type_of_data_list:
     keys = unit_dict[i].keys()
-    start_date_ = 199001010000
-    end_date_ = 199001010000
+    start_date_ = 200001010000
+    end_date_ = 200001020000
     x = main_dwd(local_domain=local_domain_,
                  type_of_data=i,
                  type_of_time="historical",
                  start_date=start_date_, end_date=end_date_).main_activ_stations_in_date()
     for j in keys:
         my_list = []
-        for z in range(4, 50, 1):
+        for z in range(3, 51, 1):
             print(j)
             looking_for_ = [j]
-            start_date_ = 199001010000
-            end_date_   = 199001020000
+            start_date_ = 200001010000
+            end_date_   = 200001020000
             x_coordinate_ = x[0][0] # 7 for compare == False
             y_coordinate_ = x[1][0] # 51 for compare == False
             z_coordinate_ = 0 # not needed for now (maybe in future)
             print(z)
             k_factor_ = z # how many station are you looking for around your location? 7 means, it will find 7 next stations for your location
             compare_station_ = x[3][0] # needed for comparing (don't forget to set the prefix (wind_)
+            print(compare_station_)
             type_of_data_ = i
             type_of_time_ = "historical"
             dwd = main_dwd(local_domain=local_domain_,
