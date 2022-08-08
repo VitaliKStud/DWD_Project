@@ -105,6 +105,7 @@ def get_dwd_dict():
 
 
     type_of_time_list = ["recent", "now", "historical"]
+    # type_of_data_list = ["wind"]
     type_of_data_list = ["air_temperature", "precipitation", "solar", "wind"]
     # leave it (global lists). Here you can see what data_types and time_types are available (needed for type_of_data_ and type_of_time_)
 

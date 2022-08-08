@@ -282,15 +282,21 @@ class NearNeighbor:
                 rmse = np.sqrt(np.full((len(diff_sqr)), diff_sqr.sum()/(len(diff_sqr)-diff_sqr.isna().sum())))
                 maximum = diff.max()
                 avg_diff = np.full((len(diff)), diff.sum()/(len(diff)-diff.isna().sum()))
-                data_density = 1 - diff.isna().sum() / len(diff)
-                print(avg_diff)
+                mask_for_quality = date_range_df.iloc[:, 2:].notnull()
+                data_number = mask_for_quality.multiply(1, fill_value=np.nan).replace({0: np.nan})
+                data_factor = (data_number.sum(axis=1, min_count=1))/(self.k_factor-1)
+                data_density = data_factor.sum()/(len(data_factor) - data_factor.isna().sum())
+                print(compare_station)
+                # print("here", diff.isna().sum())
+                # print(avg_diff)
                 index_for_plot = data_all.index
                 index_for_plot = pd.to_datetime(index_for_plot, format='%Y%m%d%H%M')
-                print(f"Data All: \n{data_all}\n")
-                print(f"Data mean: \n{data_mean}\n")
-                print(f"maximum: \n{maximum}\n")
-                print(f"avg_diff: \n{avg_diff[0]}\n")
-                print(f"rmse: \n{rmse[0]}\n")
+                # print(f"Data All: \n{data_all}\n")
+                # print(f"Data mean: \n{data_mean}\n")
+                # print(f"maximum: \n{maximum}\n")
+                # print(f"avg_diff: \n{avg_diff[0]}\n")
+                # print(f"rmse: \n{rmse[0]}\n")
+                # print(f"density: \n{data_density}\n")
                 return data_all, data_mean, index_for_plot, column_name_list, data_to_compare, diff, maximum, avg_diff, rmse[0], data_density
             else:
                 data_all = date_range_df
