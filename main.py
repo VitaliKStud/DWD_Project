@@ -167,11 +167,11 @@ def calculations():
 looking_for_ = ["TT_10"]
 start_date_ = 200001010000
 end_date_   = 200002010020
-x_coordinate_ = 6.0941 # 7 for compare == False
-y_coordinate_ = 50.7827 # 51 for compare == False
+x_coordinate_ = 10.3771 # 7 for compare == False
+y_coordinate_ = 50.5611 # 51 for compare == False
 z_coordinate_ = 0 # not needed for now (maybe in future)
-k_factor_ = 5 # how many station are you looking for around your location? 7 means, it will find 7 next stations for your location
-compare_station_ = "TU_00003" # needed for comparing (don't forget to set the prefix (wind_)
+k_factor_ = 6 # how many station are you looking for around your location? 7 means, it will find 7 next stations for your location
+compare_station_ = "TU_03231" # needed for comparing (don't forget to set the prefix (wind_)
 type_of_data_ = "air_temperature"
 type_of_time_ = "historical"
 dwd = main_dwd(local_domain=local_domain_,
@@ -187,6 +187,7 @@ dwd = main_dwd(local_domain=local_domain_,
                looking_for=looking_for_)
 
 dwd.main_plotter_data(qn_weight=False, distance_weight=False, direction=True, compare=True, no_plot=False)
+dwd.main_data_map()
 
 # for i in type_of_data_list:
 #     keys = unit_dict[i].keys()

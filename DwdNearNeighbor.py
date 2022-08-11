@@ -70,15 +70,60 @@ class NearNeighbor:
         column_name_list = []
         counter = 0
         if direction:
-            print(self.station_list[self.activ_id[self.closest[:, 1:self.k_factor + 1][0][0]]].get_geobreite())
-            print(self.station_list[self.activ_id[self.closest[:, 1:self.k_factor + 1][0][0]]].get_geolaenge())
-            print(self.k_factor)
-            for i in self.closest[:, 1:self.k_factor + 1][0]:
-                datapath_near_list.append(self.station_list[self.activ_id[i]].generate_tu_data_path_date(self.start_date, self.end_date))
-                column_name_list.append(self.activ_id[i])
-                for j in range(len(datapath_near_list[counter])):
-                    column_names_list.append(self.activ_id[i])
-                counter = counter + 1
+            looking_for_gebreite = self.station_list[self.activ_id[self.closest[:, 1:self.k_factor + 1][0][0]]].get_geobreite()
+            looking_for_geolaenge = self.station_list[self.activ_id[self.closest[:, 1:self.k_factor + 1][0][0]]].get_geolaenge()
+            q_1 = []
+            q_2 = []
+            q_3 = []
+            q_4 = []
+            q_ges = []
+            for i in self.closest[:, 1:][0]:
+                station_geolaenge = self.station_list[self.activ_id[i]].get_geolaenge()
+                station_geobreite = self.station_list[self.activ_id[i]].get_geobreite()
+                if station_geolaenge > looking_for_geolaenge and station_geobreite > looking_for_gebreite:
+                    q_1.append(i)
+                elif station_geolaenge < looking_for_geolaenge and station_geobreite > looking_for_gebreite:
+                    q_2.append(i)
+                elif station_geolaenge < looking_for_geolaenge and station_geobreite < looking_for_gebreite:
+                    q_3.append(i)
+                elif station_geolaenge > looking_for_geolaenge and station_geobreite < looking_for_gebreite:
+                    q_4.append(i)
+                else:
+                    pass
+            for m in range(0,len(self.closest[:, 1:][0]),1):
+                if m >= len(q_1):
+                    pass
+                else:
+                    q_ges.append(q_1[m])
+                if m >= len(q_2):
+                    pass
+                else:
+                    q_ges.append(q_2[m])
+                if m >= len(q_3):
+                    pass
+                else:
+                    q_ges.append(q_3[m])
+                if m >= len(q_4):
+                    pass
+                else:
+                    q_ges.append(q_4[m])
+            print(q_1, q_2, q_3, q_4, q_ges)
+            datapath_near_list.append(self.station_list[self.activ_id[self.closest[:, 1:][0][0]]].generate_tu_data_path_date(self.start_date, self.end_date))
+            column_name_list.append(self.activ_id[self.closest[:, 1:][0][0]])
+            for s in range(len(datapath_near_list[counter])):
+                column_names_list.append(self.activ_id[s])
+            counter = counter + 1
+            for k in range(0,self.k_factor,1):
+                r = q_ges[k]
+                if self.activ_id[r] == "Find near TU for me":
+                    pass
+                else:
+                    datapath_near_list.append(self.station_list[self.activ_id[r]].generate_tu_data_path_date(self.start_date, self.end_date))
+                    column_name_list.append(self.activ_id[r])
+                    for j in range(len(datapath_near_list[counter])):
+                        column_names_list.append(self.activ_id[r])
+                    counter = counter + 1
+            print(column_name_list)
             return datapath_near_list, column_names_list, column_name_list
         else:
             for i in self.closest[:, 1:self.k_factor + 1][0]:
@@ -278,7 +323,7 @@ class NearNeighbor:
                 print(f"Data Mean: \n{data_mean}\n")
                 return data_all, data_mean, index_for_plot, column_name_list
         elif direction_n_avg:
-            print("direction_avg")
+            print("direction_method")
             date_range_df = self.date_range_df().set_index('MESS_DATUM_GENERATED')
             df_from_to, column_names_list, column_name_list = self.dataframe_near_from_to_path(direction=True)
             counter = 0
@@ -292,60 +337,39 @@ class NearNeighbor:
                 date_range_df.update(df_tt_10)
                 counter = counter + 1
             if compare_n_avg:
-                sorted_distance = np.sort(self.distance[0], axis=0)[2:self.k_factor + 1]
-                distance_quality = (1 - sorted_distance / np.sum(sorted_distance)) / (self.k_factor - 2)
-                mask_for_quality = date_range_df.iloc[:, 2:].notnull()
-                quality_mask = mask_for_quality.multiply(distance_quality, fill_value=np.nan).replace({0: np.nan})
-                data_quality = quality_mask.div(quality_mask.sum(axis=1, min_count=1), axis=0)
-                data_number = mask_for_quality.multiply(1, fill_value=np.nan).replace({0: np.nan})
-                data_factor = (data_number.sum(axis=1, min_count=1)) / (self.k_factor - 1)
-                data_density = data_factor.sum() / (len(data_factor) - data_factor.isna().sum())
                 data_all = date_range_df
-                data_all_distance = data_all.iloc[:, 2:].mul(data_quality)
-                data_mean = data_all_distance.sum(axis=1, min_count=1)
                 data_to_compare = data_all[compare_station]
+                data_all = data_all.drop([compare_station], axis=1)
+                data_mean = data_all.mean(axis=1)
                 diff = (data_mean - data_to_compare).abs()
-                diff_sqr = (data_mean - data_to_compare) ** 2
-                rmse = np.sqrt(np.full((len(diff_sqr)), diff_sqr.sum() / (len(diff_sqr) - diff_sqr.isna().sum())))
+                diff_sqr = (data_mean - data_to_compare)**2
+                rmse = np.sqrt(np.full((len(diff_sqr)), diff_sqr.sum()/(len(diff_sqr)-diff_sqr.isna().sum())))
                 maximum = diff.max()
-                avg_diff = np.full((len(diff)), diff.sum() / (len(diff) - diff.isna().sum()))
+                avg_diff = np.full((len(diff)), diff.sum()/(len(diff)-diff.isna().sum()))
+                mask_for_quality = date_range_df.iloc[:, 2:].notnull()
+                data_number = mask_for_quality.multiply(1, fill_value=np.nan).replace({0: np.nan})
+                data_factor = (data_number.sum(axis=1, min_count=1))/(self.k_factor-1)
+                data_density = data_factor.sum()/(len(data_factor) - data_factor.isna().sum())
+                print(compare_station)
+                # print("here", diff.isna().sum())
+                # print(avg_diff)
                 index_for_plot = data_all.index
                 index_for_plot = pd.to_datetime(index_for_plot, format='%Y%m%d%H%M')
-                print(f"data density: {data_density:.8f}")
-                print(f"max of data-quality (approx. 1 is correct): {data_quality.sum(axis=1, min_count=1).max()}")
-                print(f"min of data-quality (approx. 1 is correct): {data_quality.sum(axis=1, min_count=1).min()}")
-                print(f"sum of distance_quality: {np.sum(distance_quality)}\n")
-                print(f"sorted distance: {sorted_distance}\n")
-                print(f"distance_quality: {distance_quality}\n")
                 print(f"Data All: \n{data_all}\n")
                 print(f"Data mean: \n{data_mean}\n")
                 print(f"maximum: \n{maximum}\n")
                 print(f"avg_diff: \n{avg_diff[0]}\n")
                 print(f"rmse: \n{rmse[0]}\n")
+                print(f"density: \n{data_density}\n")
                 return data_all, data_mean, index_for_plot, column_name_list, data_to_compare, diff, maximum, avg_diff, rmse[0], data_density
             else:
-                sorted_distance = np.sort(self.distance[0], axis=0)[1:self.k_factor + 1]
-                print(sorted_distance)
-                distance_quality = (1 - sorted_distance / np.sum(sorted_distance)) / (self.k_factor - 1)
-                print(distance_quality)
-                mask_for_quality = date_range_df.iloc[:, 1:].notnull()
-                print(mask_for_quality)
-                quality_mask = mask_for_quality.multiply(distance_quality, fill_value=np.nan).replace({0: np.nan})
-                print(quality_mask)
-                data_quality = quality_mask.div(quality_mask.sum(axis=1, min_count=1), axis=0)
-                print(data_quality)
                 data_all = date_range_df
-                data_all_distance = data_all.iloc[:, 1:].mul(data_quality)
-                data_mean = data_all_distance.sum(axis=1, min_count=1)
+                data_mean = date_range_df.mean(axis=1)
                 index_for_plot = data_all.index
                 index_for_plot = pd.to_datetime(index_for_plot, format='%Y%m%d%H%M')
-                print(f"max of data-quality (approx. 1 is correct): {data_quality.sum(axis=1, min_count=1).max()}")
-                print(f"max of data-quality (approx. 1 is correct): {data_quality.sum(axis=1, min_count=1).min()}")
-                print(f"sum of distance_quality: {np.sum(distance_quality)}\n")
-                print(f"distance_quality: {distance_quality}\n")
                 print(f"Data All: \n{data_all}\n")
-                print(f"Data Mean: \n{data_mean}\n")
-                return data_all, data_mean, index_for_plot, column_name_list
+                print(f"Data mean: \n{data_mean}\n")
+            return data_all, data_mean, index_for_plot, column_name_list
         else:
             date_range_df = self.date_range_df().set_index('MESS_DATUM_GENERATED')
             df_from_to, column_names_list, column_name_list = self.dataframe_near_from_to_path()
