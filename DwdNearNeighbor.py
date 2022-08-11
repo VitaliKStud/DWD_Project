@@ -39,25 +39,77 @@ class NearNeighbor:
         self.activ_id = activ_id
         self.station_list = station_list
 
-    def find_near(self):
+    def find_near(self, direction=False):
         """
         :Description: Will find all the near stations around your location.
 
         :return: x_near, y_near, z_near, activ_near_id: **as array - activ_near_id as list**
         """
-        x_near = np.array([])
-        y_near = np.array([])
-        z_near = np.array([])
-        activ_near_id = []
-        for i in self.closest[:, 1:self.k_factor + 1][0]:
-            x_i = self.x_active[i:i + 1]
-            y_i = self.y_active[i:i + 1]
-            z_i = self.z_active[i:i + 1]
-            x_near = np.append(x_near, x_i)
-            y_near = np.append(y_near, y_i)
-            z_near = np.append(z_near, z_i)
-            activ_near_id.append(self.activ_id[i])
-        return x_near, y_near, z_near, activ_near_id
+        if direction:
+            looking_for_gebreite = self.station_list[self.activ_id[self.closest[:, 1:self.k_factor + 1][0][0]]].get_geobreite()
+            looking_for_geolaenge = self.station_list[self.activ_id[self.closest[:, 1:self.k_factor + 1][0][0]]].get_geolaenge()
+            q_1 = []
+            q_2 = []
+            q_3 = []
+            q_4 = []
+            q_ges = []
+            for i in self.closest[:, 1:][0]:
+                station_geolaenge = self.station_list[self.activ_id[i]].get_geolaenge()
+                station_geobreite = self.station_list[self.activ_id[i]].get_geobreite()
+                if station_geolaenge > looking_for_geolaenge and station_geobreite > looking_for_gebreite:
+                    q_1.append(i)
+                elif station_geolaenge < looking_for_geolaenge and station_geobreite > looking_for_gebreite:
+                    q_2.append(i)
+                elif station_geolaenge < looking_for_geolaenge and station_geobreite < looking_for_gebreite:
+                    q_3.append(i)
+                elif station_geolaenge > looking_for_geolaenge and station_geobreite < looking_for_gebreite:
+                    q_4.append(i)
+                else:
+                    pass
+            for m in range(0,len(self.closest[:, 1:][0]),1):
+                if m >= len(q_1):
+                    pass
+                else:
+                    q_ges.append(q_1[m])
+                if m >= len(q_2):
+                    pass
+                else:
+                    q_ges.append(q_2[m])
+                if m >= len(q_3):
+                    pass
+                else:
+                    q_ges.append(q_3[m])
+                if m >= len(q_4):
+                    pass
+                else:
+                    q_ges.append(q_4[m])
+            x_near = np.array([])
+            y_near = np.array([])
+            z_near = np.array([])
+            activ_near_id = []
+            for i in range(0,self.k_factor,1):
+                x_i = self.x_active[q_ges[i]:q_ges[i] + 1]
+                y_i = self.y_active[q_ges[i]:q_ges[i]  + 1]
+                z_i = self.z_active[q_ges[i]:q_ges[i]  + 1]
+                x_near = np.append(x_near, x_i)
+                y_near = np.append(y_near, y_i)
+                z_near = np.append(z_near, z_i)
+                activ_near_id.append(self.activ_id[q_ges[i]])
+            return x_near, y_near, z_near, activ_near_id
+        else:
+            x_near = np.array([])
+            y_near = np.array([])
+            z_near = np.array([])
+            activ_near_id = []
+            for i in self.closest[:, 1:self.k_factor + 1][0]:
+                x_i = self.x_active[i:i + 1]
+                y_i = self.y_active[i:i + 1]
+                z_i = self.z_active[i:i + 1]
+                x_near = np.append(x_near, x_i)
+                y_near = np.append(y_near, y_i)
+                z_near = np.append(z_near, z_i)
+                activ_near_id.append(self.activ_id[i])
+            return x_near, y_near, z_near, activ_near_id
 
     def datapath_near(self, direction=False):
         """

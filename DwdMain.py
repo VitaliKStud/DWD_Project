@@ -273,7 +273,7 @@ class DwdMain:
         PlotterForStations(x_active, y_active, z_active, type_of_data=self.type_of_data).plotting_3d(projection)
         PlotterForStations(x_active, y_active, z_active, type_of_data=self.type_of_data).plotting_height_2d()
 
-    def main_data_map(self):
+    def main_data_map(self, direction=False):
         """
         :Description: Will create some json files, with active stations, not activ stations, activ stations without data and the near station for your location and your timedelta
 
@@ -289,7 +289,7 @@ class DwdMain:
                                                              start_date=self.start_date,
                                                              end_date=self.end_date,
                                                              activ_id=activ_id_in_date,
-                                                             station_list=station_list).find_near()
+                                                             station_list=station_list).find_near(direction=direction)
         with open(self.local_domain + r"DWD_Project/MapCreator/" + r"zip_data_near.json", "w") as f:
             json.dump(np.array(list(zip(x_near, y_near, activ_near_id))).tolist(), f, indent=2)
         with open(self.local_domain + r"DWD_Project/MapCreator/" + r"zip_data_active_in_date.json", "w") as f:

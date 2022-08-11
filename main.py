@@ -187,7 +187,7 @@ dwd = main_dwd(local_domain=local_domain_,
                looking_for=looking_for_)
 
 dwd.main_plotter_data(qn_weight=False, distance_weight=False, direction=True, compare=True, no_plot=False)
-dwd.main_data_map()
+dwd.main_data_map(direction=True)
 
 # for i in type_of_data_list:
 #     keys = unit_dict[i].keys()
