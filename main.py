@@ -43,16 +43,15 @@ type_dict, load_txt_dict, rest_dict, title_dict, unit_dict, type_of_time_list, t
 #         main_dwd(local_domain=local_domain_, type_of_data=j, type_of_time=i,).main_plotter_stations(projection=True)
 
 data = []
-
 def month_step():
     month_list = []
     for y in range (0,31,1):
         for m in range(1,13,1):
-            start_date_ = int(str(2001+y)+str(f"{m:02d}")+str(0)+str(1))*10000
+            start_date_ = int(str(2000+y)+str(f"{m:02d}")+str(0)+str(1))*10000
             if m == 12:
-                end_date_ = int(str(2001 + y+1) + str(f"{1:02d}") + str(0) + str(1)) * 10000
+                end_date_ = int(str(2000 + y+1) + str(f"{1:02d}") + str(0) + str(1)) * 10000
             else:
-                end_date_ = int(str(2001+y)+str(f"{m+1:02d}")+str(0)+str(1))*10000
+                end_date_ = int(str(2000+y)+str(f"{m+1:02d}")+str(0)+str(1))*10000
             month_list.append([start_date_,end_date_])
     return month_list
 
@@ -165,29 +164,29 @@ def calculations():
             pass
 
 
-# looking_for_ = ["PP_10"]
-# start_date_ = 200001010000
-# end_date_   = 200001010020
-# x_coordinate_ = 9.7377 # 7 for compare == False
-# y_coordinate_ = 50.852 # 51 for compare == False
-# z_coordinate_ = 0 # not needed for now (maybe in future)
-# k_factor_ = 3 # how many station are you looking for around your location? 7 means, it will find 7 next stations for your location
-# compare_station_ = "TU_02171" # needed for comparing (don't forget to set the prefix (wind_)
-# type_of_data_ = "air_temperature"
-# type_of_time_ = "historical"
-# dwd = main_dwd(local_domain=local_domain_,
-#                type_of_data=type_of_data_,
-#                type_of_time=type_of_time_,
-#                start_date=start_date_,
-#                end_date=end_date_,
-#                compare_station=compare_station_,
-#                x_coordinate=x_coordinate_,
-#                y_coordinate=y_coordinate_,
-#                z_coordinate=z_coordinate_,
-#                k_factor=k_factor_,
-#                looking_for=looking_for_)
-#
-# dwd.main_plotter_data(qn_weight=False, distance_weight=False, compare=True, no_plot=True)
+looking_for_ = ["TT_10"]
+start_date_ = 200001010000
+end_date_   = 200002010020
+x_coordinate_ = 6.0941 # 7 for compare == False
+y_coordinate_ = 50.7827 # 51 for compare == False
+z_coordinate_ = 0 # not needed for now (maybe in future)
+k_factor_ = 5 # how many station are you looking for around your location? 7 means, it will find 7 next stations for your location
+compare_station_ = "TU_00003" # needed for comparing (don't forget to set the prefix (wind_)
+type_of_data_ = "air_temperature"
+type_of_time_ = "historical"
+dwd = main_dwd(local_domain=local_domain_,
+               type_of_data=type_of_data_,
+               type_of_time=type_of_time_,
+               start_date=start_date_,
+               end_date=end_date_,
+               compare_station=compare_station_,
+               x_coordinate=x_coordinate_,
+               y_coordinate=y_coordinate_,
+               z_coordinate=z_coordinate_,
+               k_factor=k_factor_,
+               looking_for=looking_for_)
+
+dwd.main_plotter_data(qn_weight=False, distance_weight=False, direction=True, compare=True, no_plot=False)
 
 # for i in type_of_data_list:
 #     keys = unit_dict[i].keys()
@@ -216,27 +215,29 @@ def std_from_list (my_list):
     std = np.sqrt(a/len(my_list))
     return 2*std
 
-def check(num):
-    if num % 2 == 0:
+def check(num,n=2):
+    if num % n == 0:
         return True
     else:
         return False
 #
 #
 
-def analyze():
-    counter = 0
-    counter_2 = 0
-    counter_3 = 0
-    fig, ax = plt.subplots(5,2, figsize=(10, 20))
+def analyze(method="standard", density=0.9):
+    dict_avg = {}
+    dict_std = {}
     for i in type_of_data_list:
         keys = unit_dict[i].keys()
         for j in keys:
-            if j == "RWS_DAU_10" or j == "DS_10" or j == "GS_10":
+            if j == "RWS_DAU_10":
                 pass
             else:
                 my_list = []
-                with open("C:/Users/VID/Desktop/Betriebliche_Praxis/Ergebnisse/weighted/ergebnisse_gewichtet_" + j + "_" + ".csv") as file:
+                if method == "standard":
+                    path = r"C:/Users/VID/Desktop/Betriebliche_Praxis/Ergebnisse/standard/ergebnisse_gewichtet_" + j + "_standard_" + ".csv"
+                elif method == "weighted":
+                    path = r"C:/Users/VID/Desktop/Betriebliche_Praxis/Ergebnisse/weighted/ergebnisse_gewichtet_" + j + "_" + ".csv"
+                with open(path) as file:
                     for i in file:
                         if len(i.strip("\n").split(",")) == 1:
                             pass
@@ -250,33 +251,19 @@ def analyze():
                         try:
                             for i in my_list:
                                 if int(i[5]) == k:
-                                    if float(i[11]) > 0.1:
+                                    if float(i[11]) > density:
                                         if i[n] == "nan":
                                             pass
                                         else:
                                             y.append(float(i[n]))
-                            print(len(y))
-                            print(j)
+
                             avg.append(sum(y)/len(y))
                             std_list.append(std_from_list(y))
                         except:
                             pass
-                if counter == 0:
-                    pass
-                else:
-                    if check(counter):
-                        counter_2 = 0
-                        counter_3 = counter_3 + 1
-                    else:
-                        counter_2 = 1
-                counter = counter + 1
-                ax[counter_3,counter_2].bar(np.arange(3, len(avg) + 3), avg, yerr=std_list, capsize=4)
-                # plt.grid()
-                # plt.ylim(0,max(avg)+max(std))
-                ax[counter_3,counter_2].set_title(j)
-                ax[counter_3,counter_2].set_ylim(0,max(avg)+max(std_list)*1.1)
-                fig.savefig("Graphs/german_stations_2d_weighted" + ".png")
-                plt.close("all")
+                dict_avg.update({j: avg})
+                dict_std.update({j: std_list})
+    return dict_avg, dict_std
 
 
 def write_csv():
@@ -298,6 +285,57 @@ def write_csv():
                 # writer.writerow(header)
                 writer.writerows(my_list)
 
+def plot_compare_method_bar(dict_avg, dict_std, name="test", std=True):
+    keys = dict_avg.keys()
+    counter_0 = 0
+    counter_1 = 0
+    counter_2 = 0
+    fig, ax = plt.subplots(3, 4, figsize=(20, 10))
+    for i in keys:
+        if counter_0 == 0:
+            pass
+        else:
+            if check(counter_0,4):
+                counter_1 = counter_1 + 1
+                counter_2 = 0
+            else:
+                counter_2 = counter_2 + 1
+        counter_0 = counter_0 + 1
+        avg = dict_avg[i]
+        std_list = dict_std[i]
+        if std:
+            ax[counter_1, counter_2].bar(np.arange(3, len(avg) + 3), avg, yerr=std_list, capsize=4)
+        else:
+            ax[counter_1, counter_2].bar(np.arange(3, len(avg) + 3), avg)
+        # plt.ylim(0,max(avg)+max(std))
+        ax[counter_1, counter_2].set_title(i)
+        ax[counter_1, counter_2].grid()
+        # ax[counter_1, counter_2].set_ylim(min(avg) + min(std_list) * 1.1, max(avg) + max(std_list) * 1.1)
+        fig.savefig("Graphs/calculation_" + name + ".png")
+        plt.close("all")
 
-analyze()
+def compare_methods(dict_1, dict_2, dict_std_1, dict_std_2):
+    keys = dict_1.keys()
+    dict_erg = {}
+    dict_erg_std = {}
+    for i in keys:
+        array_1 = np.array(dict_1[i])
+        array_2 = np.array(dict_2[i])
+        array_3 = np.array(dict_std_1[i])
+        array_4 = np.array(dict_std_2[i])
+        a = array_1 - array_2
+        b = array_3 - array_4
+        dict_erg.update({i:a})
+        dict_erg_std.update({i: b})
+    return dict_erg, dict_erg_std
+
 # write_csv()
+
+# dict_avg_1, dict_std_1 = analyze(method="standard", density = 0.01)
+# dict_avg_2, dict_std_2 = analyze(method="weighted", density = 0.01)
+# dict_erg, dict_erg_std = compare_methods(dict_avg_1, dict_avg_2, dict_std_1, dict_std_2)
+#
+# plot_compare_method_bar(dict_erg, dict_erg_std, name="_test",std=False)
+# plot_compare_method_bar(dict_avg_1, dict_std_1, name="_standard")
+# plot_compare_method_bar(dict_avg_2, dict_std_2, name="_weighted")
+

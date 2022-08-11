@@ -195,7 +195,7 @@ class DwdMain:
         zip_data_active_in_date = np.around(np.array(list(zip(x_active_in_date, y_active_in_date))), decimals=4)
         return x_active_in_date, y_active_in_date, z_active_in_date, zip_data_active_in_date, activ_id_in_date, station_list
 
-    def __main_nearneighbor(self, look_for="TT_10", qn_weight_n=False, distance_weight_n=False, compare_n=False, no_plot_n=False):
+    def __main_nearneighbor(self, look_for="TT_10", qn_weight_n=False, distance_weight_n=False, direction_n=False, compare_n=False, no_plot_n=False):
         """
         :Description: Calling the method from DwdNearNeigbor.DwdNearNeighbor(...).average_for_coordinate(...) and return this.
 
@@ -216,7 +216,7 @@ class DwdMain:
                                     end_date=self.end_date,
                                     activ_id=activ_id_in_date,
                                     station_list=station_list)
-        return nearneighbor.average_for_coordinate(data_looking_for=look_for, qn_weight_n_avg=qn_weight_n, distance_weight_n_avg=distance_weight_n, compare_n_avg=compare_n, compare_station=self.compare_station)
+        return nearneighbor.average_for_coordinate(data_looking_for=look_for, qn_weight_n_avg=qn_weight_n, distance_weight_n_avg=distance_weight_n, direction_n_avg=direction_n, compare_n_avg=compare_n, compare_station=self.compare_station)
 
     def __main_plotter_for_data(self, data_all, data_mean, index_for_plot, column_name_list, plot_name, compare=False, no_plot=False, data_to_compare=None, diff=None, maximum=None, avg_diff=None, rmse=None, data_density=None, type_of_method="Durchschnitt"):
         """
@@ -304,7 +304,7 @@ class DwdMain:
             json.dump((self.x_coordinate, self.y_coordinate, self.local_domain), f, indent=2)
         return print("zipped_data_for_active_map")
 
-    def main_plotter_data(self, qn_weight=False, distance_weight=False, compare=False, no_plot=False):
+    def main_plotter_data(self, qn_weight=False, distance_weight=False, direction=False, compare=False, no_plot=False):
         """
         :Description: Compressed method for plotting. qn_weight, distance_weight are the methods. If both are False, it will make simple average method.
 
@@ -318,7 +318,12 @@ class DwdMain:
         for i in self.looking_for:
             if qn_weight:
                 if compare:
-                    data_all_n, data_mean_n, index_for_plot_n, column_name_list_n, data_to_compare_n, diff_n, maximum_n, avg_diff_n = self.__main_nearneighbor(i, qn_weight_n=qn_weight, distance_weight_n=distance_weight, compare_n=compare, no_plot_n=no_plot)
+                    data_all_n, data_mean_n, index_for_plot_n, column_name_list_n, data_to_compare_n, diff_n, maximum_n, avg_diff_n = self.__main_nearneighbor(i,
+                                                                                                                                                               qn_weight_n=qn_weight,
+                                                                                                                                                               distance_weight_n=distance_weight,
+                                                                                                                                                               direction_n=direction,
+                                                                                                                                                               compare_n=compare,
+                                                                                                                                                               no_plot_n=no_plot)
                     self.__main_plotter_for_data(data_all=data_all_n,
                                                  data_mean=data_mean_n,
                                                  index_for_plot=index_for_plot_n,
@@ -335,6 +340,7 @@ class DwdMain:
                     data_all_n, data_mean_n, index_for_plot_n, column_name_list_n = self.__main_nearneighbor(i,
                                                                                                              qn_weight_n=qn_weight,
                                                                                                              distance_weight_n=distance_weight,
+                                                                                                             direction_n=direction,
                                                                                                              compare_n=compare,
                                                                                                              no_plot_n=no_plot)
                     self.__main_plotter_for_data(data_all=data_all_n,
@@ -350,6 +356,7 @@ class DwdMain:
                     data_all_n, data_mean_n, index_for_plot_n, column_name_list_n, data_to_compare_n, diff_n, maximum_n, avg_diff_n, rmse_n, data_density_n = self.__main_nearneighbor(i,
                                                                                                                                                                                        qn_weight_n=qn_weight,
                                                                                                                                                                                        distance_weight_n=distance_weight,
+                                                                                                                                                                                       direction_n=direction,
                                                                                                                                                                                        compare_n=compare,
                                                                                                                                                                                        no_plot_n=no_plot)
                     return self.__main_plotter_for_data(data_all=data_all_n,
@@ -370,6 +377,7 @@ class DwdMain:
                     data_all_n, data_mean_n, index_for_plot_n, column_name_list_n = self.__main_nearneighbor(i,
                                                                                                              qn_weight_n=qn_weight,
                                                                                                              distance_weight_n=distance_weight,
+                                                                                                             direction_n=direction,
                                                                                                              compare_n=compare,
                                                                                                              no_plot_n=no_plot)
                     self.__main_plotter_for_data(data_all=data_all_n,
@@ -380,11 +388,50 @@ class DwdMain:
                                                  compare=compare,
                                                  no_plot=no_plot,
                                                  type_of_method="Gewichteter Durchschnitt (Distanzabh.)")
+            elif direction:
+                if compare:
+                    data_all_n, data_mean_n, index_for_plot_n, column_name_list_n, data_to_compare_n, diff_n, maximum_n, avg_diff_n, rmse_n, data_density_n = self.__main_nearneighbor(i,
+                                                                                                                                                                                       qn_weight_n=qn_weight,
+                                                                                                                                                                                       distance_weight_n=distance_weight,
+                                                                                                                                                                                       direction_n=direction,
+                                                                                                                                                                                       compare_n=compare,
+                                                                                                                                                                                       no_plot_n=no_plot)
+                    return self.__main_plotter_for_data(data_all=data_all_n,
+                                                        data_mean=data_mean_n,
+                                                        index_for_plot=index_for_plot_n,
+                                                        column_name_list=column_name_list_n,
+                                                        plot_name=i,
+                                                        compare=compare,
+                                                        no_plot=no_plot,
+                                                        data_to_compare=data_to_compare_n,
+                                                        diff=diff_n,
+                                                        maximum=maximum_n,
+                                                        avg_diff=avg_diff_n,
+                                                        rmse=rmse_n,
+                                                        data_density=data_density_n,
+                                                        type_of_method="Durchschnitt-Himmelsrichtung")
+                else:
+                    data_all_n, data_mean_n, index_for_plot_n, column_name_list_n = self.__main_nearneighbor(i,
+                                                                                                             qn_weight_n=qn_weight,
+                                                                                                             distance_weight_n=distance_weight,
+                                                                                                             direction_n=direction,
+                                                                                                             compare_n=compare,
+                                                                                                             no_plot_n=no_plot)
+                    self.__main_plotter_for_data(data_all=data_all_n,
+                                                 data_mean=data_mean_n,
+                                                 index_for_plot=index_for_plot_n,
+                                                 column_name_list=column_name_list_n,
+                                                 plot_name=i,
+                                                 compare=compare,
+                                                 no_plot=no_plot,
+                                                 type_of_method="Durchschnitt-Himmelsrichtung")
+
             else:
                 if compare:
                     data_all_n, data_mean_n, index_for_plot_n, column_name_list_n, data_to_compare_n, diff_n, maximum_n, avg_diff_n, rmse_n, data_density_n = self.__main_nearneighbor(i,
                                                                                                                                                                                        qn_weight_n=qn_weight,
                                                                                                                                                                                        distance_weight_n=distance_weight,
+                                                                                                                                                                                       direction_n=direction,
                                                                                                                                                                                        compare_n=compare,
                                                                                                                                                                                        no_plot_n=no_plot)
                     return self.__main_plotter_for_data(data_all=data_all_n,
@@ -403,7 +450,12 @@ class DwdMain:
                                                         type_of_method="Durchschnitt")
 
                 else:
-                    data_all_n, data_mean_n, index_for_plot_n, column_name_list_n = self.__main_nearneighbor(i, qn_weight_n=qn_weight, distance_weight_n=distance_weight, compare_n=compare, no_plot_n=no_plot)
+                    data_all_n, data_mean_n, index_for_plot_n, column_name_list_n = self.__main_nearneighbor(i,
+                                                                                                             qn_weight_n=qn_weight,
+                                                                                                             distance_weight_n=distance_weight,
+                                                                                                             direction_n=direction,
+                                                                                                             compare_n=compare,
+                                                                                                             no_plot_n=no_plot)
                     self.__main_plotter_for_data(data_all=data_all_n,
                                                  data_mean=data_mean_n,
                                                  index_for_plot=index_for_plot_n,
