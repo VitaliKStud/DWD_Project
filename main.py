@@ -99,7 +99,7 @@ def calculations():
                                                        z_coordinate=z_coordinate_,
                                                        k_factor=k_factor_,
                                                        looking_for=looking_for_)
-                                        dwd_list = dwd.main_plotter_data(qn_weight=False, distance_weight=False, compare=True, no_plot=True)
+                                        dwd_list = dwd.main_plotter_data(qn_weight=False, distance_weight=False, direction=True, compare=True, no_plot=True)
                                         maximum, avg_diff, rmse, data_density = dwd_list[0], dwd_list[1], dwd_list[2], dwd_list[3]
                                         my_list.append([compare_station_, x_coordinate_, y_coordinate_, j, type_of_data_, z, start_date_, end_date_, avg_diff, maximum, rmse, data_density])
                                         #header = ["paramter", "k-faktor", "von_datum", "bis_datum", "avg_diff", "max_diff", "rmse", "data_density"]
@@ -107,7 +107,7 @@ def calculations():
                                     except:
                                         print("error1")
                                         pass
-                                    with open("C:/Users/VID/Desktop/Betriebliche_Praxis/Ergebnisse/ergebnisse_gewichtet_" + j + "standard" +".csv") as file:
+                                    with open("C:/Users/VID/Desktop/Betriebliche_Praxis/Ergebnisse/avg_" + j + "_direction" +".csv") as file:
                                         writer = csv.writer(file)
                                         #writer.writerow(header)
                                         writer.writerows(my_list)
@@ -141,7 +141,7 @@ def calculations():
                                                        z_coordinate=z_coordinate_,
                                                        k_factor=k_factor_,
                                                        looking_for=looking_for_)
-                                        dwd_list = dwd.main_plotter_data(qn_weight=False, distance_weight=False, compare=True, no_plot=True)
+                                        dwd_list = dwd.main_plotter_data(qn_weight=False, distance_weight=False, direction=True, compare=True, no_plot=True)
                                         maximum, avg_diff, rmse, data_density = dwd_list[0], dwd_list[1], dwd_list[2], dwd_list[3]
                                         my_list.append([compare_station_, x_coordinate_, y_coordinate_, j, type_of_data_, z, start_date_, end_date_, avg_diff, maximum, rmse, data_density])
                                         # header = [0compare_station_, 1x_coordinate_, 2y_coordinate_, 3j, 4type_of_data_, 5z, 6start_date_, 7end_date_, 8avg_diff, 9maximum, 10rmse, 11data_density]
@@ -149,7 +149,7 @@ def calculations():
                                     except:
                                         print("error2")
                                         pass
-                                    with open("C:/Users/VID/Desktop/Betriebliche_Praxis/Ergebnisse/ergebnisse_gewichtet_" + j + "_standard" +".csv", "a+", newline="") as file:
+                                    with open("C:/Users/VID/Desktop/Betriebliche_Praxis/Ergebnisse/avg_" + j + "_direction" +".csv", "a+", newline="") as file:
                                         writer = csv.writer(file)
                                         # writer.writerow(header)
                                         writer.writerows(my_list)
@@ -162,7 +162,7 @@ def calculations():
         except:
             print("error5")
             pass
-
+calculations()
 
 looking_for_ = ["TT_10"]
 start_date_ = 200001010000
@@ -238,6 +238,8 @@ def analyze(method="standard", density=0.9):
                     path = r"C:/Users/VID/Desktop/Betriebliche_Praxis/Ergebnisse/standard/ergebnisse_gewichtet_" + j + "_standard_" + ".csv"
                 elif method == "weighted":
                     path = r"C:/Users/VID/Desktop/Betriebliche_Praxis/Ergebnisse/weighted/ergebnisse_gewichtet_" + j + "_" + ".csv"
+                elif method == "direction":
+                    path = r"C:/Users/VID/Desktop/Betriebliche_Praxis/Ergebnisse/weighted/direction_avg_" + j + "_" + ".csv"
                 with open(path) as file:
                     for i in file:
                         if len(i.strip("\n").split(",")) == 1:
