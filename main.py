@@ -8,6 +8,7 @@ from random import randint
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import seaborn as sns
 
 local_domain_ = r"C:\Users\VID\Desktop\Betriebliche_Praxis/"
 os.chdir(local_domain_)
@@ -227,6 +228,8 @@ def check(num,n=2):
 def analyze(method="standard", density=0.9):
     dict_avg = {}
     dict_std = {}
+    dict_density = {}
+    dict_datapoints = {}
     for i in type_of_data_list:
         keys = unit_dict[i].keys()
         for j in keys:
@@ -246,11 +249,15 @@ def analyze(method="standard", density=0.9):
                             pass
                         else:
                             my_list.append(i.strip("\n").split(","))
+                density_list = []
                 avg = []
                 std_list = []
+                count_datapoints = []
                 for k in range(3,21,1):
+                        count_data = 0
                         n = 10
                         y = []
+                        den_list = []
                         try:
                             for i in my_list:
                                 if int(i[5]) == k:
@@ -259,14 +266,23 @@ def analyze(method="standard", density=0.9):
                                             pass
                                         else:
                                             y.append(float(i[n]))
+                                            count_data = count_data + 1
+                                            den_list.append(float(i[11]))
+                                    else:
+                                        pass
+                                else:
+                                    pass
 
                             avg.append(sum(y)/len(y))
+                            density_list.append(sum(den_list)/len(den_list))
                             std_list.append(std_from_list(y))
                         except:
                             pass
                 dict_avg.update({j: avg})
                 dict_std.update({j: std_list})
-    return dict_avg, dict_std
+                dict_density.update({j: density_list})
+                dict_datapoints.update({j: count_data})
+    return dict_avg, dict_std, dict_density, dict_datapoints
 
 def write_csv():
     for i in type_of_data_list:
@@ -288,7 +304,7 @@ def write_csv():
                 writer.writerows(my_list)
 
 
-def plot_compare_method_bar(dict_avg, dict_std, name="test", std=True):
+def plot_compare_method_bar(dict_avg, dict_std, dict_names, name="test", std=True, plt_name="test"):
     keys = dict_avg.keys()
     counter_0 = 0
     counter_1 = 0
@@ -306,42 +322,147 @@ def plot_compare_method_bar(dict_avg, dict_std, name="test", std=True):
         counter_0 = counter_0 + 1
         avg = dict_avg[i]
         std_list = dict_std[i]
-        if std:
-            ax[counter_1, counter_2].bar(np.arange(3, len(avg) + 3), avg, yerr=std_list, capsize=4)
+        if len(avg) == 0:
+            pass
         else:
-            ax[counter_1, counter_2].bar(np.arange(3, len(avg) + 3), avg)
-        # plt.ylim(0,max(avg)+max(std))
-        ax[counter_1, counter_2].set_title(i)
-        ax[counter_1, counter_2].grid()
-        # ax[counter_1, counter_2].set_ylim(min(avg) + min(std_list) * 1.1, max(avg) + max(std_list) * 1.1)
-        fig.savefig("Graphs/calculation_" + name + ".png")
-        plt.close("all")
+            if std:
+                bar = ax[counter_1, counter_2].bar(np.arange(3, len(avg) + 3), avg)
+                bar_error = ax[counter_1, counter_2].errorbar(np.arange(3, len(avg) + 3), avg, yerr=std_list, capsize=4, fmt="o", color="grey", ms=4.0)
+                for j in range(0,len(bar),1):
+                    if dict_names[i][j] == "a":
+                        bar[j].set_color("red")
+                        bar[j].set_label("test")
+                    elif dict_names[i][j] == "b":
+                        bar[j].set_color("orange")
+                        bar[j].set_label("test1")
+                    elif dict_names[i][j] == "c":
+                        bar[j].set_color("green")
+                        bar[j].set_label("test2")
+            else:
+                bar = ax[counter_1, counter_2].bar(np.arange(3, len(avg) + 3), avg)
+            ax[counter_1, counter_2].set_title(i)
+            ax[counter_1, counter_2].grid()
+            colors = {'standard': 'red', 'weighted': 'orange', "direction": "green"}
+            labels = list(colors.keys())
+            handles = [plt.Rectangle((0, 0), 1, 1, color=colors[label]) for label in labels]
+            plt.legend(handles, labels, loc="best", bbox_to_anchor=(1.0, 0.5))
+            ax[counter_1, counter_2].set_ylim(0, max(avg) + max(std_list) * 1.1)
+            ax[counter_1, counter_2].set_xticks(np.arange(3, 21, 2))
+            fig.savefig(r"C:\Users\VID\Desktop\Betriebliche_Praxis\Graphs/" + plt_name + ".png")
+            plt.close("all")
 
-
-
-def compare_methods(dict_1, dict_2, dict_std_1, dict_std_2):
+def compare_methods(dict_1, dict_2, dict_3, dict_std_1, dict_std_2, dict_std_3):
     keys = dict_1.keys()
     dict_erg = {}
-    dict_erg_std = {}
+    dict_std = {}
+    dict_erg_g = {}
+    dict_std_g = {}
+    dict_names = {}
     for i in keys:
-        array_1 = np.array(dict_1[i])
-        array_2 = np.array(dict_2[i])
-        array_3 = np.array(dict_std_1[i])
-        array_4 = np.array(dict_std_2[i])
-        a = array_1 - array_2
-        b = array_3 - array_4
-        dict_erg.update({i:a})
-        dict_erg_std.update({i: b})
-    return dict_erg, dict_erg_std
+        array_1 = np.array(dict_1[i]) #standard
+        array_2 = np.array(dict_2[i]) #weighted
+        array_3 = np.array(dict_3[i]) #direction
+        array_4 = np.array(dict_std_1[i])
+        array_5 = np.array(dict_std_2[i])
+        array_6 = np.array(dict_std_3[i])
+        a = array_1
+        b = array_2
+        c = array_3
+        d = array_4
+        e = array_5
+        f = array_6
+        list_erg = []
+        list_erg_names = []
+        list_std = []
+        if len(a) == len(b) == len(c):
+            for j in range(0,len(a),1):
+                if abs(a[j]) < abs(b[j]) and abs(a[j]) < abs(c[j]):
+                    list_erg_names.append("a")
+                    list_erg.append(a[j])
+                    list_std.append(d[j])
+                elif abs(b[j]) < abs(a[j]) and abs(b[j]) < abs(c[j]):
+                    list_erg_names.append("b")
+                    list_erg.append(b[j])
+                    list_std.append(e[j])
+                elif abs(c[j]) < abs(a[j]) and abs(c[j]) < abs(b[j]):
+                    list_erg_names.append("c")
+                    list_erg.append(c[j])
+                    list_std.append(f[j])
+            dict_erg.update({i:list_erg})
+            dict_std.update({i:list_std})
+            dict_names.update({i:list_erg_names})
+            dict_erg_g.update(dict_erg)
+            dict_std_g.update(dict_std)
+        else:
+            pass
+    return dict_erg_g, dict_names, dict_std_g
 
 # write_csv()
 
-dict_avg_1, dict_std_1 = analyze(method="direction", density = 0.01)
-dict_avg_2, dict_std_2 = analyze(method="standard", density = 0.01)
-# dict_avg_2, dict_std_2 = analyze(method="weighted", density = 0.01)
-dict_erg, dict_erg_std = compare_methods(dict_avg_1, dict_avg_2, dict_std_1, dict_std_2)
-#
-plot_compare_method_bar(dict_erg, dict_erg_std, name="_test", std=False)
-# plot_compare_method_bar(dict_avg_1, dict_std_1, name="_standard")
-# plot_compare_method_bar(dict_avg_2, dict_std_2, name="_weighted")
+def analyze_density(dict_density, dict_datapoints):
+    keys = dict_density.keys()
+    dict_avg_density = {}
+    for i in keys:
+        a = dict_density[i]
+        dict_avg_density.update({i:sum(a)/len(a)})
+    return dict_avg_density, dict_datapoints
+
+def plot_density(dict_avg_density, dict_datapoints, density_list, plt_name):
+    keys = dict_avg_density[0].keys()
+    my_name = []
+    my_avg_density = []
+    my_data_points = []
+    my_density_list = []
+    for i in range(0,len(dict_avg_density),1):
+        for j in keys:
+            my_name.append(j)
+            my_avg_density.append(dict_avg_density[i][j])
+            my_data_points.append((dict_datapoints[i][j]))
+            my_density_list.append((density_list[i]))
+    df = pd.DataFrame(list(zip(my_name, my_data_points, my_avg_density, my_density_list)))
+    df = df.rename(columns={0:"names",1:"data_points",2:"density", 3:"density_list"})
+    print(df)
+    heatmap1_data = pd.pivot_table(df, values='data_points',
+                                   index=['names'],
+                                   columns='density_list')
+    print(heatmap1_data)
+    fig = plt.figure(figsize=(10, 5))
+    sns.heatmap(heatmap1_data, cmap="YlGnBu")
+    fig.savefig(r"C:\Users\VID\Desktop\Betriebliche_Praxis\Graphs/" + plt_name + ".png")
+
+
+def my_main():
+    density_1_list = []
+    den_1_list = []
+    data_p_1_list = []
+    density_2_list = []
+    den_2_list = []
+    data_p_2_list = []
+    density_3_list = []
+    den_3_list = []
+    data_p_3_list = []
+    for i in range(0,100,10):
+        d = i/100
+        print(d)
+        dict_avg_1, dict_std_1, dict_density_1, dict_datapoints_1 = analyze(method="standard", density=d)
+        dict_avg_2, dict_std_2, dict_density_2, dict_datapoints_2 = analyze(method="weighted", density=d)
+        dict_avg_3, dict_std_3, dict_density_3, dict_datapoints_3 = analyze(method="direction", density=d)
+        dict_erg_g, dict_names, dict_std_g = compare_methods(dict_avg_1, dict_avg_2, dict_avg_3, dict_std_1, dict_std_2, dict_std_3)
+        plot_compare_method_bar(dict_erg_g, dict_std_g, dict_names, name="_test", std=True, plt_name="test_"+str(d))
+        den_1, data_p_1 = analyze_density(dict_density_1, dict_datapoints_1)
+        den_2, data_p_2 = analyze_density(dict_density_2, dict_datapoints_2)
+        den_3, data_p_3 = analyze_density(dict_density_3, dict_datapoints_3)
+        den_1_list.append(den_1)
+        data_p_1_list.append(data_p_1)
+        density_1_list.append(d)
+        den_2_list.append(den_2)
+        data_p_2_list.append(data_p_2)
+        density_2_list.append(d)
+        den_3_list.append(den_3)
+        data_p_3_list.append(data_p_3)
+        density_3_list.append(d)
+    plot_density(den_1_list, data_p_1_list, density_1_list, "standard")
+    plot_density(den_2_list, data_p_2_list, density_2_list, "weighted")
+    plot_density(den_3_list, data_p_3_list, density_3_list, "direction")
+my_main()
 
