@@ -253,35 +253,40 @@ def analyze(method="standard", density=0.9):
                 avg = []
                 std_list = []
                 count_datapoints = []
+                count_data_list = []
                 for k in range(3,21,1):
                         count_data = 0
-                        n = 10
+                        n = 8
                         y = []
                         den_list = []
                         try:
                             for i in my_list:
                                 if int(i[5]) == k:
-                                    if float(i[11]) > density:
-                                        if i[n] == "nan":
-                                            pass
+                                    if int(i[7]) > 200000000000:
+                                        if float(i[11]) > density:
+                                            if i[n] == "nan":
+                                                pass
+                                            else:
+                                                y.append(float(i[n]))
+                                                count_data = count_data + 1
+                                                den_list.append(float(i[11]))
                                         else:
-                                            y.append(float(i[n]))
-                                            count_data = count_data + 1
-                                            den_list.append(float(i[11]))
+                                            pass
                                     else:
                                         pass
                                 else:
                                     pass
-
+                            count_data_list.append(count_data)
                             avg.append(sum(y)/len(y))
                             density_list.append(sum(den_list)/len(den_list))
                             std_list.append(std_from_list(y))
                         except:
                             pass
+
                 dict_avg.update({j: avg})
                 dict_std.update({j: std_list})
                 dict_density.update({j: density_list})
-                dict_datapoints.update({j: count_data})
+                dict_datapoints.update({j: sum(count_data_list)/len(count_data_list)})
     return dict_avg, dict_std, dict_density, dict_datapoints
 
 def write_csv():
