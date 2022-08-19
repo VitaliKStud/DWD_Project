@@ -162,32 +162,32 @@ def calculations():
         except:
             print("error5")
             pass
-calculations()
 
-looking_for_ = ["TT_10"]
-start_date_ = 200001010000
-end_date_   = 200002010020
-x_coordinate_ = 10.3771 # 7 for compare == False
-y_coordinate_ = 50.5611 # 51 for compare == False
-z_coordinate_ = 0 # not needed for now (maybe in future)
-k_factor_ = 6 # how many station are you looking for around your location? 7 means, it will find 7 next stations for your location
-compare_station_ = "TU_03231" # needed for comparing (don't forget to set the prefix (wind_)
-type_of_data_ = "air_temperature"
-type_of_time_ = "historical"
-dwd = main_dwd(local_domain=local_domain_,
-               type_of_data=type_of_data_,
-               type_of_time=type_of_time_,
-               start_date=start_date_,
-               end_date=end_date_,
-               compare_station=compare_station_,
-               x_coordinate=x_coordinate_,
-               y_coordinate=y_coordinate_,
-               z_coordinate=z_coordinate_,
-               k_factor=k_factor_,
-               looking_for=looking_for_)
 
-dwd.main_plotter_data(qn_weight=False, distance_weight=False, direction=True, compare=True, no_plot=False)
-dwd.main_data_map(direction=True)
+# looking_for_ = ["TT_10"]
+# start_date_ = 200001010000
+# end_date_   = 200002010020
+# x_coordinate_ = 10.3771 # 7 for compare == False
+# y_coordinate_ = 50.5611 # 51 for compare == False
+# z_coordinate_ = 0 # not needed for now (maybe in future)
+# k_factor_ = 6 # how many station are you looking for around your location? 7 means, it will find 7 next stations for your location
+# compare_station_ = "TU_03231" # needed for comparing (don't forget to set the prefix (wind_)
+# type_of_data_ = "air_temperature"
+# type_of_time_ = "historical"
+# dwd = main_dwd(local_domain=local_domain_,
+#                type_of_data=type_of_data_,
+#                type_of_time=type_of_time_,
+#                start_date=start_date_,
+#                end_date=end_date_,
+#                compare_station=compare_station_,
+#                x_coordinate=x_coordinate_,
+#                y_coordinate=y_coordinate_,
+#                z_coordinate=z_coordinate_,
+#                k_factor=k_factor_,
+#                looking_for=looking_for_)
+#
+# dwd.main_plotter_data(qn_weight=False, distance_weight=False, direction=True, compare=True, no_plot=False)
+# dwd.main_data_map(direction=True)
 
 # for i in type_of_data_list:
 #     keys = unit_dict[i].keys()
@@ -239,7 +239,7 @@ def analyze(method="standard", density=0.9):
                 elif method == "weighted":
                     path = r"C:/Users/VID/Desktop/Betriebliche_Praxis/Ergebnisse/weighted/ergebnisse_gewichtet_" + j + "_" + ".csv"
                 elif method == "direction":
-                    path = r"C:/Users/VID/Desktop/Betriebliche_Praxis/Ergebnisse/weighted/direction_avg_" + j + "_" + ".csv"
+                    path = r"C:/Users/VID/Desktop/Betriebliche_Praxis/Ergebnisse/direction/avg_" + j + "_direction_" + ".csv"
                 with open(path) as file:
                     for i in file:
                         if len(i.strip("\n").split(",")) == 1:
@@ -268,13 +268,12 @@ def analyze(method="standard", density=0.9):
                 dict_std.update({j: std_list})
     return dict_avg, dict_std
 
-
 def write_csv():
     for i in type_of_data_list:
         keys = unit_dict[i].keys()
         for j in keys:
             my_list = []
-            with open("C:/Users/VID/Desktop/Betriebliche_Praxis/Ergebnisse/ergebnisse_gewichtet_" + j + "_standard" ".csv") as file:
+            with open("C:/Users/VID/Desktop/Betriebliche_Praxis/Ergebnisse/direction_roh/avg_" + j + "_direction" ".csv") as file:
                 counter = 0
                 for i in file:
                     if [i] in my_list:
@@ -283,10 +282,11 @@ def write_csv():
                         my_list.append([i])
 
             print(counter)
-            with open("C:/Users/VID/Desktop/Betriebliche_Praxis/Ergebnisse/ergebnisse_gewichtet_" + j + "_standard_" + ".csv", "a+", newline="") as file:
+            with open("C:/Users/VID/Desktop/Betriebliche_Praxis/Ergebnisse/direction/avg_" + j + "_direction_" + ".csv", "a+", newline="") as file:
                 writer = csv.writer(file)
                 # writer.writerow(header)
                 writer.writerows(my_list)
+
 
 def plot_compare_method_bar(dict_avg, dict_std, name="test", std=True):
     keys = dict_avg.keys()
@@ -317,6 +317,8 @@ def plot_compare_method_bar(dict_avg, dict_std, name="test", std=True):
         fig.savefig("Graphs/calculation_" + name + ".png")
         plt.close("all")
 
+
+
 def compare_methods(dict_1, dict_2, dict_std_1, dict_std_2):
     keys = dict_1.keys()
     dict_erg = {}
@@ -334,11 +336,12 @@ def compare_methods(dict_1, dict_2, dict_std_1, dict_std_2):
 
 # write_csv()
 
-# dict_avg_1, dict_std_1 = analyze(method="standard", density = 0.01)
+dict_avg_1, dict_std_1 = analyze(method="direction", density = 0.01)
+dict_avg_2, dict_std_2 = analyze(method="standard", density = 0.01)
 # dict_avg_2, dict_std_2 = analyze(method="weighted", density = 0.01)
-# dict_erg, dict_erg_std = compare_methods(dict_avg_1, dict_avg_2, dict_std_1, dict_std_2)
+dict_erg, dict_erg_std = compare_methods(dict_avg_1, dict_avg_2, dict_std_1, dict_std_2)
 #
-# plot_compare_method_bar(dict_erg, dict_erg_std, name="_test",std=False)
+plot_compare_method_bar(dict_erg, dict_erg_std, name="_test", std=False)
 # plot_compare_method_bar(dict_avg_1, dict_std_1, name="_standard")
 # plot_compare_method_bar(dict_avg_2, dict_std_2, name="_weighted")
 
