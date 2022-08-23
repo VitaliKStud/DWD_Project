@@ -469,5 +469,48 @@ def my_main():
     plot_density(den_1_list, data_p_1_list, density_1_list, "standard")
     plot_density(den_2_list, data_p_2_list, density_2_list, "weighted")
     plot_density(den_3_list, data_p_3_list, density_3_list, "direction")
-my_main()
+# my_main()
+
+def correlation():
+    looking_for_ = ["PP_10"]
+    start_date_ = 200901010000
+    end_date_   = 201002010000
+    x_coordinate_ = 7.1077 # 7 for compare == False
+    y_coordinate_ = 49.2128 # 51 for compare == False
+    z_coordinate_ = 0 # not needed for now (maybe in future)
+    k_factor_ = 3 # how many station are you looking for around your location? 7 means, it will find 7 next stations for your location
+    compare_station_ = "TU_04336" # needed for comparing (don't forget to set the prefix (wind_)
+    type_of_data_ = "air_temperature"
+    type_of_time_ = "historical"
+
+    my_list = []
+    for i in type_of_data_list:
+        x = main_dwd(local_domain=local_domain_,
+                     type_of_data=i,
+                     type_of_time="historical",
+                     start_date=start_date_, end_date=end_date_).main_activ_stations_in_date()
+        for j in range(0,len(x[3]),1):
+            my_list.append(x[3][j].split("_")[1])
+
+    stations_with_all_data = []
+    for n in my_list:
+        if my_list.count(n) == 4:
+            stations_with_all_data.append(n)
+    print(stations_with_all_data)
+
+    dwd = main_dwd(local_domain=local_domain_,
+                   type_of_data=type_of_data_,
+                   type_of_time=type_of_time_,
+                   start_date=start_date_,
+                   end_date=end_date_,
+                   compare_station=compare_station_,
+                   x_coordinate=x_coordinate_,
+                   y_coordinate=y_coordinate_,
+                   z_coordinate=z_coordinate_,
+                   looking_for=looking_for_)
+
+
+    print(dwd.main_analyze_data())
+correlation()
+
 

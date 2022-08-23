@@ -111,7 +111,7 @@ class NearNeighbor:
                 activ_near_id.append(self.activ_id[i])
             return x_near, y_near, z_near, activ_near_id
 
-    def datapath_near(self, direction=False):
+    def datapath_near(self, direction=False, analyze=False):
         """
         :Description: Is getting all the paths for data of all the near stations in timedelta. Also creating a list with the columnnames for your DataFrame
 
@@ -174,6 +174,12 @@ class NearNeighbor:
                         column_names_list.append(self.activ_id[r])
                     counter = counter + 1
             return datapath_near_list, column_names_list, column_name_list
+        elif analyze:
+            datapath_near_list.append(self.station_list[self.activ_id[self.closest[:, 1:2][0][0]]].generate_tu_data_path_date(self.start_date, self.end_date))
+            column_name_list.append(self.activ_id[self.closest[:, 1:2][0][0]])
+            for j in range(len(datapath_near_list[counter])):
+                column_names_list.append(self.activ_id[self.closest[:, 1:2][0][0]])
+            return datapath_near_list, column_names_list, column_name_list
         else:
             for i in self.closest[:, 1:self.k_factor + 1][0]:
                 datapath_near_list.append(self.station_list[self.activ_id[i]].generate_tu_data_path_date(self.start_date, self.end_date))
@@ -183,7 +189,7 @@ class NearNeighbor:
                 counter = counter + 1
             return datapath_near_list, column_names_list, column_name_list
 
-    def dataframe_near_from_to(self, direction=False):
+    def dataframe_near_from_to(self, direction=False, analyze=False):
         """
         :Description: Is generating a DataFrame with alle the dates inside your files (timedelta for every file) inside your timedelta. Also returning same lists from self.datapath_near()
 
@@ -193,6 +199,8 @@ class NearNeighbor:
         df_to = pd.DataFrame([])
         if direction:
             datapath_near_list, column_names_list, column_name_list = self.datapath_near(direction=True)
+        elif analyze:
+            datapath_near_list, column_names_list, column_name_list = self.datapath_near(direction=False, analyze=True)
         else:
             datapath_near_list, column_names_list, column_name_list = self.datapath_near(direction=False)
         for i in range(len(datapath_near_list)):
@@ -207,7 +215,7 @@ class NearNeighbor:
         del df_to
         return df_from_to, datapath_near_list, column_names_list, column_name_list
 
-    def dataframe_near_from_to_path(self, direction=False):
+    def dataframe_near_from_to_path(self, direction=False, analyze=False):
         """
         :Description: Is connecting df_from_to with datapah_near_list for easier handling.
 
@@ -215,6 +223,8 @@ class NearNeighbor:
         """
         if direction:
             df_from_to, datapath_near_list, column_names_list, column_name_list = self.dataframe_near_from_to(direction=True)
+        elif analyze:
+            df_from_to, datapath_near_list, column_names_list, column_name_list = self.dataframe_near_from_to(direction=False, analyze=True)
         else:
             df_from_to, datapath_near_list, column_names_list, column_name_list = self.dataframe_near_from_to(direction=False)
         free_list = []
@@ -468,3 +478,31 @@ class NearNeighbor:
                 print(f"Data All: \n{data_all}\n")
                 print(f"Data mean: \n{data_mean}\n")
             return data_all, data_mean, index_for_plot, column_name_list
+
+    def analyze_data(self, data_looking_for="TT_10", correlation=True):
+        if correlation:
+            print("correlation")
+            date_range_df = self.date_range_df().set_index('MESS_DATUM_GENERATED')
+            df_from_to, column_names_list, column_name_list = self.dataframe_near_from_to_path(direction=False, analyze=True)
+            for i in column_name_list:
+                date_range_df.loc[:, str(i)] = np.nan
+            for i in df_from_to["DATA_PATH"]:
+                df_tt_10 = pd.read_csv(i, sep=";", usecols=["MESS_DATUM", data_looking_for], index_col=["MESS_DATUM"])
+                mask = df_tt_10[data_looking_for] > -999
+                df_tt_10 = df_tt_10[mask]
+                my_new_name = f"{column_names_list[0]}_{data_looking_for}"
+                print(my_new_name)
+                df_tt_10 = df_tt_10.rename(columns={data_looking_for: column_names_list[0]})
+                date_range_df.update(df_tt_10)
+                data_all = date_range_df
+                data_all = data_all.drop(["DATA_SUMM"], axis=1)
+                mask_for_quality = data_all.iloc[:, 0:].notnull()
+                data_number = mask_for_quality.multiply(1, fill_value=np.nan).replace({0: np.nan})
+                data_factor = (data_number.sum(axis=1, min_count=1))
+                data_density = data_factor.sum() / len(data_factor)
+                index_for_plot = data_all.index
+                index_for_plot = pd.to_datetime(index_for_plot, format='%Y%m%d%H%M')
+                data_all = data_all.rename(columns={column_names_list[0]: my_new_name})
+                print(f"Data All: \n{data_all}\n")
+                print(f"density: \n{data_density}\n")
+                return data_all, column_name_list[0], data_density
