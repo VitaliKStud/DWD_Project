@@ -503,6 +503,6 @@ class NearNeighbor:
                 index_for_plot = data_all.index
                 index_for_plot = pd.to_datetime(index_for_plot, format='%Y%m%d%H%M')
                 data_all = data_all.rename(columns={column_names_list[0]: my_new_name})
-                print(f"Data All: \n{data_all}\n")
+                # print(f"Data All: \n{data_all}\n")
                 print(f"density: \n{data_density}\n")
                 return data_all, column_name_list[0], data_density

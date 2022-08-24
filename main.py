@@ -503,10 +503,6 @@ def correlation():
         names_type_of_data = type_dict.keys()
         for names_type in names_type_of_data:
             prefix = f"{type_dict[names_type]}_"
-        print(names_type_of_data)
-
-        for names_type in names_type_of_data:
-            prefix = f"{type_dict[names_type]}_"
             for stations in stations_with_all_data:
                 information = main_dwd(local_domain=local_domain_,
                                        type_of_data=names_type,
@@ -514,28 +510,24 @@ def correlation():
                                        start_date=start_date_, end_date=end_date_).main_station_information(f"{prefix}{stations}")
                 y_coordinate_ = information["geoBreite"]
                 x_coordinate_ = information["geoLaenge"]
+                z_coordinate_ = 0  # not needed for now (maybe in future)
+                compare_station_ = stations
 
+            for parameter in title_dict[names_type]:
+                print(parameter)
+                looking_for_ = [parameter]
+                dwd = main_dwd(local_domain=local_domain_,
+                               type_of_data=names_type,
+                               type_of_time="historical",
+                               start_date=start_date_,
+                               end_date=end_date_,
+                               compare_station=compare_station_,
+                               x_coordinate=x_coordinate_,
+                               y_coordinate=y_coordinate_,
+                               z_coordinate=z_coordinate_,
+                               looking_for=looking_for_)
+                # print(dwd.main_analyze_data())
 
-    looking_for_ = ["PP_10"]
-    k_factor_ = 3 # how many station are you looking for around your location? 7 means, it will find 7 next stations for your location
-    compare_station_ = "TU_04336" # needed for comparing (don't forget to set the prefix (wind_)
-    type_of_data_ = "air_temperature"
-    type_of_time_ = "historical"
-
-
-
-
-    dwd = main_dwd(local_domain=local_domain_,
-                   type_of_data=type_of_data_,
-                   type_of_time=type_of_time_,
-                   start_date=start_date_,
-                   end_date=end_date_,
-                   compare_station=compare_station_,
-                   x_coordinate=x_coordinate_,
-                   y_coordinate=y_coordinate_,
-                   z_coordinate=z_coordinate_,
-                   looking_for=looking_for_)
-    print(dwd.main_analyze_data())
 correlation()
 
 
