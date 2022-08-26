@@ -501,37 +501,175 @@ def correlation():
         stations_with_all_data = delete_double_values(stations_with_all_data)
 
         names_type_of_data = type_dict.keys()
+        print(stations_with_all_data)
 
-        for stations in stations_with_all_data:
-            my_df = pd.DataFrame([])
-            for names_type in names_type_of_data:
-                prefix = f"{type_dict[names_type]}_"
-                information = main_dwd(local_domain=local_domain_,
-                                       type_of_data=names_type,
-                                       type_of_time="historical",
-                                       start_date=start_date_, end_date=end_date_).main_station_information(f"{prefix}{stations}")
-                y_coordinate_ = information["geoBreite"]
-                x_coordinate_ = information["geoLaenge"]
-                z_coordinate_ = 0  # not needed for now (maybe in future)
-                compare_station_ = stations
+        if len(stations_with_all_data) < 20:
+            for stations in stations_with_all_data:
+                my_df = pd.DataFrame([])
+                my_density = []
+                try:
+                    for names_type in names_type_of_data:
+                        prefix = f"{type_dict[names_type]}_"
+                        information = main_dwd(local_domain=local_domain_,
+                                               type_of_data=names_type,
+                                               type_of_time="historical",
+                                               start_date=start_date_, end_date=end_date_).main_station_information(f"{prefix}{stations}")
+                        y_coordinate_ = information["geoBreite"]
+                        x_coordinate_ = information["geoLaenge"]
+                        z_coordinate_ = 0  # not needed for now (maybe in future)
+                        compare_station_ = stations
 
-                for parameter in title_dict[names_type]:
-                    print(parameter)
-                    looking_for_ = [parameter]
-                    dwd = main_dwd(local_domain=local_domain_,
-                                   type_of_data=names_type,
-                                   type_of_time="historical",
-                                   start_date=start_date_,
-                                   end_date=end_date_,
-                                   compare_station=compare_station_,
-                                   x_coordinate=x_coordinate_,
-                                   y_coordinate=y_coordinate_,
-                                   z_coordinate=z_coordinate_,
-                                   looking_for=looking_for_)
-                    new_df = dwd.main_analyze_data()[0]
-                    my_df = pd.concat([my_df, new_df], axis=1)
-                    print(my_df)
+                        for parameter in title_dict[names_type]:
+                            print(parameter)
+                            looking_for_ = [parameter]
+                            dwd = main_dwd(local_domain=local_domain_,
+                                           type_of_data=names_type,
+                                           type_of_time="historical",
+                                           start_date=start_date_,
+                                           end_date=end_date_,
+                                           compare_station=compare_station_,
+                                           x_coordinate=x_coordinate_,
+                                           y_coordinate=y_coordinate_,
+                                           z_coordinate=z_coordinate_,
+                                           looking_for=looking_for_)
+                            new_df, names, density = dwd.main_analyze_data()
+                            my_df = pd.concat([my_df, new_df], axis=1)
+                            my_density.append(density)
+                            print(my_density)
+                except:
+                    print("error1")
+                    pass
+                plt.figure(figsize=(16, 6))
+                correlation_pearson_df = my_df.corr(method="pearson")
+                correlation_kendall_df = my_df.corr(method="kendall")
+                correlation_spearman_df = my_df.corr(method="spearman")
+                link_pearson = r"C:\Users\VID\Desktop\Betriebliche_Praxis\Ergebnisse\correlation\pearson" + "/" + str(compare_station_) + "_" + str(start_date_) + ".csv"
+                link_density = r"C:\Users\VID\Desktop\Betriebliche_Praxis\Ergebnisse\correlation" + "/" + str(compare_station_) + "_" + str(start_date_) + "_density.json"
+                link_kendall = r"C:\Users\VID\Desktop\Betriebliche_Praxis\Ergebnisse\correlation\kendall" + "/" + str(compare_station_) + "_" + str(start_date_) +".csv"
+                link_spearman = r"C:\Users\VID\Desktop\Betriebliche_Praxis\Ergebnisse\correlation\spearman" + "/" + str(compare_station_) + "_" + str(start_date_) + ".csv"
+                correlation_pearson_df.to_csv(link_pearson)
+                correlation_kendall_df.to_csv(link_kendall)
+                correlation_spearman_df.to_csv(link_spearman)
+                with open(link_density, "w") as fp:
+                    json.dump(my_density, fp)
+        else:
+            for stations in range(0,21,1):
+                my_df = pd.DataFrame([])
+                my_density = []
+                random = randint(0, len(stations_with_all_data) - 1)
+                try:
+                    for names_type in names_type_of_data:
+                        prefix = f"{type_dict[names_type]}_"
+                        information = main_dwd(local_domain=local_domain_,
+                                               type_of_data=names_type,
+                                               type_of_time="historical",
+                                               start_date=start_date_, end_date=end_date_).main_station_information(f"{prefix}{stations_with_all_data[random]}")
+                        y_coordinate_ = information["geoBreite"]
+                        x_coordinate_ = information["geoLaenge"]
+                        z_coordinate_ = 0  # not needed for now (maybe in future)
+                        compare_station_ = stations_with_all_data[random]
+
+                        for parameter in title_dict[names_type]:
+                            print(parameter)
+                            looking_for_ = [parameter]
+                            dwd = main_dwd(local_domain=local_domain_,
+                                           type_of_data=names_type,
+                                           type_of_time="historical",
+                                           start_date=start_date_,
+                                           end_date=end_date_,
+                                           compare_station=compare_station_,
+                                           x_coordinate=x_coordinate_,
+                                           y_coordinate=y_coordinate_,
+                                           z_coordinate=z_coordinate_,
+                                           looking_for=looking_for_)
+                            new_df, names, density = dwd.main_analyze_data()
+                            my_df = pd.concat([my_df, new_df], axis=1)
+                            my_density.append(density)
+                            # print(my_density)
+                except:
+                    print("error1")
+                    pass
+
+                correlation_pearson_df = my_df.corr(method="pearson")
+                correlation_kendall_df = my_df.corr(method="kendall")
+                correlation_spearman_df = my_df.corr(method="spearman")
+                link_pearson = r"C:\Users\VID\Desktop\Betriebliche_Praxis\Ergebnisse\correlation\pearson" + "/" + str(compare_station_) + "_" + str(start_date_) + ".csv"
+                link_density = r"C:\Users\VID\Desktop\Betriebliche_Praxis\Ergebnisse\correlation" + "/" + str(compare_station_) + "_" + str(start_date_) + "_density.json"
+                link_kendall = r"C:\Users\VID\Desktop\Betriebliche_Praxis\Ergebnisse\correlation\kendall" + "/" + str(compare_station_) + "_" + str(start_date_) +".csv"
+                link_spearman = r"C:\Users\VID\Desktop\Betriebliche_Praxis\Ergebnisse\correlation\spearman" + "/" + str(compare_station_) + "_" + str(start_date_) + ".csv"
+                correlation_pearson_df.to_csv(link_pearson)
+                correlation_kendall_df.to_csv(link_kendall)
+                correlation_spearman_df.to_csv(link_spearman)
+                with open(link_density, "w") as fp:
+                    json.dump(my_density, fp)
+                # plt.figure(figsize=(16, 6))
+                # test_df = pd.read_csv(r'C:\Users\VID\Desktop\Betriebliche_Praxis\Ergebnisse\correlation\corr_test.csv', index_col=0)
+                # mask = np.triu(np.ones_like(correlation_pearson_df, dtype=np.bool_))
+                # heatmap = sns.heatmap(my_df.corr(method="pearson"), mask=mask, vmin=-1, vmax=1, annot=True, cmap='BrBG')
+                # plt.plot(my_df.iloc[:,2])
+                # plt.plot(my_df.iloc[:,11])
+                # plt.show()
+
 
 correlation()
 
+def dataframe_tolist(df):
+    my_dflist = []
+    for i in range(0,df.shape[1],1):
+        my_dflist.append(df.iloc[:,i].tolist())
+    return my_dflist
+
+def avg_of_one_element(data, zeile, spalte):
+    summe = 0
+    counter = 0
+    for i in data:
+        if np.isnan(i[zeile][spalte]):
+            pass
+        else:
+            counter = counter + 1
+            summe = summe + i[zeile][spalte]
+    if counter == 0:
+        avg = np.nan
+    else:
+        avg = summe/counter
+    return avg
+
+def avg_all_corr(data):
+    my_avg_list = []
+    for zeile in range(0,13,1):
+        my_avg_mini_list = []
+        for spalte in range(0,13,1):
+            avg = avg_of_one_element(data, zeile, spalte)
+            my_avg_mini_list.append(avg)
+        my_avg_list.append(my_avg_mini_list)
+    return my_avg_list
+
+def analyze_correlation():
+    my_list = os.listdir(r"C:\Users\VID\Desktop\Betriebliche_Praxis\Ergebnisse\correlation\pearson")
+    all_data = []
+    for i in my_list:
+        my_file = r'C:\Users\VID\Desktop\Betriebliche_Praxis\Ergebnisse\correlation\pearson/' + str(i)
+        my_density_file = r'C:\Users\VID\Desktop\Betriebliche_Praxis\Ergebnisse\correlation/' + str(i.strip(".csv")) + "_density.json"
+        my_df = pd.read_csv(my_file, index_col=0)
+        with open(my_density_file) as file:
+            density = json.load(file)
+        my_new_list = dataframe_tolist(my_df)
+        all_data.append(my_new_list)
+    return all_data
+
+all_data = analyze_correlation()
+# print(all_data[0])
+# print(all_data[0][0][0])
+# print(len(all_data))
+
+my_list = avg_all_corr(all_data)
+print(my_list)
+
+df = pd.DataFrame(my_list)
+print(df)
+
+plt.figure(figsize=(16, 6))
+mask = np.triu(np.ones_like(df, dtype=np.bool_))
+heatmap = sns.heatmap(df, mask=mask, vmin=-1, vmax=1, annot=True, cmap='BrBG')
+plt.show()
 
