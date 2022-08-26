@@ -613,11 +613,13 @@ def correlation():
 
 correlation()
 
+
 def dataframe_tolist(df):
     my_dflist = []
-    for i in range(0,df.shape[1],1):
-        my_dflist.append(df.iloc[:,i].tolist())
+    for i in range(0, df.shape[1], 1):
+        my_dflist.append(df.iloc[:, i].tolist())
     return my_dflist
+
 
 def avg_of_one_element(data, zeile, spalte):
     summe = 0
@@ -631,45 +633,58 @@ def avg_of_one_element(data, zeile, spalte):
     if counter == 0:
         avg = np.nan
     else:
-        avg = summe/counter
+        avg = summe / counter
     return avg
+
+
+def avg_density(my_list):
+    avg_list = []
+    for i in range(0, 13, 1):
+        avg = 0
+        counter = 0
+        for j in my_list:
+            avg = avg + j[i]
+            counter = counter + 1
+        avg_list.append(avg / counter)
+    return avg_list
+
 
 def avg_all_corr(data):
     my_avg_list = []
-    for zeile in range(0,13,1):
+    for zeile in range(0, 13, 1):
         my_avg_mini_list = []
-        for spalte in range(0,13,1):
+        for spalte in range(0, 13, 1):
             avg = avg_of_one_element(data, zeile, spalte)
             my_avg_mini_list.append(avg)
         my_avg_list.append(my_avg_mini_list)
     return my_avg_list
 
+
 def analyze_correlation():
-    my_list = os.listdir(r"C:\Users\VID\Desktop\Betriebliche_Praxis\Ergebnisse\correlation\pearson")
+    my_list = os.listdir(r"C:\Users\VID\Desktop\Betriebliche_Praxis\Ergebnisse\correlation\kendall")
     all_data = []
+    my_density = []
     for i in my_list:
-        my_file = r'C:\Users\VID\Desktop\Betriebliche_Praxis\Ergebnisse\correlation\pearson/' + str(i)
+        my_file = r'C:\Users\VID\Desktop\Betriebliche_Praxis\Ergebnisse\correlation\kendall/' + str(i)
         my_density_file = r'C:\Users\VID\Desktop\Betriebliche_Praxis\Ergebnisse\correlation/' + str(i.strip(".csv")) + "_density.json"
         my_df = pd.read_csv(my_file, index_col=0)
         with open(my_density_file) as file:
             density = json.load(file)
         my_new_list = dataframe_tolist(my_df)
         all_data.append(my_new_list)
-    return all_data
+        my_density.append(density)
+    return all_data, my_density
 
-all_data = analyze_correlation()
-# print(all_data[0])
-# print(all_data[0][0][0])
-# print(len(all_data))
 
-my_list = avg_all_corr(all_data)
-print(my_list)
+def corr_main(plt_name):
+    all_data, my_density = analyze_correlation()
+    den_avg = avg_density(my_density)
+    my_list = avg_all_corr(all_data)
+    df = pd.DataFrame(my_list)
+    plt.figure(figsize=(16, 6))
+    mask = np.triu(np.ones_like(df, dtype=np.bool_))
+    heatmap = sns.heatmap(df, mask=mask, vmin=-1, vmax=1, annot=True, cmap='BrBG')
+    fig.savefig(r"C:\Users\VID\Desktop\Betriebliche_Praxis\Graphs/" + plt_name + ".png")
 
-df = pd.DataFrame(my_list)
-print(df)
-
-plt.figure(figsize=(16, 6))
-mask = np.triu(np.ones_like(df, dtype=np.bool_))
-heatmap = sns.heatmap(df, mask=mask, vmin=-1, vmax=1, annot=True, cmap='BrBG')
-plt.show()
+corr_main()
 
