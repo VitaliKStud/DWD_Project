@@ -479,7 +479,7 @@ class NearNeighbor:
                 print(f"Data mean: \n{data_mean}\n")
             return data_all, data_mean, index_for_plot, column_name_list
 
-    def analyze_data(self, data_looking_for="TT_10", correlation=True):
+    def analyze_data(self, data_looking_for="TT_10", correlation=True, compare_station=""):
         if correlation:
             print("correlation")
             date_range_df = self.date_range_df().set_index('MESS_DATUM_GENERATED')
@@ -508,4 +508,24 @@ class NearNeighbor:
                 return data_all, column_name_list[0], data_density
         else:
             print("prep data")
+            date_range_df = self.date_range_df().set_index('MESS_DATUM_GENERATED')
+            df_from_to, column_names_list, column_name_list = self.dataframe_near_from_to_path()
+            counter = 0
+            for i in column_name_list:
+                date_range_df.loc[:, str(i)] = np.nan
+            for i in df_from_to["DATA_PATH"]:
+                df_tt_10 = pd.read_csv(i, sep=";", usecols=["MESS_DATUM", data_looking_for], index_col=["MESS_DATUM"])
+                mask = df_tt_10[data_looking_for] > -999
+                df_tt_10 = df_tt_10[mask]
+                df_tt_10 = df_tt_10.rename(columns={data_looking_for: column_names_list[counter]})
+                date_range_df.update(df_tt_10)
+                counter = counter + 1
+            data_all = date_range_df
+            mask_for_quality = date_range_df.iloc[:, 2:].notnull()
+            data_number = mask_for_quality.multiply(1, fill_value=np.nan).replace({0: np.nan})
+            data_factor = (data_number.sum(axis=1, min_count=1))/(self.k_factor-1)
+            data_density = data_factor.sum()/(len(data_factor) - data_factor.isna().sum())
+            index_for_plot = data_all.index
+            index_for_plot = pd.to_datetime(index_for_plot, format='%Y%m%d%H%M')
+            return data_all, index_for_plot, column_name_list, data_density
 
