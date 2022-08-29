@@ -9,6 +9,12 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
+from matplotlib.patches import Rectangle
+np.set_printoptions(precision=3, suppress=True)
+import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras import layers
+
 
 local_domain_ = r"C:\Users\VID\Desktop\Betriebliche_Praxis/"
 os.chdir(local_domain_)
@@ -602,16 +608,9 @@ def correlation():
                 correlation_spearman_df.to_csv(link_spearman)
                 with open(link_density, "w") as fp:
                     json.dump(my_density, fp)
-                # plt.figure(figsize=(16, 6))
-                # test_df = pd.read_csv(r'C:\Users\VID\Desktop\Betriebliche_Praxis\Ergebnisse\correlation\corr_test.csv', index_col=0)
-                # mask = np.triu(np.ones_like(correlation_pearson_df, dtype=np.bool_))
-                # heatmap = sns.heatmap(my_df.corr(method="pearson"), mask=mask, vmin=-1, vmax=1, annot=True, cmap='BrBG')
-                # plt.plot(my_df.iloc[:,2])
-                # plt.plot(my_df.iloc[:,11])
-                # plt.show()
 
 
-correlation()
+# correlation()
 
 
 def dataframe_tolist(df):
@@ -661,11 +660,11 @@ def avg_all_corr(data):
 
 
 def analyze_correlation():
-    my_list = os.listdir(r"C:\Users\VID\Desktop\Betriebliche_Praxis\Ergebnisse\correlation\kendall")
+    my_list = os.listdir(r"C:\Users\VID\Desktop\Betriebliche_Praxis\Ergebnisse\correlation\spearman")
     all_data = []
     my_density = []
     for i in my_list:
-        my_file = r'C:\Users\VID\Desktop\Betriebliche_Praxis\Ergebnisse\correlation\kendall/' + str(i)
+        my_file = r'C:\Users\VID\Desktop\Betriebliche_Praxis\Ergebnisse\correlation\spearman/' + str(i)
         my_density_file = r'C:\Users\VID\Desktop\Betriebliche_Praxis\Ergebnisse\correlation/' + str(i.strip(".csv")) + "_density.json"
         my_df = pd.read_csv(my_file, index_col=0)
         with open(my_density_file) as file:
@@ -681,10 +680,20 @@ def corr_main(plt_name):
     den_avg = avg_density(my_density)
     my_list = avg_all_corr(all_data)
     df = pd.DataFrame(my_list)
-    plt.figure(figsize=(16, 6))
+    counter = 0
+    for i in title_dict.keys():
+        for j in title_dict[i]:
+            df = df.rename(columns={counter: j})
+            df = df.rename(index={counter: j})
+            counter = counter + 1
+    fig = plt.figure(figsize=(15, 10))
     mask = np.triu(np.ones_like(df, dtype=np.bool_))
-    heatmap = sns.heatmap(df, mask=mask, vmin=-1, vmax=1, annot=True, cmap='BrBG')
+    heatmap = sns.heatmap(df, mask=mask, vmin=-1, vmax=1, annot=True, cmap='coolwarm',linewidths=3.0,cbar_kws={'label': 'Korrelationskoeffizient'})
+    plt.xticks(rotation=45)
+    heatmap.add_patch(Rectangle((1, 2), 1, 1, fill=False, edgecolor='darkred', lw=1))
+    heatmap.add_patch(Rectangle((1, 3), 1, 1, fill=False, edgecolor='darkorange', lw=1))
+    plt.title("Korrelationskoeffizienten für verschiedene Parameter", pad=10, weight='bold', size=18)
     fig.savefig(r"C:\Users\VID\Desktop\Betriebliche_Praxis\Graphs/" + plt_name + ".png")
 
-corr_main()
+# corr_main("test")
 

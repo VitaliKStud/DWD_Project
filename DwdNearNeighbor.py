@@ -506,3 +506,6 @@ class NearNeighbor:
                 # print(f"Data All: \n{data_all}\n")
                 print(f"density: \n{data_density}\n")
                 return data_all, column_name_list[0], data_density
+        else:
+            print("prep data")
+

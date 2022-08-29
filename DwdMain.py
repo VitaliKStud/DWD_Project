@@ -490,7 +490,7 @@ class DwdMain:
         """
         return self.reader.get_active_stations_in_date(self.start_date, self.end_date)
 
-    def main_analyze_data(self):
+    def main_analyze_data(self, correlation=True):
         x_active_in_date, y_active_in_date, z_active_in_date, zip_data_active_in_date, activ_id_in_date, station_list = self.__main_data_prep()
         nearneighbor = NearNeighbor(zip_data_active=zip_data_active_in_date,
                                     x_active=x_active_in_date,
@@ -501,7 +501,10 @@ class DwdMain:
                                     end_date=self.end_date,
                                     activ_id=activ_id_in_date,
                                     station_list=station_list)
-        return nearneighbor.analyze_data(data_looking_for = self.looking_for[0],correlation="True")
+        if correlation:
+            return nearneighbor.analyze_data(data_looking_for = self.looking_for[0], correlation=True)
+        else:
+            return nearneighbor.analyze_data(data_looking_for=self.looking_for[0], correlation=False)
 
 def main_dwd(local_domain,
              type_of_data=None,
