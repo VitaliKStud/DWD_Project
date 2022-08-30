@@ -125,7 +125,7 @@ def prep_data_for_ml(k_factor_g=3):
                        type_of_time="historical",
                        start_date=start_date_,
                        end_date=end_date_,
-                       k_factor=k_factor_g+2+counter_2,
+                       k_factor=k_factor_g+2,
                        compare_station=compare_station_,
                        x_coordinate=x_coordinate_,
                        y_coordinate=y_coordinate_,
@@ -142,34 +142,35 @@ def prep_data_for_ml(k_factor_g=3):
                 counter += 1
             else:
                 counter += 1
+        print(new_df)
 
-        dnn_model = tf.keras.models.load_model('dnn_model')
+        # dnn_model = tf.keras.models.load_model('dnn_model')
         # print(dnn_model.shape())
 
         dataset = new_df.copy()
         dataset.tail()
         dataset = dataset.dropna()
 
-        # train_dataset = dataset.sample(frac=0.8, random_state=0)
-        # test_dataset = dataset.drop(train_dataset.index)
-        test_dataset = dataset
+        train_dataset = dataset.sample(frac=0.8, random_state=0)
+        test_dataset = dataset.drop(train_dataset.index)
+        # test_dataset = dataset
 
-        # train_features = train_dataset.copy()
+        train_features = train_dataset.copy()
         test_features = test_dataset.copy()
 
-        # train_labels = train_features.pop(column_names[0])
+        train_labels = train_features.pop(column_names[0])
         test_labels = test_features.pop(column_names[0])
 
-        # normalizer = tf.keras.layers.Normalization(axis=-1)
-        # normalizer.adapt(np.array(train_features))
+        normalizer = tf.keras.layers.Normalization(axis=-1)
+        normalizer.adapt(np.array(train_features))
 
-        # dnn_model = build_and_compile_model(normalizer)
+        dnn_model = build_and_compile_model(normalizer)
 
-        # history = dnn_model.fit(
-        #     train_features,
-        #     train_labels,
-        #     validation_split=0.2,
-        #     verbose=0, epochs=100)
+        history = dnn_model.fit(
+            train_features,
+            train_labels,
+            validation_split=0.2,
+            verbose=0, epochs=100)
 
         print(dnn_model.evaluate(test_features, test_labels, verbose=0))
 
@@ -198,7 +199,7 @@ def prep_data_for_ml(k_factor_g=3):
         # sns.pairplot(train_dataset[column_names], diag_kind='kde')
         # plt.show()
 
-prep_data_for_ml(k_factor_g=50)
+prep_data_for_ml(k_factor_g=7)
 
 
 
