@@ -102,7 +102,7 @@ def prep_data_for_ml(k_factor_g=3):
     for w in range(0, len(wind[3]),1):
         wind_list.append(wind[3][w].split("_")[1])
 
-
+    counter_2 = 0
     for stations in air_list:
         my_df = pd.DataFrame([])
         my_density = []
@@ -125,7 +125,7 @@ def prep_data_for_ml(k_factor_g=3):
                        type_of_time="historical",
                        start_date=start_date_,
                        end_date=end_date_,
-                       k_factor=k_factor_g+2,
+                       k_factor=k_factor_g+2+counter_2,
                        compare_station=compare_station_,
                        x_coordinate=x_coordinate_,
                        y_coordinate=y_coordinate_,
@@ -192,7 +192,7 @@ def prep_data_for_ml(k_factor_g=3):
         plt.show()
 
         # dnn_model.save('dnn_model')
-
+        counter_2 +=1
 
 
         # sns.pairplot(train_dataset[column_names], diag_kind='kde')
