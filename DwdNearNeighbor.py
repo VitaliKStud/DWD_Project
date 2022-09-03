@@ -111,7 +111,7 @@ class NearNeighbor:
                 activ_near_id.append(self.activ_id[i])
             return x_near, y_near, z_near, activ_near_id
 
-    def datapath_near(self, direction=False, analyze=False):
+    def datapath_near(self, direction=False, analyze=False, machine_learning=False, looking_for="TT_10"):
         """
         :Description: Is getting all the paths for data of all the near stations in timedelta. Also creating a list with the columnnames for your DataFrame
 
@@ -121,6 +121,7 @@ class NearNeighbor:
         column_names_list = []
         column_name_list = []
         counter = 0
+        my_bool = True
         if direction:
             looking_for_gebreite = self.station_list[self.activ_id[self.closest[:, 1:self.k_factor + 1][0][0]]].get_geobreite()
             looking_for_geolaenge = self.station_list[self.activ_id[self.closest[:, 1:self.k_factor + 1][0][0]]].get_geolaenge()
@@ -180,6 +181,44 @@ class NearNeighbor:
             for j in range(len(datapath_near_list[counter])):
                 column_names_list.append(self.activ_id[self.closest[:, 1:2][0][0]])
             return datapath_near_list, column_names_list, column_name_list
+        elif machine_learning:
+            count_loop = 0
+            count_station = 0
+            while count_station < self.k_factor:
+                i = self.closest[:, 1:self.k_factor + 1 + count_loop][0][count_loop]
+                test = self.station_list[self.activ_id[i]].generate_tu_data_path_date(self.start_date, self.end_date)
+                date_range_df = pd.DataFrame([])
+                date_range_df = self.date_range_df().set_index('MESS_DATUM_GENERATED')
+                date_range_df.loc[:, str(self.activ_id[i])] = np.nan
+                for j in test:
+                    df_tt_10 = pd.read_csv(j, sep=";", usecols=["MESS_DATUM", looking_for], index_col=["MESS_DATUM"])
+                    mask = df_tt_10[looking_for] > -999
+                    df_tt_10 = df_tt_10[mask]
+                    df_tt_10 = df_tt_10.rename(columns={looking_for: self.activ_id[i]})
+                    date_range_df.update(df_tt_10)
+                    print(date_range_df.isna().sum()[1])
+                if date_range_df.isna().sum()[1] > len(date_range_df) * 0.5 and count_loop == 0:
+                    my_bool = False
+                elif date_range_df.isna().sum()[1] > len(date_range_df) * 0.5:
+                    pass
+                else:
+                    datapath_near_list.append(self.station_list[self.activ_id[i]].generate_tu_data_path_date(self.start_date, self.end_date))
+                    column_name_list.append(self.activ_id[i])
+                    for j in range(len(datapath_near_list[counter])):
+                        column_names_list.append(self.activ_id[i])
+                    counter = counter + 1
+                    count_station += 1
+                count_loop += 1
+            return datapath_near_list, column_names_list, column_name_list, my_bool
+
+            # for i in self.closest[:, 1:self.k_factor + 1][0]:
+            #     datapath_near_list.append(self.station_list[self.activ_id[i]].generate_tu_data_path_date(self.start_date, self.end_date))
+            #     column_name_list.append(self.activ_id[i])
+            #     for j in range(len(datapath_near_list[counter])):
+            #         column_names_list.append(self.activ_id[i])
+            #     counter = counter + 1
+
+
         else:
             for i in self.closest[:, 1:self.k_factor + 1][0]:
                 datapath_near_list.append(self.station_list[self.activ_id[i]].generate_tu_data_path_date(self.start_date, self.end_date))
@@ -189,7 +228,7 @@ class NearNeighbor:
                 counter = counter + 1
             return datapath_near_list, column_names_list, column_name_list
 
-    def dataframe_near_from_to(self, direction=False, analyze=False):
+    def dataframe_near_from_to(self, direction=False, analyze=False, machine_learning=False, looking_for="TT_10"):
         """
         :Description: Is generating a DataFrame with alle the dates inside your files (timedelta for every file) inside your timedelta. Also returning same lists from self.datapath_near()
 
@@ -198,42 +237,52 @@ class NearNeighbor:
         df_from = pd.DataFrame([])
         df_to = pd.DataFrame([])
         if direction:
-            datapath_near_list, column_names_list, column_name_list = self.datapath_near(direction=True)
+            datapath_near_list, column_names_list, column_name_list, my_bool = self.datapath_near(direction=True)
         elif analyze:
-            datapath_near_list, column_names_list, column_name_list = self.datapath_near(direction=False, analyze=True)
+            datapath_near_list, column_names_list, column_name_list, my_bool = self.datapath_near(direction=False, analyze=True)
+        elif machine_learning:
+            datapath_near_list, column_names_list, column_name_list, my_bool = self.datapath_near(direction=False, analyze=False, machine_learning=True, looking_for=looking_for)
         else:
-            datapath_near_list, column_names_list, column_name_list = self.datapath_near(direction=False)
-        for i in range(len(datapath_near_list)):
-            for j in datapath_near_list[i]:
-                data = pd.read_csv(j, sep=";", usecols=["MESS_DATUM"])
-                df_from = pd.concat([df_from, data.iloc[[0]]], ignore_index=True)
-                df_to = pd.concat([df_to, data.iloc[[-1]]], ignore_index=True)
-        df_from = df_from.rename(columns={"MESS_DATUM": "FROM_DATE"})
-        df_to = df_to.rename(columns={"MESS_DATUM": "TO_DATE"})
-        df_from_to = df_from.join(df_to)
-        del df_from
-        del df_to
-        return df_from_to, datapath_near_list, column_names_list, column_name_list
+            datapath_near_list, column_names_list, column_name_list, my_bool = self.datapath_near(direction=False)
+        if my_bool:
+            for i in range(len(datapath_near_list)):
+                for j in datapath_near_list[i]:
+                    data = pd.read_csv(j, sep=";", usecols=["MESS_DATUM"])
+                    df_from = pd.concat([df_from, data.iloc[[0]]], ignore_index=True)
+                    df_to = pd.concat([df_to, data.iloc[[-1]]], ignore_index=True)
+            df_from = df_from.rename(columns={"MESS_DATUM": "FROM_DATE"})
+            df_to = df_to.rename(columns={"MESS_DATUM": "TO_DATE"})
+            df_from_to = df_from.join(df_to)
+            del df_from
+            del df_to
+        else:
+            df_from_to = False
+        return df_from_to, datapath_near_list, column_names_list, column_name_list, my_bool
 
-    def dataframe_near_from_to_path(self, direction=False, analyze=False):
+    def dataframe_near_from_to_path(self, direction=False, analyze=False, machine_learning=False, looking_for="TT_10"):
         """
         :Description: Is connecting df_from_to with datapah_near_list for easier handling.
 
         :return: df_from_to, column_names_list, column_name_list: **as list, df_from_to as DataFrame**
         """
         if direction:
-            df_from_to, datapath_near_list, column_names_list, column_name_list = self.dataframe_near_from_to(direction=True)
+            df_from_to, datapath_near_list, column_names_list, column_name_list, my_bool = self.dataframe_near_from_to(direction=True)
         elif analyze:
-            df_from_to, datapath_near_list, column_names_list, column_name_list = self.dataframe_near_from_to(direction=False, analyze=True)
+            df_from_to, datapath_near_list, column_names_list, column_name_list, my_bool = self.dataframe_near_from_to(direction=False, analyze=True)
+        elif machine_learning:
+            df_from_to, datapath_near_list, column_names_list, column_name_list, my_bool = self.dataframe_near_from_to(direction=False, machine_learning=True, looking_for=looking_for)
         else:
-            df_from_to, datapath_near_list, column_names_list, column_name_list = self.dataframe_near_from_to(direction=False)
-        free_list = []
-        for i in range(len(datapath_near_list)):
-            for j in datapath_near_list[i]:
-                free_list.append(j)
-        df_data_path = pd.DataFrame(free_list, columns=["DATA_PATH"])
-        df_from_to = df_from_to.join(df_data_path["DATA_PATH"])
-        return df_from_to, column_names_list, column_name_list
+            df_from_to, datapath_near_list, column_names_list, column_name_list, my_bool = self.dataframe_near_from_to(direction=False)
+        if my_bool:
+            free_list = []
+            for i in range(len(datapath_near_list)):
+                for j in datapath_near_list[i]:
+                    free_list.append(j)
+            df_data_path = pd.DataFrame(free_list, columns=["DATA_PATH"])
+            df_from_to = df_from_to.join(df_data_path["DATA_PATH"])
+        else:
+            pass
+        return df_from_to, column_names_list, column_name_list, my_bool
 
     def date_range_df(self):
         """
@@ -509,23 +558,26 @@ class NearNeighbor:
         else:
             print("prep data")
             date_range_df = self.date_range_df().set_index('MESS_DATUM_GENERATED')
-            df_from_to, column_names_list, column_name_list = self.dataframe_near_from_to_path()
-            counter = 0
-            for i in column_name_list:
-                date_range_df.loc[:, str(i)] = np.nan
-            for i in df_from_to["DATA_PATH"]:
-                df_tt_10 = pd.read_csv(i, sep=";", usecols=["MESS_DATUM", data_looking_for], index_col=["MESS_DATUM"])
-                mask = df_tt_10[data_looking_for] > -999
-                df_tt_10 = df_tt_10[mask]
-                df_tt_10 = df_tt_10.rename(columns={data_looking_for: column_names_list[counter]})
-                date_range_df.update(df_tt_10)
-                counter = counter + 1
-            data_all = date_range_df
-            mask_for_quality = date_range_df.iloc[:, 2:].notnull()
-            data_number = mask_for_quality.multiply(1, fill_value=np.nan).replace({0: np.nan})
-            data_factor = (data_number.sum(axis=1, min_count=1))/(self.k_factor-1)
-            data_density = data_factor.sum()/(len(data_factor) - data_factor.isna().sum())
-            index_for_plot = data_all.index
-            index_for_plot = pd.to_datetime(index_for_plot, format='%Y%m%d%H%M')
-            return data_all, index_for_plot, column_name_list, data_density
+            df_from_to, column_names_list, column_name_list, my_bool = self.dataframe_near_from_to_path(machine_learning=True, looking_for=data_looking_for)
+            if my_bool:
+                counter = 0
+                for i in column_name_list:
+                    date_range_df.loc[:, str(i)] = np.nan
+                for i in df_from_to["DATA_PATH"]:
+                    df_tt_10 = pd.read_csv(i, sep=";", usecols=["MESS_DATUM", data_looking_for], index_col=["MESS_DATUM"])
+                    mask = df_tt_10[data_looking_for] > -999
+                    df_tt_10 = df_tt_10[mask]
+                    df_tt_10 = df_tt_10.rename(columns={data_looking_for: column_names_list[counter]})
+                    date_range_df.update(df_tt_10)
+                    counter = counter + 1
+                data_all = date_range_df
+                mask_for_quality = date_range_df.iloc[:, 2:].notnull()
+                data_number = mask_for_quality.multiply(1, fill_value=np.nan).replace({0: np.nan})
+                data_factor = (data_number.sum(axis=1, min_count=1))/(self.k_factor-1)
+                data_density = data_factor.sum()/(len(data_factor) - data_factor.isna().sum())
+                index_for_plot = data_all.index
+                index_for_plot = pd.to_datetime(index_for_plot, format='%Y%m%d%H%M')
+                return data_all, index_for_plot, column_name_list, data_density, my_bool
+            else:
+                return False, False, False, False, my_bool
 

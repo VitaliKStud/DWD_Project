@@ -103,7 +103,8 @@ def prep_data_for_ml(k_factor_g=3):
         wind_list.append(wind[3][w].split("_")[1])
 
     counter_2 = 0
-    for stations in air_list:
+    for stations in range(0, len(air_list),1):
+        random = randint(0, len(air_list) - 1)
         my_df = pd.DataFrame([])
         my_density = []
         names_type = "air_temperature"
@@ -111,11 +112,12 @@ def prep_data_for_ml(k_factor_g=3):
         information = main_dwd(local_domain=local_domain_,
                                type_of_data=names_type,
                                type_of_time="historical",
-                               start_date=start_date_, end_date=end_date_).main_station_information(f"{prefix}{stations}")
+                               start_date=start_date_, end_date=end_date_).main_station_information(f"{prefix}{air_list[random]}")
         y_coordinate_ = information["geoBreite"]
         x_coordinate_ = information["geoLaenge"]
         z_coordinate_ = 0  # not needed for now (maybe in future)
-        compare_station_ = f"{prefix}{stations}"
+        compare_station_ = f"{prefix}{air_list[random]}"
+        print(compare_station_)
 
         parameter = "TT_10"
         print(parameter)
@@ -125,81 +127,87 @@ def prep_data_for_ml(k_factor_g=3):
                        type_of_time="historical",
                        start_date=start_date_,
                        end_date=end_date_,
-                       k_factor=k_factor_g+2,
+                       k_factor=k_factor_g+1,
                        compare_station=compare_station_,
                        x_coordinate=x_coordinate_,
                        y_coordinate=y_coordinate_,
                        z_coordinate=z_coordinate_,
                        looking_for=looking_for_)
-        new_df, index_for_plot, column_name_list, data_density = dwd.main_analyze_data(correlation=False, compare_station=f"{prefix}{stations}")
-        new_df.pop("DATA_SUMM")
-        column_names = list(new_df.columns)
-        is_nan_list = new_df.isna().sum()
-        counter = 0
-        for i in is_nan_list:
-            if i > len(new_df)/2:
-                new_df.pop(column_names[counter])
-                counter += 1
-            else:
-                counter += 1
-        print(new_df)
+        new_df, index_for_plot, column_name_list, data_density, my_bool = dwd.main_analyze_data(correlation=False, compare_station=f"{prefix}{air_list[random]}")
+        if my_bool == False:
+            print("no")
+        else:
+            new_df.pop("DATA_SUMM")
+            column_names = list(new_df.columns)
+            is_nan_list = new_df.isna().sum()
+            counter = 0
+            for i in is_nan_list:
+                if i > len(new_df)/2:
+                    new_df.pop(column_names[counter])
+                    counter += 1
+                else:
+                    counter += 1
+            print(new_df)
 
         # dnn_model = tf.keras.models.load_model('dnn_model')
         # print(dnn_model.shape())
 
-        dataset = new_df.copy()
-        dataset.tail()
-        dataset = dataset.dropna()
-
-        train_dataset = dataset.sample(frac=0.8, random_state=0)
-        test_dataset = dataset.drop(train_dataset.index)
-        # test_dataset = dataset
-
-        train_features = train_dataset.copy()
-        test_features = test_dataset.copy()
-
-        train_labels = train_features.pop(column_names[0])
-        test_labels = test_features.pop(column_names[0])
-
-        normalizer = tf.keras.layers.Normalization(axis=-1)
-        normalizer.adapt(np.array(train_features))
-
-        dnn_model = build_and_compile_model(normalizer)
-
-        history = dnn_model.fit(
-            train_features,
-            train_labels,
-            validation_split=0.2,
-            verbose=0, epochs=100)
-
-        print(dnn_model.evaluate(test_features, test_labels, verbose=0))
-
-        test_predictions = dnn_model.predict(test_features).flatten()
-
-        a = plt.axes(aspect='equal')
-        plt.scatter(test_labels, test_predictions)
-        plt.xlabel('True Values [MPG]')
-        plt.ylabel('Predictions [MPG]')
-        lims = [-10, 15]
-        plt.xlim(lims)
-        plt.ylim(lims)
-        _ = plt.plot(lims, lims)
-        plt.show()
-
-        error = test_predictions - test_labels
-        plt.hist(error, bins=25)
-        plt.xlabel('Prediction Error [MPG]')
-        _ = plt.ylabel('Count')
-        plt.show()
-
-        # dnn_model.save('dnn_model')
-        counter_2 +=1
 
 
         # sns.pairplot(train_dataset[column_names], diag_kind='kde')
         # plt.show()
 
-prep_data_for_ml(k_factor_g=7)
+prep_data_for_ml(k_factor_g=5)
+
+
+def machine_learning():
+    dataset = new_df.copy()
+    dataset.tail()
+    dataset = dataset.dropna()
+
+    train_dataset = dataset.sample(frac=0.8, random_state=0)
+    test_dataset = dataset.drop(train_dataset.index)
+    # test_dataset = dataset
+
+    train_features = train_dataset.copy()
+    test_features = test_dataset.copy()
+
+    train_labels = train_features.pop(column_names[0])
+    test_labels = test_features.pop(column_names[0])
+
+    normalizer = tf.keras.layers.Normalization(axis=-1)
+    normalizer.adapt(np.array(train_features))
+
+    dnn_model = build_and_compile_model(normalizer)
+
+    history = dnn_model.fit(
+        train_features,
+        train_labels,
+        validation_split=0.2,
+        verbose=0, epochs=100)
+
+    print(dnn_model.evaluate(test_features, test_labels, verbose=0))
+
+    test_predictions = dnn_model.predict(test_features).flatten()
+
+    a = plt.axes(aspect='equal')
+    plt.scatter(test_labels, test_predictions)
+    plt.xlabel('True Values [MPG]')
+    plt.ylabel('Predictions [MPG]')
+    lims = [-10, 15]
+    plt.xlim(lims)
+    plt.ylim(lims)
+    _ = plt.plot(lims, lims)
+    plt.show()
+
+    error = test_predictions - test_labels
+    plt.hist(error, bins=25)
+    plt.xlabel('Prediction Error [MPG]')
+    _ = plt.ylabel('Count')
+    plt.show()
+
+    # dnn_model.save('dnn_model')
+    counter_2 += 1
 
 
 
