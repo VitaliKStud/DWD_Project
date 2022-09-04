@@ -196,7 +196,6 @@ class NearNeighbor:
                     df_tt_10 = df_tt_10[mask]
                     df_tt_10 = df_tt_10.rename(columns={looking_for: self.activ_id[i]})
                     date_range_df.update(df_tt_10)
-                    print(date_range_df.isna().sum()[1])
                 if date_range_df.isna().sum()[1] > len(date_range_df) * 0.5 and count_loop == 0:
                     my_bool = False
                 elif date_range_df.isna().sum()[1] > len(date_range_df) * 0.5:

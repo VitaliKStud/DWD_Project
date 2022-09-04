@@ -41,28 +41,7 @@ def delete_double_values(my_list):
             clean_list.append(i)
     return clean_list
 
-def build_and_compile_model(norm):
-  model = keras.Sequential([
-      norm,
-      layers.Dense(64, activation='relu'),
-      layers.Dense(64, activation='relu'),
-      layers.Dense(1)
-  ])
-
-  model.compile(loss='mean_absolute_error',
-                optimizer=tf.keras.optimizers.Adam(0.001))
-  return model
-
-def plot_loss(history):
-  plt.plot(history.history['loss'], label='loss')
-  plt.plot(history.history['val_loss'], label='val_loss')
-  plt.xlabel('Epoch')
-  plt.ylabel('Error [MPG]')
-  plt.legend()
-  plt.grid(True)
-  plt.show()
-
-def prep_data_for_ml(k_factor_g=3):
+def prep_data_for_ml(k_factor_g=3, test_modell=False):
     # for date in range(0, len(month_step())):
     #     start_date_ = month_step()[date][0]
     #     end_date_ = month_step()[date][1]
@@ -102,7 +81,6 @@ def prep_data_for_ml(k_factor_g=3):
     for w in range(0, len(wind[3]),1):
         wind_list.append(wind[3][w].split("_")[1])
 
-    counter_2 = 0
     for stations in range(0, len(air_list),1):
         random = randint(0, len(air_list) - 1)
         my_df = pd.DataFrame([])
@@ -136,6 +114,7 @@ def prep_data_for_ml(k_factor_g=3):
         new_df, index_for_plot, column_name_list, data_density, my_bool = dwd.main_analyze_data(correlation=False, compare_station=f"{prefix}{air_list[random]}")
         if my_bool == False:
             print("no")
+            column_names = []
         else:
             new_df.pop("DATA_SUMM")
             column_names = list(new_df.columns)
@@ -148,8 +127,19 @@ def prep_data_for_ml(k_factor_g=3):
                 else:
                     counter += 1
             print(new_df)
+        if test_modell:
+            if my_bool:
+                machine_learning(new_df, column_names)
+            else:
+                pass
+        else:
+            if my_bool:
+                machine_learning_modelling(new_df, column_names)
+            else:
+                pass
 
-        # dnn_model = tf.keras.models.load_model('dnn_model')
+
+
         # print(dnn_model.shape())
 
 
@@ -157,11 +147,39 @@ def prep_data_for_ml(k_factor_g=3):
         # sns.pairplot(train_dataset[column_names], diag_kind='kde')
         # plt.show()
 
-prep_data_for_ml(k_factor_g=5)
 
 
-def machine_learning():
-    dataset = new_df.copy()
+def plot_loss(history):
+    plt.plot(history.history['loss'], label='loss')
+    plt.plot(history.history['val_loss'], label='val_loss')
+    plt.xlabel('Epoch')
+    plt.ylabel('Error [MPG]')
+    plt.legend()
+    plt.grid(True)
+    plt.show()
+
+def plot_horsepower(x, y):
+    plt.scatter(train_features['Horsepower'], train_labels, label='Data')
+    plt.plot(x, y, color='k', label='Predictions')
+    plt.xlabel('Horsepower')
+    plt.ylabel('MPG')
+    plt.legend()
+
+def build_and_compile_model(norm):
+    model = keras.Sequential([
+      norm,
+      layers.Dense(128, activation='relu'),
+      layers.Dense(128, activation='relu'),
+      layers.Dense(1)
+    ])
+
+    model.compile(loss='mean_absolute_error',
+                optimizer=tf.keras.optimizers.Adam(0.001))
+    model.summary()
+    return model
+
+def machine_learning_modelling(my_df, column_names):
+    dataset = my_df.copy()
     dataset.tail()
     dataset = dataset.dropna()
 
@@ -172,11 +190,14 @@ def machine_learning():
     train_features = train_dataset.copy()
     test_features = test_dataset.copy()
 
+    real_data = test_features[column_names[0]]
     train_labels = train_features.pop(column_names[0])
     test_labels = test_features.pop(column_names[0])
+    print(real_data)
 
     normalizer = tf.keras.layers.Normalization(axis=-1)
     normalizer.adapt(np.array(train_features))
+    print(normalizer.mean.numpy())
 
     dnn_model = build_and_compile_model(normalizer)
 
@@ -185,10 +206,21 @@ def machine_learning():
         train_labels,
         validation_split=0.2,
         verbose=0, epochs=100)
+    print(history)
+    plot_loss(history)
 
     print(dnn_model.evaluate(test_features, test_labels, verbose=0))
 
     test_predictions = dnn_model.predict(test_features).flatten()
+
+    print(test_features)
+
+    y = dnn_model.predict(test_features)
+    x = tf.linspace(0.0, len(y)-1, len(y))
+
+    plt.plot(x, real_data)
+    plt.plot(x,y)
+    plt.show()
 
     a = plt.axes(aspect='equal')
     plt.scatter(test_labels, test_predictions)
@@ -206,8 +238,46 @@ def machine_learning():
     _ = plt.ylabel('Count')
     plt.show()
 
-    # dnn_model.save('dnn_model')
-    counter_2 += 1
+    dnn_model.save('dnn_model')
 
+
+def machine_learning(my_df, column_names):
+    dnn_model = tf.keras.models.load_model('dnn_model')
+    dataset = my_df.copy()
+    dataset.tail()
+    dataset = dataset.dropna()
+    real_data = dataset[column_names[0]]
+    test_dataset = dataset.pop(column_names[0])
+
+
+
+    test_features = test_dataset.copy()
+    print(dnn_model.evaluate(test_features, real_data, verbose=0))
+    y = dnn_model.predict(test_features)
+    my_new_list = []
+    for i in y:
+        for j in i:
+            my_new_list.append(j)
+    y = tf.convert_to_tensor(my_new_list)
+    data = tf.convert_to_tensor(real_data)
+    err = tf.keras.losses.mean_squared_error(data, y)
+    print(err)
+
+
+    x = tf.linspace(0.0, len(y)-1, len(y))
+    plt.plot(x, real_data)
+    plt.plot(x,y, lw=0.5)
+    plt.show()
+
+    # error = y - real_data
+    # plt.hist(error, bins=25)
+    # plt.xlabel('Prediction Error [MPG]')
+    # _ = plt.ylabel('Count')
+    # plt.show()
+
+
+
+prep_data_for_ml(k_factor_g=4, test_modell=False)
+# prep_data_for_ml(k_factor_g=10, test_modell=True)
 
 
