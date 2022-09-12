@@ -1,4 +1,5 @@
 import os
+import math
 from DwdMain import main_dwd
 from DwdDict import get_dwd_dict
 import json
@@ -81,11 +82,12 @@ def prep_data_for_ml(k_factor_g=3, test_modell=False):
     for w in range(0, len(wind[3]),1):
         wind_list.append(wind[3][w].split("_")[1])
 
+    count_norm = 0
     for stations in range(0, len(air_list),1):
         random = randint(0, len(air_list) - 1)
         my_df = pd.DataFrame([])
         my_density = []
-        names_type = "air_temperature"
+        names_type = "solar"
         prefix = f"{type_dict[names_type]}_"
         information = main_dwd(local_domain=local_domain_,
                                type_of_data=names_type,
@@ -97,7 +99,7 @@ def prep_data_for_ml(k_factor_g=3, test_modell=False):
         compare_station_ = f"{prefix}{air_list[random]}"
         print(compare_station_)
 
-        parameter = "TT_10"
+        parameter = "SD_10"
         print(parameter)
         looking_for_ = [parameter]
         dwd = main_dwd(local_domain=local_domain_,
@@ -111,7 +113,8 @@ def prep_data_for_ml(k_factor_g=3, test_modell=False):
                        y_coordinate=y_coordinate_,
                        z_coordinate=z_coordinate_,
                        looking_for=looking_for_)
-        new_df, index_for_plot, column_name_list, data_density, my_bool = dwd.main_analyze_data(correlation=False, compare_station=f"{prefix}{air_list[random]}")
+        new_df, index_for_plot, column_name_list, data_density, dist, my_bool = dwd.main_analyze_data(correlation=False, compare_station=f"{prefix}{air_list[random]}")
+        print(dist)
         if my_bool == False:
             print("no")
             column_names = []
@@ -129,12 +132,18 @@ def prep_data_for_ml(k_factor_g=3, test_modell=False):
             print(new_df)
         if test_modell:
             if my_bool:
-                machine_learning(new_df, column_names)
+                machine_learning(new_df, column_names, dist)
             else:
                 pass
         else:
             if my_bool:
-                machine_learning_modelling(new_df, column_names)
+                if count_norm == 0:
+                    machine_learning_modelling(new_df, column_names, dist)
+                    count_norm += 1
+                    print(count_norm)
+                else:
+                    print("im here")
+                    machine_learning_modelling(new_df, column_names, dist, normalize=False)
             else:
                 pass
 
@@ -153,11 +162,7 @@ def plot_loss(history):
     plt.plot(history.history['loss'], label='loss')
     plt.plot(history.history['val_loss'], label='val_loss')
     plt.xlabel('Epoch')
-    plt.ylabel('Error [MPG]')
-    plt.legend()
-    plt.grid(True)
     plt.show()
-
 def plot_horsepower(x, y):
     plt.scatter(train_features['Horsepower'], train_labels, label='Data')
     plt.plot(x, y, color='k', label='Predictions')
@@ -165,57 +170,88 @@ def plot_horsepower(x, y):
     plt.ylabel('MPG')
     plt.legend()
 
-def build_and_compile_model(norm):
-    model = keras.Sequential([
-      norm,
-      layers.Dense(128, activation='relu'),
-      layers.Dense(128, activation='relu'),
-      layers.Dense(1)
-    ])
+def build_and_compile_model():
+    # model = keras.Sequential([
+    #     norm,
+    #     layers.Dense(128, activation='relu'),
+    #     layers.Dense(128, activation='relu'),
+    #     layers.Dense(1)
+    # ])
 
+    inputs = keras.Input(shape=(20,))
+    input_2 = keras.Input(shape=(20,))
+
+    dense = layers.Dense(64, activation="relu")
+    x = dense(inputs)
+    x = layers.Dense(64, activation="relu")(x)
+
+    dense_2 = layers.Dense(64, activation="relu")
+    x_2 = dense_2(input_2)
+    x_2 = layers.Dense(64, activation="relu")(x_2)
+
+    combo = layers.concatenate([x_2, x])
+    y = layers.Dense(64, activation="relu")(combo)
+    outputs = layers.Dense(1)(y)
+
+    model = keras.Model(inputs=[inputs, input_2], outputs=outputs, name="dnn_model")
     model.compile(loss='mean_absolute_error',
                 optimizer=tf.keras.optimizers.Adam(0.001))
     model.summary()
+    tf.keras.utils.plot_model(model, "multi_input_and_output_model.png", show_shapes=True)
     return model
 
-def machine_learning_modelling(my_df, column_names):
-    dataset = my_df.copy()
-    dataset.tail()
-    dataset = dataset.dropna()
+def machine_learning_modelling(my_df, column_names, dist, normalize = True):
+    #PREP DATA FOR DNN
+    my_data = my_df.copy()
+    my_data.tail()
+    my_data = my_data.dropna()
 
-    train_dataset = dataset.sample(frac=0.8, random_state=0)
-    test_dataset = dataset.drop(train_dataset.index)
-    # test_dataset = dataset
+    #SPLIT DATA
+    train_features = my_data.sample(frac=0.8, random_state=0)
+    dist_1 = tf.convert_to_tensor(dist[1:])
+    dist_1 = pd.DataFrame([dist[1:]])
+    dist_1 = dist_1.append([dist_1]*(len(train_features)-1), ignore_index=True)
 
-    train_features = train_dataset.copy()
-    test_features = test_dataset.copy()
-
+    # train_dist_features = dist_1.sample(frac=0.8, random_state=0)
+    test_features = my_data.drop(train_features.index)
     real_data = test_features[column_names[0]]
+
+    dist_2 = tf.convert_to_tensor(dist[1:])
+    dist_2 = pd.DataFrame([dist[1:]])
+    dist_2 = dist_2.append([dist_2]*(len(test_features)-1), ignore_index=True)
+
+    #GET LABELS
     train_labels = train_features.pop(column_names[0])
     test_labels = test_features.pop(column_names[0])
-    print(real_data)
 
-    normalizer = tf.keras.layers.Normalization(axis=-1)
-    normalizer.adapt(np.array(train_features))
-    print(normalizer.mean.numpy())
+    #NORMALIZE
+    if normalize:
+        # normalizer = tf.keras.layers.Normalization(axis=-1)
+        # normalizer.adapt(np.array(train_features))
+        # CREATE MODELL
+        dnn_model = build_and_compile_model()
+        # inputs = tf.keras.Input(shape=(28,28))
+    else:
+        dnn_model = tf.keras.models.load_model('dnn_model')
+    #FIT MODELL
 
-    dnn_model = build_and_compile_model(normalizer)
-
+    print(dnn_model.summary())
     history = dnn_model.fit(
-        train_features,
+        [train_features, dist_1],
         train_labels,
         validation_split=0.2,
         verbose=0, epochs=100)
-    print(history)
+
     plot_loss(history)
 
-    print(dnn_model.evaluate(test_features, test_labels, verbose=0))
+    print(dnn_model.evaluate([test_features, dist_2], test_labels, verbose=0))
 
-    test_predictions = dnn_model.predict(test_features).flatten()
+    test_predictions = dnn_model.predict([test_features, dist_2]).flatten()
 
-    print(test_features)
+    print(len(test_features))
+    print(len(dist_2))
 
-    y = dnn_model.predict(test_features)
+    y = dnn_model.predict([test_features, dist_2])
     x = tf.linspace(0.0, len(y)-1, len(y))
 
     plt.plot(x, real_data)
@@ -241,7 +277,7 @@ def machine_learning_modelling(my_df, column_names):
     dnn_model.save('dnn_model')
 
 
-def machine_learning(my_df, column_names):
+def machine_learning(my_df, column_names, dist):
     dnn_model = tf.keras.models.load_model('dnn_model')
     dataset = my_df.copy()
     dataset.tail()
@@ -249,11 +285,16 @@ def machine_learning(my_df, column_names):
     real_data = dataset[column_names[0]]
     test_dataset = dataset.pop(column_names[0])
 
+    dist_1 = dist
+    dist_1 = tf.convert_to_tensor(dist[1:])
+    dist_1 = pd.DataFrame([dist[1:]])
+    dist_1 = dist_1.append([dist_1]*(len(train_features)-1), ignore_index=True)
+
 
 
     test_features = test_dataset.copy()
     print(dnn_model.evaluate(test_features, real_data, verbose=0))
-    y = dnn_model.predict(test_features)
+    y = dnn_model.predict([test_features, dist_1])
     my_new_list = []
     for i in y:
         for j in i:
@@ -269,6 +310,11 @@ def machine_learning(my_df, column_names):
     plt.plot(x,y, lw=0.5)
     plt.show()
 
+    tf.keras.utils.plot_model(dnn_model, "multi_input_and_output_model.png", show_shapes=True)
+
+    # dnn_model.save('dnn_model')
+
+
     # error = y - real_data
     # plt.hist(error, bins=25)
     # plt.xlabel('Prediction Error [MPG]')
@@ -277,7 +323,7 @@ def machine_learning(my_df, column_names):
 
 
 
-prep_data_for_ml(k_factor_g=4, test_modell=False)
-# prep_data_for_ml(k_factor_g=10, test_modell=True)
+prep_data_for_ml(k_factor_g=20, test_modell=False)
+# prep_data_for_ml(k_factor_g=5, test_modell=True)
 
 

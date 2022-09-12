@@ -576,7 +576,24 @@ class NearNeighbor:
                 data_density = data_factor.sum()/(len(data_factor) - data_factor.isna().sum())
                 index_for_plot = data_all.index
                 index_for_plot = pd.to_datetime(index_for_plot, format='%Y%m%d%H%M')
-                return data_all, index_for_plot, column_name_list, data_density, my_bool
+                station_names = data_all.columns.values[1:]
+                gebreite_list = []
+                geolaenge_list = []
+                geohoehe_list = []
+
+                for i in station_names:
+                    geobreite = self.station_list[i].get_geobreite()
+                    geolaenge = self.station_list[i].get_geolaenge()
+                    geohoehe = self.station_list[i].get_stationshoehe()
+                    gebreite_list.append(geobreite)
+                    geolaenge_list.append(geolaenge)
+                    geohoehe_list.append(geohoehe)
+                dist = []
+                for n in range(0,len(gebreite_list),1):
+                    dist_1 = (gebreite_list[0], geolaenge_list[0], geohoehe_list[0])
+                    dist_2 = (gebreite_list[n], geolaenge_list[n], geohoehe_list[n])
+                    dist.append(distance.euclidean(dist_1, dist_2))
+                return data_all, index_for_plot, column_name_list, data_density, dist, my_bool
             else:
-                return False, False, False, False, my_bool
+                return False, False, False, False, False, my_bool
 
