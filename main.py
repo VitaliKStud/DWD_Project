@@ -261,7 +261,7 @@ def analyze(method="standard", density=0.9):
                 count_data_list = []
                 for k in range(3,21,1):
                         count_data = 0
-                        n = 8
+                        n = 10
                         y = []
                         den_list = []
                         try:
@@ -430,14 +430,14 @@ def plot_density(dict_avg_density, dict_datapoints, density_list, plt_name):
             my_data_points.append((dict_datapoints[i][j]))
             my_density_list.append((density_list[i]))
     df = pd.DataFrame(list(zip(my_name, my_data_points, my_avg_density, my_density_list)))
-    df = df.rename(columns={0:"names",1:"data_points",2:"density", 3:"density_list"})
+    df = df.rename(columns={0:"Parameter",1:"data_points",2:"density", 3:"Gesetzte Grenze für die Dichte"})
     print(df)
-    heatmap1_data = pd.pivot_table(df, values='data_points',
-                                   index=['names'],
-                                   columns='density_list')
+    heatmap1_data = pd.pivot_table(df, values='density',
+                                   index=['Parameter'],
+                                   columns='Gesetzte Grenze für die Dichte')
     print(heatmap1_data)
     fig = plt.figure(figsize=(10, 5))
-    sns.heatmap(heatmap1_data, cmap="YlGnBu")
+    sns.heatmap(heatmap1_data, cmap="YlGnBu", cbar_kws={'label': 'Erreichte Datendichte'})
     fig.savefig(r"C:\Users\VID\Desktop\Betriebliche_Praxis\Graphs/" + plt_name + ".png")
 
 
@@ -458,7 +458,7 @@ def my_main():
         dict_avg_2, dict_std_2, dict_density_2, dict_datapoints_2 = analyze(method="weighted", density=d)
         dict_avg_3, dict_std_3, dict_density_3, dict_datapoints_3 = analyze(method="direction", density=d)
         dict_erg_g, dict_names, dict_std_g = compare_methods(dict_avg_1, dict_avg_2, dict_avg_3, dict_std_1, dict_std_2, dict_std_3)
-        plot_compare_method_bar(dict_erg_g, dict_std_g, dict_names, name="_test", std=True, plt_name="test_"+str(d))
+        # plot_compare_method_bar(dict_erg_g, dict_std_g, dict_names, name="_test", std=True, plt_name="test_"+str(d))
         den_1, data_p_1 = analyze_density(dict_density_1, dict_datapoints_1)
         den_2, data_p_2 = analyze_density(dict_density_2, dict_datapoints_2)
         den_3, data_p_3 = analyze_density(dict_density_3, dict_datapoints_3)
@@ -474,7 +474,7 @@ def my_main():
     plot_density(den_1_list, data_p_1_list, density_1_list, "standard")
     plot_density(den_2_list, data_p_2_list, density_2_list, "weighted")
     plot_density(den_3_list, data_p_3_list, density_3_list, "direction")
-# my_main()
+my_main()
 
 def delete_double_values(my_list):
     clean_list = []

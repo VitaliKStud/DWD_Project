@@ -558,15 +558,18 @@ class NearNeighbor:
             print("prep data")
             date_range_df = self.date_range_df().set_index('MESS_DATUM_GENERATED')
             df_from_to, column_names_list, column_name_list, my_bool = self.dataframe_near_from_to_path(machine_learning=True, looking_for=data_looking_for)
+            column_names_list_2 = []
+            for names in column_names_list:
+                column_names_list_2.append(f"{names}_{data_looking_for}")
             if my_bool:
                 counter = 0
-                for i in column_name_list:
+                for i in column_names_list_2:
                     date_range_df.loc[:, str(i)] = np.nan
                 for i in df_from_to["DATA_PATH"]:
                     df_tt_10 = pd.read_csv(i, sep=";", usecols=["MESS_DATUM", data_looking_for], index_col=["MESS_DATUM"])
                     mask = df_tt_10[data_looking_for] > -999
                     df_tt_10 = df_tt_10[mask]
-                    df_tt_10 = df_tt_10.rename(columns={data_looking_for: column_names_list[counter]})
+                    df_tt_10 = df_tt_10.rename(columns={data_looking_for: f"{column_names_list[counter]}_{data_looking_for}"})
                     date_range_df.update(df_tt_10)
                     counter = counter + 1
                 data_all = date_range_df
@@ -582,6 +585,7 @@ class NearNeighbor:
                 geohoehe_list = []
 
                 for i in station_names:
+                    i = i.replace(f"_{data_looking_for}", "")
                     geobreite = self.station_list[i].get_geobreite()
                     geolaenge = self.station_list[i].get_geolaenge()
                     geohoehe = self.station_list[i].get_stationshoehe()
@@ -590,10 +594,10 @@ class NearNeighbor:
                     geohoehe_list.append(geohoehe)
                 dist = []
                 for n in range(0,len(gebreite_list),1):
-                    dist_1 = (gebreite_list[0], geolaenge_list[0], geohoehe_list[0])
-                    dist_2 = (gebreite_list[n], geolaenge_list[n], geohoehe_list[n])
+                    dist_1 = (gebreite_list[0], geolaenge_list[0])
+                    dist_2 = (gebreite_list[n], geolaenge_list[n])
                     dist.append(distance.euclidean(dist_1, dist_2))
-                return data_all, index_for_plot, column_name_list, data_density, dist, my_bool
+                return data_all, index_for_plot, column_name_list, data_density, dist, geohoehe_list, my_bool
             else:
-                return False, False, False, False, False, my_bool
+                return False, False, False, False, False, False, my_bool
 
