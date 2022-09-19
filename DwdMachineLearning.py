@@ -81,6 +81,7 @@ def prep_data_for_ml(k_factor_g=3, parameter_n=1, stations_per_month=1, start_da
     count_norm = 0
     # random = randint(0, len(air_list) - 1)
     random = stations_per_month - 1
+    # random = 0
     my_df = pd.DataFrame([])
     my_density = []
     names_type = "air_temperature"
@@ -95,7 +96,7 @@ def prep_data_for_ml(k_factor_g=3, parameter_n=1, stations_per_month=1, start_da
     compare_station_ = f"{prefix}{air_list[random]}"
     print(compare_station_)
 
-    parameter = "TT_10"
+    parameter = "PP_10"
     print(parameter)
     looking_for_ = [parameter]
     dwd = main_dwd(local_domain=local_domain_,
@@ -111,7 +112,7 @@ def prep_data_for_ml(k_factor_g=3, parameter_n=1, stations_per_month=1, start_da
                    looking_for=looking_for_)
     new_df_1, index_for_plot, column_name_list, data_density, dist, height, my_bool = dwd.main_analyze_data(correlation=False, compare_station=f"{prefix}{air_list[random]}")
     if parameter_n == 2:
-        parameter_2 = "TM5_10"
+        parameter_2 = "PP_10"
         print(parameter_2)
         looking_for_2 = [parameter_2]
         dwd = main_dwd(local_domain=local_domain_,
@@ -244,19 +245,19 @@ def plot_horsepower(x, y):
 def build_and_compile_model(shape=5, parameter=1):
     inputs = keras.Input(shape=(shape,), name="InputsData1")
     input_2 = keras.Input(shape=(shape,), name="InputsDistance")
-    # input_3 = keras.Input(shape=(shape,), name="InputsHeight")
+    input_3 = keras.Input(shape=(shape,), name="InputsHeight")
 
     dense = layers.Dense(32, activation="relu", name="HiddenLayer1ForData1")
     x = dense(inputs)
-    x = layers.Dense(32, activation="relu", name="HiddenLayer2ForData1")(x)
+    x = layers.Dense(64, activation="relu", name="HiddenLayer2ForData1")(x)
 
     dense_2 = layers.Dense(32, activation="relu", name="HiddenLayer1ForDistance")
     x_2 = dense_2(input_2)
-    x_2 = layers.Dense(32, activation="relu", name="HiddenLayer2ForDistance")(x_2)
+    x_2 = layers.Dense(64, activation="relu", name="HiddenLayer2ForDistance")(x_2)
 
-    # dense_3 = layers.Dense(32, activation="relu", name="HiddenLayer1ForHeight")
-    # x_3 = dense_3(input_3)
-    # x_3 = layers.Dense(32, activation="relu", name="HiddenLayer2ForHeight")(x_3)
+    dense_3 = layers.Dense(32, activation="relu", name="HiddenLayer1ForHeight")
+    x_3 = dense_3(input_3)
+    x_3 = layers.Dense(64, activation="relu", name="HiddenLayer2ForHeight")(x_3)
 
     if parameter == 2:
         input_4 = keras.Input(shape=(shape,), name="InputsData2")
@@ -271,15 +272,18 @@ def build_and_compile_model(shape=5, parameter=1):
 
         model = keras.Model(inputs=[inputs, input_2, input_3, input_4], outputs=outputs, name="dnn_model")
     else:
-        combo = layers.concatenate([x_2, x], name="ConnectHiddenLayers")
-        y = layers.Dense(32, activation="relu", name="HiddenLayerForConnection")(combo)
+        combo_0 = layers.concatenate([x_2, x_3], name="ConnectHiddenLayersZero")
+        y_0 = layers.Dense(128, activation="relu", name="HiddenLayerForConnectionZero")(combo_0)
+
+        combo = layers.concatenate([x, y_0], name="ConnectHiddenLayers")
+        y = layers.Dense(256, activation="relu", name="HiddenLayerForConnection")(combo)
         outputs = layers.Dense(1, name="OutputsDataForMyLocation")(y)
 
-        model = keras.Model(inputs=[inputs, input_2], outputs=outputs, name="dnn_model")
+        model = keras.Model(inputs=[inputs, input_2, input_3], outputs=outputs, name="dnn_model_pp_10")
 
-    model.compile(loss='mean_absolute_error',
+    model.compile(loss='mse',
                 optimizer=tf.keras.optimizers.Adam(0.001))
-    # model.summary()
+    model.summary()
     tf.keras.utils.plot_model(model, "multi_input_and_output_model.png", show_shapes=True, show_layer_activations=True,
                               expand_nested=True, show_dtype=True)
     return model
@@ -293,7 +297,7 @@ def data_generator(station_steps, shape, parameter, start_date_, end_date_, data
                                                                                                                                                                                        start_date=start_date_,
                                                                                                                                                                                        end_date=end_date_)
         if my_bool == False:
-            return False, False
+            return False
         else:
             my_data = my_df.copy()
             my_data.tail()
@@ -332,8 +336,9 @@ def data_generator(station_steps, shape, parameter, start_date_, end_date_, data
 
 
             if data == True:
-                # return {"InputsData1": train_features, "InputsDistance": dist_1, "InputsHeight": height_1}, train_labels
-                return {"InputsData1": train_features, "InputsDistance": dist_1}, train_labels
+                yield {"InputsData1": train_features, "InputsDistance": dist_1, "InputsHeight": height_1}, train_labels
+                # return {"InputsData1": train_features, "InputsDistance": dist_1}, train_labels
+                # return {"InputsData1": train_features, "InputsHeight": height_1}, train_labels
 
             if val == True:
                 return {"InputsData1": val_features, "InputsDistance": val_dist, "InputsHeight": val_height}, val_labels
@@ -345,7 +350,7 @@ def data_generator(station_steps, shape, parameter, start_date_, end_date_, data
 def machine_learning_modelling(shape=5, parameter=1, epochs=100, batch_size=1, station_steps=10):
     dnn_model = build_and_compile_model(shape=shape, parameter=parameter)
     my_epoch = 0
-    for date in range(0, 12):
+    for date in range(0, 1):
         start_date_ = month_step()[date][0]
         end_date_ = month_step()[date][1]
         print(end_date_)
@@ -371,16 +376,23 @@ def machine_learning_modelling(shape=5, parameter=1, epochs=100, batch_size=1, s
                 #                         verbose=0,
                 #                         epochs=epochs)
                 gen_data = data_generator(i, shape, parameter, start_date_=start_date_, end_date_=end_date_, data=True, val=False)
-                if gen_data[0] == False:
+                if gen_data == False:
                     pass
                 else:
+                # if gen_data[0] == False:
+                #     pass
+                # else:
+                    batch_size_0 = 30
+                    # len_data = len(gen_data[1]) // batch_size_0
+                    # print(len(gen_data[1]))
+
                     # val_data = data_generator(station_steps, shape, parameter, data=False, val=True)
-                    history = dnn_model.fit(gen_data[0], gen_data[1],
+                    history = dnn_model.fit(gen_data,
                                             # validation_data=val_data,
-                                            validation_split=0.2,
-                                            batch_size=10,
+                                            # validation_split=0.2,
+                                            batch_size=batch_size_0,
                                             verbose=1,
-                                            epochs=my_epoch+1,
+                                            epochs = 100,
                                             steps_per_epoch=10,
                                             initial_epoch=my_epoch)
                     my_epoch = my_epoch + 1
@@ -414,14 +426,22 @@ def machine_learning_modelling(shape=5, parameter=1, epochs=100, batch_size=1, s
             # _ = plt.ylabel('Count')
             # plt.show()
 
-        dnn_model.save('dnn_model')
+        dnn_model.save('dnn_model_pp_10')
 
+def std_from_list (my_list):
+    avg = sum(my_list)/len(my_list)
+    a = 0
+    for i in my_list:
+        a = a + (i - avg)**2
+    std = np.sqrt(a/len(my_list))
+    return 2*std
 
 def machine_learning(shape=5, parameter=1):
+    absolute_abweichung = []
     for date in range(0, 1):
         start_date_ = month_step()[date][0]
         end_date_ = month_step()[date][1]
-        for i in range(0,10,1):
+        for i in range(0,20,1):
             if parameter == 1:
                 my_df, index_for_plot, column_names, data_density, dist, height, my_bool, index_for_plot_2, column_name_list_2, data_density_2, dist_2, height_2, my_bool_2 = prep_data_for_ml(k_factor_g=shape,
                                                                                                                                                                                                parameter_n=parameter,
@@ -431,7 +451,7 @@ def machine_learning(shape=5, parameter=1):
                 if my_bool == False:
                     pass
                 else:
-                    dnn_model = tf.keras.models.load_model('dnn_model')
+                    dnn_model = tf.keras.models.load_model('dnn_model_pp_10')
                     # dnn_model.summary()
                     dataset = my_df.copy()
                     dataset.tail()
@@ -459,11 +479,13 @@ def machine_learning(shape=5, parameter=1):
 
 
                     if parameter == 2:
-                        print(dnn_model.evaluate([test_features_1, test_features_2, dist_2], real_data, verbose=0))
-                        y = dnn_model.predict([test_features_1, test_features_2, dist_2])
+                        print(dnn_model.evaluate([test_features_1, test_features_2, dist_2, height_2], real_data, verbose=0))
+                        y = dnn_model.predict([test_features_1, test_features_2, dist_2, height_2])
                     else:
-                        print(dnn_model.evaluate([dataset, dist_2], real_data, verbose=0))
-                        y = dnn_model.predict([dataset, dist_2])
+                        abs = dnn_model.evaluate([dataset, dist_2, height_2], real_data, verbose=0)
+                        print(abs)
+                        absolute_abweichung.append(abs)
+                        y = dnn_model.predict([dataset, dist_2, height_2])
 
                     my_new_list = []
                     for i in y:
@@ -481,6 +503,7 @@ def machine_learning(shape=5, parameter=1):
                     plt.show()
 
                     tf.keras.utils.plot_model(dnn_model, "multi_input_and_output_model.png", show_shapes=True)
+    return absolute_abweichung
 
 
 
@@ -491,11 +514,17 @@ def machine_learning(shape=5, parameter=1):
     # plt.show()
 
 
-# machine_learning_modelling(shape=5, parameter=1, epochs=20, batch_size=1, station_steps=20)
-machine_learning(shape=5, parameter=1)
+machine_learning_modelling(shape=5, parameter=1, epochs=20, batch_size=1, station_steps=5)
+absolute_abweichung = machine_learning(shape=5, parameter=1)
+
+# print(sum(absolute_abweichung)/len(absolute_abweichung))
+# print(std_from_list((absolute_abweichung)))
 
 
 # prep_data_for_ml(k_factor_g=5, test_modell=True, parameter=1)
 # prep_data_for_ml(k_factor_g=5, test_modell=True)
+
+
+
 
 

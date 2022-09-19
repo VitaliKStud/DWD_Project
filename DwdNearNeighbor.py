@@ -557,7 +557,7 @@ class NearNeighbor:
         else:
             print("prep data")
             date_range_df = self.date_range_df().set_index('MESS_DATUM_GENERATED')
-            df_from_to, column_names_list, column_name_list, my_bool = self.dataframe_near_from_to_path(machine_learning=True, looking_for=data_looking_for)
+            df_from_to, column_names_list, column_name_list, my_bool = self.dataframe_near_from_to_path(direction=False, machine_learning=True, looking_for=data_looking_for)
             column_names_list_2 = []
             for names in column_names_list:
                 column_names_list_2.append(f"{names}_{data_looking_for}")
