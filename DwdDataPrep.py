@@ -118,7 +118,7 @@ class Station:
 
         :return: **Boolean**
         """
-        return datetime.now() - datetime.strptime(self.__bis_datum, "%Y-%m-%d") < timedelta(days=10)
+        return datetime.now() - datetime.strptime(self.__bis_datum, "%Y-%m-%d") < timedelta(days=365)
 
     def get_station_informations(self):
         """

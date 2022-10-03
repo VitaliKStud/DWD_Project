@@ -70,6 +70,7 @@ class PlotterForStations:
         """
         fig = plt.figure(figsize=(12, 14), dpi=100)
         ax = fig.add_subplot(1, 1, 1)
+        print(len(self.__x))
         plt.scatter(self.__x, self.__y, c=self.__z, cmap=plt.cm.get_cmap("seismic", 5), marker="s")
         plt.clim(0, 1000)
         plt.grid(True, linestyle='--', linewidth=0.5, color="black")

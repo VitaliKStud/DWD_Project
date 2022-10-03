@@ -21,33 +21,33 @@ os.chdir(local_domain_)
 
 type_dict, load_txt_dict, rest_dict, title_dict, unit_dict, type_of_time_list, type_of_data_list, external_domain, external_path_global, ending = get_dwd_dict()
 
-# looking_for_ = ["PP_10"]
-# start_date_ = 199908010000
-# end_date_   = 199909010000
-# x_coordinate_ = 7.1077 # 7 for compare == False
-# y_coordinate_ = 49.2128 # 51 for compare == False
-# z_coordinate_ = 0 # not needed for now (maybe in future)
-# k_factor_ = 20 # how many station are you looking for around your location? 7 means, it will find 7 next stations for your location
-# compare_station_ = "TU_04336" # needed for comparing (don't forget to set the prefix (wind_)
-# type_of_data_ = "air_temperature"
-# type_of_time_ = "historical"
-# dwd = main_dwd(local_domain=local_domain_,
-#                type_of_data=type_of_data_,
-#                type_of_time=type_of_time_,
-#                start_date=start_date_,
-#                end_date=end_date_,
-#                compare_station=compare_station_,
-#                x_coordinate=x_coordinate_,
-#                y_coordinate=y_coordinate_,
-#                z_coordinate=z_coordinate_,
-#                k_factor=k_factor_,
-#                looking_for=looking_for_)
-#
-# dwd.main_plotter_data(qn_weight=False, distance_weight=True, compare=True, no_plot=True)
+looking_for_ = ["TT_10"]
+start_date_ = 199908010000
+end_date_   = 199909010000
+x_coordinate_ = 7.1077 # 7 for compare == False
+y_coordinate_ = 49.2128 # 51 for compare == False
+z_coordinate_ = 0 # not needed for now (maybe in future)
+k_factor_ = 7 # how many station are you looking for around your location? 7 means, it will find 7 next stations for your location
+compare_station_ = "TU_04336" # needed for comparing (don't forget to set the prefix (wind_)
+type_of_data_ = "air_temperature"
+type_of_time_ = "historical"
+dwd = main_dwd(local_domain=local_domain_,
+               type_of_data=type_of_data_,
+               type_of_time=type_of_time_,
+               start_date=start_date_,
+               end_date=end_date_,
+               compare_station=compare_station_,
+               x_coordinate=x_coordinate_,
+               y_coordinate=y_coordinate_,
+               z_coordinate=z_coordinate_,
+               k_factor=k_factor_,
+               looking_for=looking_for_)
 
-# for i in type_of_time_list:
-#     for j in type_of_data_list:
-#         main_dwd(local_domain=local_domain_, type_of_data=j, type_of_time=i,).main_plotter_stations(projection=True)
+dwd.main_plotter_data(qn_weight=False, distance_weight=True, compare=True, no_plot=True)
+
+
+
+# main_dwd(local_domain=local_domain_, type_of_data="wind", type_of_time="historical").main_plotter_stations(projection=False)
 
 def month_step():
     month_list = []
@@ -314,12 +314,13 @@ def write_csv():
                 writer.writerows(my_list)
 
 
+
 def plot_compare_method_bar(dict_avg, dict_std, dict_names, name="test", std=True, plt_name="test"):
     keys = dict_avg.keys()
     counter_0 = 0
     counter_1 = 0
     counter_2 = 0
-    fig, ax = plt.subplots(3, 4, figsize=(20, 10))
+    fig, ax = plt.subplots(3, 4, figsize=(30, 10))
     for i in keys:
         if counter_0 == 0:
             pass
@@ -331,28 +332,51 @@ def plot_compare_method_bar(dict_avg, dict_std, dict_names, name="test", std=Tru
                 counter_2 = counter_2 + 1
         counter_0 = counter_0 + 1
         avg = dict_avg[i]
+        counter_for_number = 0
+        for r in avg:
+            if r == min(avg):
+                my_index = counter_for_number
+            else:
+                pass
+            counter_for_number += 1
+        print(avg)
+        print(min(avg))
         std_list = dict_std[i]
+        print(std_list[my_index])
         if len(avg) == 0:
             pass
         else:
             if std:
                 bar = ax[counter_1, counter_2].bar(np.arange(3, len(avg) + 3), avg)
                 bar_error = ax[counter_1, counter_2].errorbar(np.arange(3, len(avg) + 3), avg, yerr=std_list, capsize=4, fmt="o", color="grey", ms=4.0)
+                counter_for_min = 0
                 for j in range(0,len(bar),1):
                     if dict_names[i][j] == "a":
                         bar[j].set_color("red")
                         bar[j].set_label("test")
+                        if counter_for_min == my_index:
+                            bar[j].set_edgecolor("black")
+                            bar[j].set_linewidth(2)
+                        counter_for_min += 1
                     elif dict_names[i][j] == "b":
                         bar[j].set_color("orange")
                         bar[j].set_label("test1")
+                        if counter_for_min == my_index:
+                            bar[j].set_edgecolor("black")
+                            bar[j].set_linewidth(2)
+                        counter_for_min += 1
                     elif dict_names[i][j] == "c":
                         bar[j].set_color("green")
                         bar[j].set_label("test2")
+                        if counter_for_min == my_index:
+                            bar[j].set_edgecolor("black")
+                            bar[j].set_linewidth(2)
+                        counter_for_min += 1
             else:
                 bar = ax[counter_1, counter_2].bar(np.arange(3, len(avg) + 3), avg)
             ax[counter_1, counter_2].set_title(i)
             ax[counter_1, counter_2].grid()
-            colors = {'standard': 'red', 'weighted': 'orange', "direction": "green"}
+            colors = {'Modell 1: Durchschnitt': 'red', 'Modell 3: Gewichtete Distanz': 'orange', "Modell 2: Himmelsrichtungen": "green"}
             labels = list(colors.keys())
             handles = [plt.Rectangle((0, 0), 1, 1, color=colors[label]) for label in labels]
             plt.legend(handles, labels, loc="best", bbox_to_anchor=(1.0, 0.5))
@@ -458,7 +482,7 @@ def my_main():
         dict_avg_2, dict_std_2, dict_density_2, dict_datapoints_2 = analyze(method="weighted", density=d)
         dict_avg_3, dict_std_3, dict_density_3, dict_datapoints_3 = analyze(method="direction", density=d)
         dict_erg_g, dict_names, dict_std_g = compare_methods(dict_avg_1, dict_avg_2, dict_avg_3, dict_std_1, dict_std_2, dict_std_3)
-        # plot_compare_method_bar(dict_erg_g, dict_std_g, dict_names, name="_test", std=True, plt_name="test_"+str(d))
+        plot_compare_method_bar(dict_erg_g, dict_std_g, dict_names, name="_test", std=True, plt_name="test_"+str(d))
         den_1, data_p_1 = analyze_density(dict_density_1, dict_datapoints_1)
         den_2, data_p_2 = analyze_density(dict_density_2, dict_datapoints_2)
         den_3, data_p_3 = analyze_density(dict_density_3, dict_datapoints_3)
@@ -475,7 +499,7 @@ def my_main():
     plot_density(den_2_list, data_p_2_list, density_2_list, "weighted")
     plot_density(den_3_list, data_p_3_list, density_3_list, "direction")
 my_main()
-
+#hier komm
 def delete_double_values(my_list):
     clean_list = []
     for i in my_list:
@@ -660,11 +684,11 @@ def avg_all_corr(data):
 
 
 def analyze_correlation():
-    my_list = os.listdir(r"C:\Users\VID\Desktop\Betriebliche_Praxis\Ergebnisse\correlation\spearman")
+    my_list = os.listdir(r"C:\Users\VID\Desktop\Betriebliche_Praxis\Ergebnisse\correlation\pearson")
     all_data = []
     my_density = []
     for i in my_list:
-        my_file = r'C:\Users\VID\Desktop\Betriebliche_Praxis\Ergebnisse\correlation\spearman/' + str(i)
+        my_file = r'C:\Users\VID\Desktop\Betriebliche_Praxis\Ergebnisse\correlation\pearson/' + str(i)
         my_density_file = r'C:\Users\VID\Desktop\Betriebliche_Praxis\Ergebnisse\correlation/' + str(i.strip(".csv")) + "_density.json"
         my_df = pd.read_csv(my_file, index_col=0)
         with open(my_density_file) as file:
@@ -686,14 +710,17 @@ def corr_main(plt_name):
             df = df.rename(columns={counter: j})
             df = df.rename(index={counter: j})
             counter = counter + 1
-    fig = plt.figure(figsize=(15, 10))
+    fig = plt.figure(figsize=(15, 12))
     mask = np.triu(np.ones_like(df, dtype=np.bool_))
-    heatmap = sns.heatmap(df, mask=mask, vmin=-1, vmax=1, annot=True, cmap='coolwarm',linewidths=3.0,cbar_kws={'label': 'Korrelationskoeffizient'})
+    heatmap = sns.heatmap(df, mask=mask, vmin=-1, vmax=1, annot=True, cmap='coolwarm',linewidths=3.0,cbar_kws={'label': 'Korrelationskoeffizient'}, annot_kws={"fontsize":13})
+    heatmap.xaxis.set_tick_params(labelsize=15)
+    heatmap.yaxis.set_tick_params(labelsize=15)
+    heatmap.figure.axes[-1].yaxis.label.set_size(20)
+    cbar = heatmap.collections[0].colorbar
+    cbar.ax.tick_params(labelsize=15)
     plt.xticks(rotation=45)
-    heatmap.add_patch(Rectangle((1, 2), 1, 1, fill=False, edgecolor='darkred', lw=1))
-    heatmap.add_patch(Rectangle((1, 3), 1, 1, fill=False, edgecolor='darkorange', lw=1))
-    plt.title("Korrelationskoeffizienten für verschiedene Parameter", pad=10, weight='bold', size=18)
+    # plt.title("Korrelationskoeffizienten für verschiedene Parameter", pad=20, weight='bold', size=30)
     fig.savefig(r"C:\Users\VID\Desktop\Betriebliche_Praxis\Graphs/" + plt_name + ".png")
 
-# corr_main("test")
+# corr_main("pearson")
 

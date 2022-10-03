@@ -268,7 +268,6 @@ class DwdMain:
         :param projection: **as Boolean**. If projection==True, it will project the height of the stations.
         :return: two times “plot saved” if succeeded.
         """
-
         x_active, y_active, z_active, active_id, x_not_active, y_not_active, z_not_active, not_activ_id, x_no_data, y_no_data, z_no_data, no_data_id = self.reader.get_active_stations()
         PlotterForStations(x_active, y_active, z_active, type_of_data=self.type_of_data).plotting_3d(projection)
         PlotterForStations(x_active, y_active, z_active, type_of_data=self.type_of_data).plotting_height_2d()

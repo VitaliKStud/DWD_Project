@@ -181,11 +181,53 @@ class NearNeighbor:
             for j in range(len(datapath_near_list[counter])):
                 column_names_list.append(self.activ_id[self.closest[:, 1:2][0][0]])
             return datapath_near_list, column_names_list, column_name_list
+
         elif machine_learning:
+            looking_for_gebreite = self.station_list[self.activ_id[self.closest[:, 1:self.k_factor + 1][0][0]]].get_geobreite()
+            looking_for_geolaenge = self.station_list[self.activ_id[self.closest[:, 1:self.k_factor + 1][0][0]]].get_geolaenge()
+            q_1 = []
+            q_2 = []
+            q_3 = []
+            q_4 = []
+            q_ges = []
+            for i in self.closest[:, 1:][0]:
+                station_geolaenge = self.station_list[self.activ_id[i]].get_geolaenge()
+                station_geobreite = self.station_list[self.activ_id[i]].get_geobreite()
+                if station_geolaenge > looking_for_geolaenge and station_geobreite > looking_for_gebreite:
+                    q_1.append(i)
+                elif station_geolaenge < looking_for_geolaenge and station_geobreite > looking_for_gebreite:
+                    q_2.append(i)
+                elif station_geolaenge < looking_for_geolaenge and station_geobreite < looking_for_gebreite:
+                    q_3.append(i)
+                elif station_geolaenge > looking_for_geolaenge and station_geobreite < looking_for_gebreite:
+                    q_4.append(i)
+                else:
+                    pass
+            for m in range(0, len(self.closest[:, 1:][0]), 1):
+                if m >= len(q_1):
+                    pass
+                else:
+                    q_ges.append(q_1[m])
+                if m >= len(q_2):
+                    pass
+                else:
+                    q_ges.append(q_2[m])
+                if m >= len(q_3):
+                    pass
+                else:
+                    q_ges.append(q_3[m])
+                if m >= len(q_4):
+                    pass
+                else:
+                    q_ges.append(q_4[m])
+
             count_loop = 0
             count_station = 0
             while count_station < self.k_factor:
-                i = self.closest[:, 1:self.k_factor + 1 + count_loop][0][count_loop]
+                if count_loop == 0:
+                    i = self.closest[:, 1:self.k_factor + 1 + count_loop][0][count_loop]
+                else:
+                    i = q_ges[count_loop]
                 test = self.station_list[self.activ_id[i]].generate_tu_data_path_date(self.start_date, self.end_date)
                 date_range_df = pd.DataFrame([])
                 date_range_df = self.date_range_df().set_index('MESS_DATUM_GENERATED')
@@ -219,13 +261,14 @@ class NearNeighbor:
 
 
         else:
+            my_bool = True
             for i in self.closest[:, 1:self.k_factor + 1][0]:
                 datapath_near_list.append(self.station_list[self.activ_id[i]].generate_tu_data_path_date(self.start_date, self.end_date))
                 column_name_list.append(self.activ_id[i])
                 for j in range(len(datapath_near_list[counter])):
                     column_names_list.append(self.activ_id[i])
                 counter = counter + 1
-            return datapath_near_list, column_names_list, column_name_list
+            return datapath_near_list, column_names_list, column_name_list, my_bool
 
     def dataframe_near_from_to(self, direction=False, analyze=False, machine_learning=False, looking_for="TT_10"):
         """
@@ -281,7 +324,7 @@ class NearNeighbor:
             df_from_to = df_from_to.join(df_data_path["DATA_PATH"])
         else:
             pass
-        return df_from_to, column_names_list, column_name_list, my_bool
+        return df_from_to, datapath_near_list, column_names_list, column_name_list, my_bool
 
     def date_range_df(self):
         """
@@ -316,7 +359,7 @@ class NearNeighbor:
             print("qn_weight")
             date_range_df = self.date_range_df().set_index('MESS_DATUM_GENERATED')
             date_range_q_df = self.date_range_df().set_index('MESS_DATUM_GENERATED')
-            df_from_to, column_names_list, column_name_list = self.dataframe_near_from_to_path()
+            df_from_to, datapath_near_list, column_names_list, column_name_list, my_bool = self.dataframe_near_from_to_path()
             counter = 0
             for i in column_name_list:
                 date_range_df.loc[:, str(i)] = np.nan
@@ -363,7 +406,7 @@ class NearNeighbor:
         elif distance_weight_n_avg:
             print("distance weight")
             date_range_df = self.date_range_df().set_index('MESS_DATUM_GENERATED')
-            df_from_to, column_names_list, column_name_list = self.dataframe_near_from_to_path()
+            df_from_to, datapath_near_list, column_names_list, column_name_list, my_bool = self.dataframe_near_from_to_path()
             counter = 0
             for i in column_name_list:
                 date_range_df.loc[:, str(i)] = np.nan
@@ -380,6 +423,7 @@ class NearNeighbor:
                 mask_for_quality = date_range_df.iloc[:,2:].notnull()
                 quality_mask = mask_for_quality.multiply(distance_quality, fill_value=np.nan).replace({0: np.nan})
                 data_quality = quality_mask.div(quality_mask.sum(axis=1, min_count=1), axis=0)
+                print(data_quality)
                 data_number = mask_for_quality.multiply(1, fill_value=np.nan).replace({0: np.nan})
                 data_factor = (data_number.sum(axis=1, min_count=1))/(self.k_factor-1)
                 data_density = data_factor.sum()/(len(data_factor) - data_factor.isna().sum())
@@ -432,7 +476,7 @@ class NearNeighbor:
         elif direction_n_avg:
             print("direction_method")
             date_range_df = self.date_range_df().set_index('MESS_DATUM_GENERATED')
-            df_from_to, column_names_list, column_name_list = self.dataframe_near_from_to_path(direction=True)
+            df_from_to, datapath_near_list, column_names_list, column_name_list, my_bool = self.dataframe_near_from_to_path(direction=True)
             counter = 0
             for i in column_name_list:
                 date_range_df.loc[:, str(i)] = np.nan
@@ -481,7 +525,7 @@ class NearNeighbor:
             return data_all, data_mean, index_for_plot, column_name_list
         else:
             date_range_df = self.date_range_df().set_index('MESS_DATUM_GENERATED')
-            df_from_to, column_names_list, column_name_list = self.dataframe_near_from_to_path()
+            df_from_to, datapath_near_list, column_names_list, column_name_list, my_bool = self.dataframe_near_from_to_path()
             counter = 0
             for i in column_name_list:
                 date_range_df.loc[:, str(i)] = np.nan
@@ -531,7 +575,7 @@ class NearNeighbor:
         if correlation:
             print("correlation")
             date_range_df = self.date_range_df().set_index('MESS_DATUM_GENERATED')
-            df_from_to, column_names_list, column_name_list = self.dataframe_near_from_to_path(direction=False, analyze=True)
+            df_from_to, datapath_near_list, column_names_list, column_name_list, my_bool = self.dataframe_near_from_to_path(direction=False, analyze=True)
             for i in column_name_list:
                 date_range_df.loc[:, str(i)] = np.nan
             for i in df_from_to["DATA_PATH"]:
@@ -557,7 +601,7 @@ class NearNeighbor:
         else:
             print("prep data")
             date_range_df = self.date_range_df().set_index('MESS_DATUM_GENERATED')
-            df_from_to, column_names_list, column_name_list, my_bool = self.dataframe_near_from_to_path(direction=False, machine_learning=True, looking_for=data_looking_for)
+            df_from_to, datapath_near_list, column_names_list, column_name_list, my_bool = self.dataframe_near_from_to_path(direction=False, machine_learning=True, looking_for=data_looking_for)
             column_names_list_2 = []
             for names in column_names_list:
                 column_names_list_2.append(f"{names}_{data_looking_for}")
